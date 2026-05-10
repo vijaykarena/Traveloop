@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Download, Filter } from 'lucide-react'
+import { Download } from 'lucide-react'
 
 const rows = [
   [1, 'Stay', 'Hotel booking · Rome (Trastevere)', '3 nights', 300, 900],
@@ -24,42 +24,41 @@ const catVariant = { Stay: 'secondary', Travel: 'info', Activities: 'success', F
 export default function Invoice() {
   const { navigate } = useNav()
   return (
-    <div className="flex flex-col h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body overflow-hidden">
+    <div className="flex flex-col min-h-screen lg:h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body lg:overflow-hidden">
       <Chrome active="My Trips" />
-      <Controls q="Search invoice items…" extra={
-        <>
-          <Button variant="outline" size="sm"><Filter size={14} /> Filter</Button>
-          <Button variant="outline" size="sm">Sort</Button>
-        </>
-      } />
-      <div className="flex-1 overflow-auto">
-        <div className="px-8 py-4">
+      <Controls q="Search invoice items…" />
+
+      <div className="flex-1 lg:overflow-auto">
+        <div className="px-4 sm:px-8 py-4">
           <Button variant="link" size="sm" className="px-0" onClick={() => navigate('my-trips')}>← Back to my trips</Button>
         </div>
-        <div className="grid grid-cols-[120px_1.4fr_1fr] gap-6 px-8 pb-6 border-b border-[var(--border-subtle)] items-start">
-          <Img ratio="1/1" label="trip" />
+
+        {/* ===== INVOICE HEADER ===== */}
+        {/* Desktop: 3-col  Mobile: stacked */}
+        <div className="flex flex-col md:grid md:grid-cols-[120px_1.4fr_1fr] gap-4 sm:gap-6 px-4 sm:px-8 pb-6 border-b border-[var(--border-subtle)] items-start">
+          <Img ratio="1/1" label="trip" className="w-24 md:w-auto" />
           <div>
             <Badge variant="secondary" className="mb-2">Invoice TRV-30540</Badge>
-            <h1 className="font-display text-2xl font-bold tracking-tight">Trip to Europe Adventure</h1>
-            <p className="text-[var(--text-secondary)] mt-1">Amelia Stone · 18 May → 02 Jun 2026 · 6 stops</p>
-            <div className="flex gap-6 mt-4 items-center">
+            <h1 className="font-display text-xl sm:text-2xl font-bold tracking-tight">Trip to Europe Adventure</h1>
+            <p className="text-[var(--text-secondary)] mt-1 text-sm">Amelia Stone · 18 May → 02 Jun 2026 · 6 stops</p>
+            <div className="flex flex-wrap gap-4 sm:gap-6 mt-4 items-center">
               <div>
                 <div className="text-xs text-[var(--text-tertiary)] uppercase tracking-wider">Generated</div>
                 <div className="font-medium mt-0.5">10 May 2026</div>
               </div>
-              <Separator orientation="vertical" className="h-10" />
+              <Separator orientation="vertical" className="h-10 hidden sm:block" />
               <div>
                 <div className="text-xs text-[var(--text-tertiary)] uppercase tracking-wider">Currency</div>
                 <div className="font-medium mt-0.5">EUR · €</div>
               </div>
-              <Separator orientation="vertical" className="h-10" />
+              <Separator orientation="vertical" className="h-10 hidden sm:block" />
               <div>
                 <div className="text-xs text-[var(--text-tertiary)] uppercase tracking-wider">Status</div>
                 <Badge variant="warning" className="mt-0.5">Pending · 4 of 7</Badge>
               </div>
             </div>
           </div>
-          <Card className="py-0">
+          <Card className="py-0 w-full md:w-auto">
             <CardHeader className="p-4 pb-2"><CardTitle className="text-sm">Budget Insights</CardTitle></CardHeader>
             <CardContent className="p-4 pt-2">
               <div className="flex items-center gap-4">
@@ -78,34 +77,62 @@ export default function Invoice() {
             </CardContent>
           </Card>
         </div>
-        <div className="p-8">
+
+        {/* ===== INVOICE TABLE ===== */}
+        <div className="p-4 sm:p-8">
           <Card className="py-0">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>#</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Description</TableHead>
-                  <TableHead>Qty / Details</TableHead>
-                  <TableHead className="text-right">Unit</TableHead>
-                  <TableHead className="text-right">Amount</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {rows.map(r => (
-                  <TableRow key={r[0]}>
-                    <TableCell className="text-[var(--text-tertiary)] tabular-nums">{String(r[0]).padStart(2, '0')}</TableCell>
-                    <TableCell><Badge variant={catVariant[r[1]]}>{r[1]}</Badge></TableCell>
-                    <TableCell className="font-medium">{r[2]}</TableCell>
-                    <TableCell className="text-[var(--text-tertiary)]">{r[3]}</TableCell>
-                    <TableCell className="text-right tabular-nums">€{r[4]}</TableCell>
-                    <TableCell className="text-right tabular-nums font-medium">€{r[5].toLocaleString()}</TableCell>
+
+            {/* Desktop Table */}
+            <div className="hidden sm:block">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>#</TableHead>
+                    <TableHead>Category</TableHead>
+                    <TableHead>Description</TableHead>
+                    <TableHead>Qty / Details</TableHead>
+                    <TableHead className="text-right">Unit</TableHead>
+                    <TableHead className="text-right">Amount</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {rows.map(r => (
+                    <TableRow key={r[0]}>
+                      <TableCell className="text-[var(--text-tertiary)] tabular-nums">{String(r[0]).padStart(2, '0')}</TableCell>
+                      <TableCell><Badge variant={catVariant[r[1]]}>{r[1]}</Badge></TableCell>
+                      <TableCell className="font-medium">{r[2]}</TableCell>
+                      <TableCell className="text-[var(--text-tertiary)]">{r[3]}</TableCell>
+                      <TableCell className="text-right tabular-nums">€{r[4]}</TableCell>
+                      <TableCell className="text-right tabular-nums font-medium">€{r[5].toLocaleString()}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+
+            {/* Mobile Card List */}
+            <div className="sm:hidden divide-y divide-[var(--border-subtle)]">
+              {rows.map(r => (
+                <div key={r[0]} className="flex items-start justify-between p-4 gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs text-[var(--text-tertiary)] font-mono">{String(r[0]).padStart(2, '0')}</span>
+                      <Badge variant={catVariant[r[1]]}>{r[1]}</Badge>
+                    </div>
+                    <div className="font-medium text-sm">{r[2]}</div>
+                    <div className="text-xs text-[var(--text-tertiary)] mt-0.5">{r[3]}</div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <div className="text-xs text-[var(--text-tertiary)]">€{r[4]} × unit</div>
+                    <div className="font-bold text-base">€{r[5].toLocaleString()}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </Card>
-          <div className="grid grid-cols-[1fr_300px] mt-6">
+
+          {/* Totals */}
+          <div className="flex flex-col md:grid md:grid-cols-[1fr_300px] gap-4 mt-6">
             <div />
             <Card className="py-0">
               <CardContent className="p-5 space-y-2">
@@ -120,7 +147,9 @@ export default function Invoice() {
               </CardContent>
             </Card>
           </div>
-          <div className="flex gap-2 mt-6">
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap gap-2 mt-6">
             <Button variant="outline"><Download size={14} /> Download invoice</Button>
             <Button variant="outline"><Download size={14} /> Export PDF</Button>
             <div className="flex-1" />

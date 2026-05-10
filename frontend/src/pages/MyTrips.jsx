@@ -17,10 +17,10 @@ const groups = [
 export default function MyTrips() {
   const { navigate } = useNav()
   return (
-    <div className="flex flex-col h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body overflow-hidden">
+    <div className="flex flex-col min-h-screen lg:h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body lg:overflow-hidden">
       <Chrome active="My Trips" />
       <Controls q="Search your trips…" />
-      <div className="px-8 py-6 space-y-6 flex-1 overflow-auto">
+      <div className="px-4 sm:px-8 py-4 sm:py-6 space-y-6 flex-1 lg:overflow-auto">
         {groups.map(g => (
           <div key={g.label}>
             <SectionHeader
@@ -29,21 +29,31 @@ export default function MyTrips() {
             >
               <Badge variant={g.variant} className="ml-2">{g.count}</Badge>
             </SectionHeader>
+
             <Card className="overflow-hidden py-0">
-              <div className="grid grid-cols-[200px_1fr_auto] items-center">
-                <Img ratio="3/2" label={g.sample.img} className="rounded-none border-0 border-r rounded-l-[var(--radius-xl)]" style={{ aspectRatio: undefined, height: '100%' }} />
-                <div className="p-5">
-                  <CardTitle className="text-xl">{g.sample.title}</CardTitle>
+              {/* Desktop: image | content | actions  Mobile: stacked */}
+              <div className="flex flex-col sm:grid sm:grid-cols-[160px_1fr_auto] sm:items-center">
+                {/* Image */}
+                <Img
+                  ratio="3/2"
+                  label={g.sample.img}
+                  className="rounded-none border-0 sm:border-r rounded-t-[var(--radius-xl)] sm:rounded-t-none sm:rounded-l-[var(--radius-xl)]"
+                  style={{ aspectRatio: undefined, height: undefined }}
+                />
+                {/* Content */}
+                <div className="p-4 sm:p-5">
+                  <CardTitle className="text-lg sm:text-xl">{g.sample.title}</CardTitle>
                   <div className="text-sm text-[var(--text-tertiary)] mt-1">{g.sample.dates} · {g.sample.stops}</div>
-                  <div className="flex gap-2 mt-3">
+                  <div className="flex flex-wrap gap-2 mt-3">
                     <Badge variant="accent">{g.sample.budget}</Badge>
                     <Badge variant="outline">Notes · 6</Badge>
                     <Badge variant="outline">Activities · 14</Badge>
                   </div>
                 </div>
-                <div className="flex flex-col gap-2 p-5">
-                  <Button size="sm" onClick={() => navigate(g.page)}>Open <ArrowRight size={14} /></Button>
-                  <Button variant="outline" size="sm">Duplicate</Button>
+                {/* Actions */}
+                <div className="flex sm:flex-col gap-2 p-4 sm:p-5 border-t sm:border-t-0 sm:border-l border-[var(--border-subtle)]">
+                  <Button size="sm" className="flex-1 sm:flex-none" onClick={() => navigate(g.page)}>Open <ArrowRight size={14} /></Button>
+                  <Button variant="outline" size="sm" className="flex-1 sm:flex-none">Duplicate</Button>
                 </div>
               </div>
             </Card>

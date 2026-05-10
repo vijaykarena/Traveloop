@@ -13,7 +13,7 @@ export default function ResetPassword() {
   const { navigate } = useNav()
   const [searchParams] = useSearchParams()
   const token = searchParams.get('token')
-  
+
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -31,7 +31,7 @@ export default function ResetPassword() {
     if (password !== confirmPassword) {
       return setError('Passwords do not match')
     }
-    
+
     setLoading(true)
     setError('')
 
@@ -54,6 +54,7 @@ export default function ResetPassword() {
     }
   }
 
+  // Success state — already mobile-friendly (centered card)
   if (success) {
     return (
       <div className="flex h-screen bg-[var(--bg-page)] items-center justify-center p-6">
@@ -76,35 +77,38 @@ export default function ResetPassword() {
   }
 
   return (
-    <div className="flex h-screen bg-[var(--bg-page)]">
-      <div className="flex-[0.46] flex flex-col justify-between p-12">
+    <div className="flex flex-col md:flex-row h-screen bg-[var(--bg-page)]">
+      {/* ===== FORM PANEL ===== */}
+      <div className="w-full md:flex-[0.46] flex flex-col justify-between p-6 sm:p-10 md:p-12">
+        {/* Logo */}
         <div className="flex items-center gap-2">
           <div className="h-9 w-9 rounded-[var(--radius-md)] bg-[var(--brand-primary)] text-white flex items-center justify-center font-display font-bold">T</div>
           <span className="font-display text-xl font-bold tracking-tight text-[var(--brand-primary)]">Traveloop</span>
         </div>
 
-        <div className="max-w-sm w-full">
+        {/* Form */}
+        <div className="max-w-sm w-full mx-auto md:mx-0">
           <Badge variant="secondary" className="mb-4">Security</Badge>
-          <h1 className="font-display text-4xl font-bold tracking-tight text-[var(--text-primary)] mb-2">Reset password.</h1>
+          <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-primary)] mb-2">Reset password.</h1>
           <p className="text-[var(--text-secondary)] mb-8">Almost there. Choose a new, secure password for your account.</p>
-          
+
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="space-y-2">
               <Label>New Password</Label>
-              <Input 
-                type="password" 
-                placeholder="••••••••" 
-                required 
+              <Input
+                type="password"
+                placeholder="••••••••"
+                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div className="space-y-2">
               <Label>Confirm New Password</Label>
-              <Input 
-                type="password" 
-                placeholder="••••••••" 
-                required 
+              <Input
+                type="password"
+                placeholder="••••••••"
+                required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
@@ -118,12 +122,14 @@ export default function ResetPassword() {
           </form>
         </div>
 
+        {/* Footer */}
         <div className="text-xs text-[var(--text-tertiary)] flex justify-between">
           <span>© 2026 Traveloop</span><span>v1.4.0</span>
         </div>
       </div>
 
-      <div className="flex-1 relative bg-[var(--bg-muted)]">
+      {/* ===== IMAGE PANEL — hidden on mobile ===== */}
+      <div className="hidden md:block flex-1 relative bg-[var(--bg-muted)]">
         <Img label="Douro Valley · Portugal" className="absolute inset-0 rounded-none border-0 border-l h-full w-full" style={{ aspectRatio: undefined }} />
         <Card className="absolute bottom-10 left-10 right-10 max-w-md py-0">
           <CardHeader className="p-6">

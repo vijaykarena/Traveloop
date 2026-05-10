@@ -31,7 +31,7 @@ export default function PageLayout({
   className = '',
 }) {
   return (
-    <div className="flex flex-col h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body overflow-hidden">
+    <div className="flex flex-col min-h-screen lg:h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body lg:overflow-hidden">
       {!noChrome && <Chrome active={active} />}
 
       {/* Title Bar */}

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Chrome from '../components/Chrome'
 import Controls from '../components/Controls'
 import Img from '../components/Img'
@@ -5,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardTitle, CardDescription } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
-import { MapPin, ArrowRight, Plus } from 'lucide-react'
+import { MapPin, ArrowRight, Plus, SlidersHorizontal, X } from 'lucide-react'
 
 const results = [
   { name: 'Paragliding · Cape Sounion', meta: 'Athens, Greece', dur: '4h', cost: '€120', tag: 'Adventure', body: 'Tandem flights from cliff-tops above the Aegean. Pickup from central Athens.' },
@@ -17,27 +18,67 @@ const results = [
 ]
 
 export default function Search() {
+  const [filtersOpen, setFiltersOpen] = useState(false)
+
   return (
-    <div className="flex flex-col h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body overflow-hidden">
+    <div className="flex flex-col min-h-screen lg:h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body lg:overflow-hidden">
       <Chrome active="Discover" />
       <Controls q="paragliding" />
-      <div className="grid grid-cols-[1fr_300px] gap-8 p-8 flex-1 overflow-auto">
+
+      {/* Mobile filter toggle bar */}
+      <div className="lg:hidden flex items-center justify-between px-4 py-2 border-b border-[var(--border-subtle)] bg-[var(--bg-surface)] shrink-0">
+        <span className="text-sm text-[var(--text-tertiary)]">6 results · "paragliding"</span>
+        <Button variant="outline" size="sm" onClick={() => setFiltersOpen(v => !v)}>
+          {filtersOpen ? <><X size={14} /> Hide filters</> : <><SlidersHorizontal size={14} /> Show filters</>}
+        </Button>
+      </div>
+
+      <div className="flex flex-col lg:grid lg:grid-cols-[1fr_300px] gap-4 sm:gap-8 p-4 sm:p-8 flex-1 lg:overflow-auto">
+
+        {/* ===== RESULTS ===== */}
         <div>
-          <div className="flex items-baseline justify-between mb-4">
+          <div className="flex flex-wrap items-baseline justify-between gap-2 mb-4">
             <div>
-              <h2 className="font-display text-2xl font-bold tracking-tight">6 places to fly</h2>
+              <h2 className="font-display text-xl sm:text-2xl font-bold tracking-tight">6 places to fly</h2>
               <div className="text-sm text-[var(--text-tertiary)] mt-1">Activities matching "paragliding" · sorted by relevance</div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <Badge variant="accent">Adventure</Badge>
               <Badge variant="outline">Under €200</Badge>
               <Badge variant="outline">Half-day</Badge>
             </div>
           </div>
+
           <div className="space-y-3">
             {results.map((r, i) => (
               <Card key={r.name} className="hover:shadow-[var(--shadow-md)] transition-shadow cursor-pointer py-0">
-                <div className="grid grid-cols-[40px_140px_1fr_auto] items-center gap-4 p-4">
+                {/* Mobile: image on top, then content + actions */}
+                <div className="block sm:hidden">
+                  <Img ratio="16/9" label={r.tag.toLowerCase()} className="w-full rounded-b-none border-0 border-b rounded-t-[var(--radius-xl)]" />
+                  <div className="p-4">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <CardTitle className="text-base">{r.name}</CardTitle>
+                          <Badge variant="secondary">{r.tag}</Badge>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-2 text-xs text-[var(--text-tertiary)] mt-1">
+                          <span className="flex items-center gap-1"><MapPin size={11} /> {r.meta}</span>
+                          <span>·</span><span>{r.dur}</span><span>·</span>
+                          <span className="font-medium text-[var(--text-primary)]">{r.cost}</span>
+                        </div>
+                        <CardDescription className="mt-2 text-xs">{r.body}</CardDescription>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 mt-3">
+                      <Button variant="outline" size="sm" className="flex-1">Preview</Button>
+                      <Button size="sm" className="flex-1"><Plus size={14} /> Add</Button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Desktop: 4-col grid */}
+                <div className="hidden sm:grid sm:grid-cols-[40px_140px_1fr_auto] sm:items-center sm:gap-4 sm:p-4">
                   <span className="text-xs text-[var(--text-tertiary)] font-mono">{String(i + 1).padStart(2, '0')}</span>
                   <Img ratio="4/3" label={r.tag.toLowerCase()} className="w-full" />
                   <div>
@@ -62,7 +103,9 @@ export default function Search() {
           </div>
         </div>
 
-        <aside className="space-y-4">
+        {/* ===== FILTER ASIDE ===== */}
+        {/* Always shown on lg+. On mobile: toggled via filtersOpen state */}
+        <aside className={`space-y-4 ${filtersOpen ? 'block' : 'hidden'} lg:block`}>
           <Card className="py-0">
             <div className="p-4 pb-2 font-medium text-sm">Cost (EUR)</div>
             <div className="p-4 pt-2">
