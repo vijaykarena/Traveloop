@@ -56,16 +56,16 @@ export default function ResetPassword() {
 
   if (success) {
     return (
-      <div className="flex h-screen bg-background items-center justify-center p-6">
+      <div className="flex h-screen bg-[var(--bg-page)] items-center justify-center p-6">
         <Card className="max-w-md w-full p-8 text-center space-y-6">
           <div className="flex justify-center">
-            <div className="h-16 w-16 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+            <div className="h-16 w-16 rounded-full bg-[var(--brand-primary)]/10 text-[var(--brand-primary)] flex items-center justify-center">
               <CheckCircle2 size={32} />
             </div>
           </div>
           <div className="space-y-2">
-            <h1 className="text-2xl font-semibold tracking-tight">Password Reset Successfully</h1>
-            <p className="text-muted-foreground text-sm">Your password has been updated. You can now sign in with your new credentials.</p>
+            <h1 className="font-display text-2xl font-bold tracking-tight">Password Reset Successfully</h1>
+            <p className="text-[var(--text-tertiary)] text-sm">Your password has been updated. You can now sign in with your new credentials.</p>
           </div>
           <Button className="w-full" onClick={() => navigate('login')}>
             Sign in <ArrowRight size={14} />
@@ -76,17 +76,17 @@ export default function ResetPassword() {
   }
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-[var(--bg-page)]">
       <div className="flex-[0.46] flex flex-col justify-between p-12">
         <div className="flex items-center gap-2">
-          <div className="h-9 w-9 rounded-md bg-primary text-primary-foreground flex items-center justify-center font-semibold">T</div>
-          <span className="text-xl font-semibold tracking-tight">Traveloop</span>
+          <div className="h-9 w-9 rounded-[var(--radius-md)] bg-[var(--brand-primary)] text-white flex items-center justify-center font-display font-bold">T</div>
+          <span className="font-display text-xl font-bold tracking-tight text-[var(--brand-primary)]">Traveloop</span>
         </div>
 
         <div className="max-w-sm w-full">
           <Badge variant="secondary" className="mb-4">Security</Badge>
-          <h1 className="text-4xl font-semibold tracking-tight mb-2">Reset password.</h1>
-          <p className="text-muted-foreground mb-8">Almost there. Choose a new, secure password for your account.</p>
+          <h1 className="font-display text-4xl font-bold tracking-tight text-[var(--text-primary)] mb-2">Reset password.</h1>
+          <p className="text-[var(--text-secondary)] mb-8">Almost there. Choose a new, secure password for your account.</p>
           
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="space-y-2">
@@ -110,7 +110,7 @@ export default function ResetPassword() {
               />
             </div>
 
-            {error && <p className="text-sm text-destructive font-medium">{error}</p>}
+            {error && <p className="text-sm text-[var(--color-error)] font-medium">{error}</p>}
 
             <Button className="w-full" type="submit" disabled={loading || !token}>
               {loading ? 'Updating...' : 'Update password'} <ArrowRight size={14} />
@@ -118,14 +118,14 @@ export default function ResetPassword() {
           </form>
         </div>
 
-        <div className="text-xs text-muted-foreground flex justify-between">
+        <div className="text-xs text-[var(--text-tertiary)] flex justify-between">
           <span>© 2026 Traveloop</span><span>v1.4.0</span>
         </div>
       </div>
 
-      <div className="flex-1 relative bg-muted">
+      <div className="flex-1 relative bg-[var(--bg-muted)]">
         <Img label="Douro Valley · Portugal" className="absolute inset-0 rounded-none border-0 border-l h-full w-full" style={{ aspectRatio: undefined }} />
-        <Card className="absolute bottom-10 left-10 right-10 max-w-md rounded-xl border shadow-sm py-0">
+        <Card className="absolute bottom-10 left-10 right-10 max-w-md py-0">
           <CardHeader className="p-6">
             <Badge variant="accent" className="w-fit mb-2">Travel · Inspiration</Badge>
             <CardTitle className="text-xl">Your next adventure awaits</CardTitle>

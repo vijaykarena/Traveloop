@@ -1,5 +1,6 @@
 import Chrome from '../components/Chrome'
 import Img from '../components/Img'
+import SectionHeader from '../components/common/SectionHeader'
 import { useNav } from '../navigation'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -11,17 +12,17 @@ import { cn } from '@/lib/utils'
 export default function Profile() {
   const { navigate } = useNav()
   return (
-    <div className="flex flex-col h-screen bg-background text-foreground font-sans overflow-hidden">
+    <div className="flex flex-col h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body overflow-hidden">
       <Chrome active="" user="AS" />
 
-      <div className="px-8 py-8 border-b grid grid-cols-[120px_1fr_auto] gap-6 items-center shrink-0">
-        <Avatar className="h-28 w-28 text-2xl bg-primary/10 text-primary">
-          <AvatarFallback className="bg-primary/10 text-primary text-2xl font-medium">AS</AvatarFallback>
+      <div className="px-8 py-8 border-b border-[var(--border-subtle)] grid grid-cols-[120px_1fr_auto] gap-6 items-center shrink-0 bg-[var(--bg-surface)]">
+        <Avatar className="h-28 w-28 text-2xl">
+          <AvatarFallback className="bg-[var(--brand-primary)]/10 text-[var(--brand-primary)] text-2xl font-bold">AS</AvatarFallback>
         </Avatar>
         <div>
           <Badge variant="secondary" className="mb-2">Member since Mar 2024 · 11 trips logged</Badge>
-          <h1 className="text-3xl font-semibold tracking-tight">Amelia Stone</h1>
-          <p className="text-muted-foreground mt-1 max-w-xl">Slow traveller, occasional cook, cataloguer of small bookshops. Based in Lisbon.</p>
+          <h1 className="font-display text-3xl font-bold tracking-tight">Amelia Stone</h1>
+          <p className="text-[var(--text-secondary)] mt-1 max-w-xl">Slow traveller, occasional cook, cataloguer of small bookshops. Based in Lisbon.</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline"><Settings size={14} /> Settings</Button>
@@ -31,8 +32,8 @@ export default function Profile() {
 
       <div className="grid grid-cols-[1fr_2fr] gap-8 p-8 flex-1 overflow-auto">
         <div>
-          <h2 className="text-lg font-semibold mb-4">Account details</h2>
-          <Card className="rounded-xl border shadow-sm py-0">
+          <SectionHeader title="Account details" />
+          <Card className="py-0">
             <CardContent className="p-0">
               {[
                 ['Email', 'amelia.stone@traveloop.io'],
@@ -42,15 +43,15 @@ export default function Profile() {
                 ['Currency', 'EUR'],
                 ['Visibility', 'Friends only'],
               ].map(([k, v], i, a) => (
-                <div key={k} className={cn('flex justify-between p-4', i < a.length - 1 && 'border-b')}>
-                  <span className="text-sm text-muted-foreground">{k}</span>
+                <div key={k} className={cn('flex justify-between p-4', i < a.length - 1 && 'border-b border-[var(--border-subtle)]')}>
+                  <span className="text-sm text-[var(--text-tertiary)]">{k}</span>
                   <span className="text-sm font-medium">{v}</span>
                 </div>
               ))}
             </CardContent>
           </Card>
 
-          <h2 className="text-lg font-semibold mt-6 mb-3">Saved destinations</h2>
+          <SectionHeader title="Saved destinations" className="mt-6" />
           <div className="flex flex-wrap gap-2">
             {['Lisbon', 'Naples', 'Reykjavík', 'Marrakesh', 'Kyoto', 'Oaxaca', 'Tbilisi', 'Hanoi'].map(c => (
               <Badge key={c} variant="outline"><Heart size={11} className="mr-1" />{c}</Badge>
@@ -59,14 +60,14 @@ export default function Profile() {
         </div>
 
         <div>
-          <div className="flex items-baseline justify-between mb-4">
-            <h2 className="text-lg font-semibold">Preplanned trips</h2>
-            <Badge variant="secondary">3 ahead</Badge>
-          </div>
+          <SectionHeader
+            title="Preplanned trips"
+            trailing={<Badge variant="secondary">3 ahead</Badge>}
+          />
           <div className="grid grid-cols-3 gap-4">
             {[['Rome & Amalfi', '18 May'], ['Tokyo loop', '12 Jun'], ['Iceland', '02 Aug']].map(([n, d]) => (
-              <Card key={n} className="rounded-xl border shadow-sm py-0">
-                <Img ratio="4/3" className="rounded-t-xl rounded-b-none border-0 border-b" />
+              <Card key={n} className="py-0">
+                <Img ratio="4/3" className="rounded-t-[var(--radius-xl)] rounded-b-none border-0 border-b" />
                 <CardHeader className="p-4">
                   <CardTitle className="text-base">{n}</CardTitle>
                   <CardDescription>Departs {d}</CardDescription>
@@ -78,11 +79,11 @@ export default function Profile() {
             ))}
           </div>
 
-          <h2 className="text-lg font-semibold mt-8 mb-4">Previous trips</h2>
+          <SectionHeader title="Previous trips" className="mt-8" />
           <div className="grid grid-cols-3 gap-4">
             {[['Hokkaidō', 'Feb 2026'], ['Lofoten', 'Aug 2025'], ['Cusco', 'Apr 2025']].map(([n, d]) => (
-              <Card key={n} className="rounded-xl border shadow-sm py-0">
-                <Img ratio="4/3" className="rounded-t-xl rounded-b-none border-0 border-b" />
+              <Card key={n} className="py-0">
+                <Img ratio="4/3" className="rounded-t-[var(--radius-xl)] rounded-b-none border-0 border-b" />
                 <CardHeader className="p-4">
                   <CardTitle className="text-base">{n}</CardTitle>
                   <CardDescription>{d}</CardDescription>
