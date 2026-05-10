@@ -29,7 +29,7 @@ export default function Community() {
   return (
     <div className="flex flex-col min-h-screen lg:h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body lg:overflow-hidden">
       <Chrome active="Community" />
-      <Controls q="Search community trip plans…" />
+      <Controls q="Search community trip plans…" hideFilters={true} />
 
       {/* Page Header */}
       <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-[var(--border-subtle)] flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 shrink-0 bg-[var(--bg-surface)]">
