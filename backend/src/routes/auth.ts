@@ -1,7 +1,11 @@
 import { Router, type Request, type Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
+import { Resend } from "resend";
 import prisma from "../lib/prisma";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const router = Router();
 
@@ -133,6 +137,107 @@ router.post("/login", async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error("Login Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// @route   POST /auth/forgot-password
+// @desc    Send password reset email
+// @access  Public
+router.post("/forgot-password", async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
+
+    const user = await prisma.user.findUnique({ where: { email } });
+
+    // For security, don't reveal if user exists or not
+    if (!user) {
+      return res.json({
+        message: "If an account with that email exists, we have sent a reset link.",
+      });
+    }
+
+    // Generate token
+    const token = crypto.randomBytes(32).toString("hex");
+    const expiresAt = new Date(Date.now() + 3600000); // 1 hour from now
+
+    // Store token
+    await prisma.passwordResetToken.upsert({
+      where: { email },
+      update: { token, expiresAt },
+      create: { email, token, expiresAt },
+    });
+
+    // Send email
+    const resetLink = `${
+      process.env.FRONTEND_URL || "http://localhost:5174"
+    }/reset-password?token=${token}`;
+
+    await resend.emails.send({
+      from: "Traveloop <onboarding@resend.dev>",
+      to: email,
+      subject: "Reset Your Password - Traveloop",
+      html: `
+        <h1>Password Reset Request</h1>
+        <p>You requested a password reset for your Traveloop account.</p>
+        <p>Click the link below to reset your password. This link will expire in 1 hour.</p>
+        <a href="${resetLink}">${resetLink}</a>
+        <p>If you did not request this, please ignore this email.</p>
+      `,
+    });
+
+    res.json({
+      message: "If an account with that email exists, we have sent a reset link.",
+    });
+  } catch (error) {
+    console.error("Forgot Password Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// @route   POST /auth/reset-password
+// @desc    Reset password using token
+// @access  Public
+router.post("/reset-password", async (req: Request, res: Response) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    if (!token || !newPassword) {
+      return res
+        .status(400)
+        .json({ error: "Token and new password are required" });
+    }
+
+    const resetToken = await prisma.passwordResetToken.findUnique({
+      where: { token },
+    });
+
+    if (!resetToken || resetToken.expiresAt < new Date()) {
+      return res.status(400).json({ error: "Invalid or expired token" });
+    }
+
+    // Hash new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // Update user
+    await prisma.user.update({
+      where: { email: resetToken.email },
+      data: { password: hashedPassword },
+    });
+
+    // Delete token
+    await prisma.passwordResetToken.delete({
+      where: { token },
+    });
+
+    res.json({ message: "Password reset successful" });
+  } catch (error) {
+    console.error("Reset Password Error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });

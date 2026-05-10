@@ -258,3 +258,13 @@ model SavedDestination {
 
   @@id([userId, cityId])
 }
+
+// ── Password Reset Token ───────────────────────────────────────────────────
+
+model PasswordResetToken {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
