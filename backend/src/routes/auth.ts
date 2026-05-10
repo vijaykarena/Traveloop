@@ -177,7 +177,8 @@ router.post("/forgot-password", async (req: Request, res: Response) => {
       process.env.FRONTEND_URL || "http://localhost:5174"
     }/reset-password?token=${token}`;
 
-    await resend.emails.send({
+    console.log(`Attempting to send reset email to: ${email}`);
+    const { data, error: resendError } = await resend.emails.send({
       from: "Traveloop <onboarding@resend.dev>",
       to: email,
       subject: "Reset Your Password - Traveloop",
@@ -190,11 +191,18 @@ router.post("/forgot-password", async (req: Request, res: Response) => {
       `,
     });
 
+    if (resendError) {
+      console.error("Resend API Error:", resendError);
+      return res.status(500).json({ error: "Failed to send email via Resend" });
+    }
+
+    console.log("Resend API Success Data:", data);
+
     res.json({
       message: "If an account with that email exists, we have sent a reset link.",
     });
   } catch (error) {
-    console.error("Forgot Password Error:", error);
+    console.error("Forgot Password Internal Error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
