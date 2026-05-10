@@ -14,6 +14,7 @@ router.get("/stats", async (_req: Request, res: Response) => {
       totalTrips,
       publicTrips,
       totalCities,
+      avgBudget,
       topCities,
       topActivities,
       recentUsers,
@@ -23,6 +24,7 @@ router.get("/stats", async (_req: Request, res: Response) => {
       prisma.trip.count(),
       prisma.trip.count({ where: { isPublic: true } }),
       prisma.city.count(),
+      prisma.trip.aggregate({ _avg: { budgetLimit: true } }),
       prisma.city.findMany({
         take: 10,
         orderBy: { tripStops: { _count: "desc" } },
