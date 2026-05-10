@@ -1,99 +1,108 @@
 import Chrome from '../components/Chrome'
 import Controls from '../components/Controls'
 import { useNav } from '../navigation'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
+import { MoreHorizontal, Download, Share, Plus } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 const days = [
-  { day: 'Day 01', date: 'Mon · 18 May', items: [
+  { day: 'Day 1', date: 'Mon, 18 May', items: [
     { time: '09:30', name: 'Train · Lisbon → Rome (via Madrid)', dur: '12h', cost: '€220', type: 'Travel' },
-    { time: '21:40', name: 'Check-in · Trastevere apartment', dur: '—', cost: '€140', type: 'Stay' }
+    { time: '21:40', name: 'Check-in · Trastevere apartment', dur: '—', cost: '€140', type: 'Stay' },
   ]},
-  { day: 'Day 02', date: 'Tue · 19 May', items: [
+  { day: 'Day 2', date: 'Tue, 19 May', items: [
     { time: '08:00', name: "Espresso at Sant'Eustachio", dur: '30m', cost: '€4', type: 'Food' },
     { time: '10:00', name: 'Pantheon & Piazza Navona walk', dur: '3h', cost: 'free', type: 'Walk' },
     { time: '13:30', name: 'Lunch · Roscioli', dur: '2h', cost: '€60', type: 'Food' },
-    { time: '17:00', name: "Aperitivo · Campo de' Fiori", dur: '2h', cost: '€18', type: 'Food' }
+    { time: '17:00', name: "Aperitivo · Campo de' Fiori", dur: '2h', cost: '€18', type: 'Food' },
   ]},
-  { day: 'Day 03', date: 'Wed · 20 May', items: [
+  { day: 'Day 3', date: 'Wed, 20 May', items: [
     { time: '06:30', name: 'Vatican at dawn (private)', dur: '3h', cost: '€96', type: 'Tour' },
-    { time: '14:00', name: 'Borghese Gardens · picnic', dur: '3h', cost: '€22', type: 'Walk' }
-  ]}
+    { time: '14:00', name: 'Borghese Gardens · picnic', dur: '3h', cost: '€22', type: 'Walk' },
+  ]},
 ]
+
+const typeVariant = { Travel: 'info', Stay: 'secondary', Food: 'accent', Walk: 'outline', Tour: 'success' }
 
 export default function ItineraryView() {
   const { navigate } = useNav()
   return (
-    <div className="tl-screen">
+    <div className="flex flex-col h-screen bg-background text-foreground font-sans overflow-hidden">
       <Chrome active="My Trips" />
       <Controls q="Search this itinerary…" />
-      <div style={{ padding: '24px 36px 12px', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
+      <div className="flex items-end justify-between px-8 py-6 border-b shrink-0">
         <div>
-          <div className="tl-eyebrow">— Itinerary · Rome &amp; Amalfi</div>
-          <h2 className="tl-display" style={{ fontSize: 36, margin: '6px 0 0' }}>Itinerary for <i>Rome.</i></h2>
+          <Badge variant="secondary" className="mb-2">Itinerary · 16 days</Badge>
+          <h1 className="text-3xl font-semibold tracking-tight">Rome &amp; the Amalfi</h1>
+          <p className="text-muted-foreground mt-1">Day-by-day plan with cost breakdown</p>
         </div>
-        <div style={{ display: 'flex', gap: 10 }}>
-          <button className="tl-pill">Export PDF</button>
-          <button className="tl-pill">Share publicly</button>
-          <button className="tl-pill active">+ Add stop</button>
+        <div className="flex gap-2">
+          <Button variant="outline"><Download size={14} /> Export</Button>
+          <Button variant="outline"><Share size={14} /> Share</Button>
+          <Button><Plus size={14} /> Add stop</Button>
         </div>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 28, padding: '12px 36px 28px', flex: 1 }}>
-        <div>
-          <div style={{ display: 'grid', gridTemplateColumns: '90px 1fr 110px', gap: 16, fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--ink-3)', padding: '8px 0', borderBottom: '1px solid var(--rule)' }}>
-            <span>Day · Time</span><span>Physical activity</span><span style={{ textAlign: 'right' }}>Expense</span>
-          </div>
-          {days.map((d) => (
-            <div key={d.day} style={{ borderBottom: '1px solid var(--rule-2)' }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, padding: '14px 0 6px' }}>
-                <span style={{ fontFamily: 'var(--serif)', fontSize: 24, color: 'var(--terracotta)' }}>{d.day}</span>
-                <span className="tl-num" style={{ fontSize: 12, color: 'var(--ink-3)' }}>{d.date}</span>
+      <div className="grid grid-cols-[1fr_320px] gap-8 p-8 flex-1 overflow-auto">
+        <div className="space-y-6">
+          {days.map(d => (
+            <div key={d.day}>
+              <div className="flex items-baseline gap-3 mb-3">
+                <h2 className="text-xl font-semibold">{d.day}</h2>
+                <span className="text-sm text-muted-foreground">{d.date}</span>
               </div>
-              {d.items.map((it, i) => (
-                <div key={i} style={{ display: 'grid', gridTemplateColumns: '90px 1fr 110px', gap: 16, alignItems: 'center', padding: '10px 0', borderTop: i === 0 ? '1px solid var(--rule-2)' : 'none' }}>
-                  <span className="tl-num" style={{ fontSize: 13 }}>{it.time}</span>
-                  <div>
-                    <div style={{ fontFamily: 'var(--serif)', fontSize: 18 }}>{it.name}</div>
-                    <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
-                      <span className="tl-tag">{it.type}</span>
-                      <span className="tl-num" style={{ fontSize: 11, color: 'var(--ink-3)', alignSelf: 'center' }}>{it.dur}</span>
+              <Card className="rounded-xl border shadow-sm py-0">
+                <CardContent className="p-0">
+                  {d.items.map((it, i) => (
+                    <div key={i} className={cn('grid grid-cols-[80px_1fr_100px_80px] items-center gap-4 px-5 py-4', i > 0 && 'border-t')}>
+                      <span className="font-mono text-sm">{it.time}</span>
+                      <div>
+                        <div className="font-medium">{it.name}</div>
+                        <div className="flex items-center gap-2 mt-1">
+                          <Badge variant={typeVariant[it.type]}>{it.type}</Badge>
+                          <span className="text-xs text-muted-foreground">{it.dur}</span>
+                        </div>
+                      </div>
+                      <span className={cn('text-right font-medium', it.cost === 'free' ? 'text-emerald-600' : '')}>{it.cost}</span>
+                      <div className="flex justify-end">
+                        <Button variant="ghost" size="icon"><MoreHorizontal size={16} /></Button>
+                      </div>
                     </div>
-                  </div>
-                  <span className="tl-num" style={{ textAlign: 'right', color: it.cost === 'free' ? 'var(--sage)' : 'var(--ink)' }}>{it.cost}</span>
-                </div>
-              ))}
+                  ))}
+                </CardContent>
+              </Card>
             </div>
           ))}
         </div>
+
         <aside>
-          <div className="tl-eyebrow" style={{ marginBottom: 12 }}>— Budget · this trip</div>
-          <div className="tl-card" style={{ padding: 18 }}>
-            <div className="tl-num" style={{ fontFamily: 'var(--serif)', fontSize: 36, color: 'var(--ink)' }}>€2,400</div>
-            <div className="tl-num" style={{ fontSize: 12, color: 'var(--ink-3)' }}>spent of €3,200 ceiling</div>
-            <div style={{ height: 4, background: 'var(--paper-2)', marginTop: 12, borderRadius: 2 }}>
-              <div style={{ width: '75%', height: '100%', background: 'var(--terracotta)', borderRadius: 2 }} />
-            </div>
-            <div style={{ height: 1, background: 'var(--rule)', margin: '18px 0' }} />
-            {[
-              ['Travel', '€620', 26],
-              ['Stay', '€940', 39],
-              ['Food', '€420', 17],
-              ['Activities', '€280', 12],
-              ['Misc', '€140', 6]
-            ].map(([k, v, p]) => (
-              <div key={k} style={{ marginBottom: 12 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}>
-                  <span>{k}</span>
-                  <span className="tl-num">{v} <span style={{ color: 'var(--ink-3)' }}>· {p}%</span></span>
+          <Card className="rounded-xl border shadow-sm py-0">
+            <CardHeader className="p-5 pb-3">
+              <CardDescription>Trip budget</CardDescription>
+              <CardTitle className="text-3xl">€2,400</CardTitle>
+              <CardDescription>of €3,200 ceiling · 75% spent</CardDescription>
+            </CardHeader>
+            <CardContent className="px-5 pb-5">
+              <Progress value={75} className="mb-6" />
+              {[['Travel', '€620', 26], ['Stay', '€940', 39], ['Food', '€420', 17], ['Activities', '€280', 12], ['Misc', '€140', 6]].map(([k, v, p]) => (
+                <div key={k} className="mb-3">
+                  <div className="flex justify-between text-sm mb-1.5">
+                    <span>{k}</span>
+                    <span className="font-medium">{v} <span className="text-muted-foreground text-xs">· {p}%</span></span>
+                  </div>
+                  <div className="h-1.5 rounded-full bg-secondary overflow-hidden">
+                    <div className="h-full bg-primary" style={{ width: `${p}%` }} />
+                  </div>
                 </div>
-                <div style={{ height: 2, background: 'var(--paper-2)', marginTop: 6 }}>
-                  <div style={{ width: `${p}%`, height: '100%', background: 'var(--ink)' }} />
-                </div>
+              ))}
+              <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-md text-xs text-amber-900">
+                ▲ Day 3 is over the daily average by €38. Consider moving the dawn tour.
               </div>
-            ))}
-            <div style={{ marginTop: 14, padding: 12, background: 'var(--terracotta-soft)', fontSize: 12, color: 'oklch(0.36 0.10 40)' }}>
-              ▲ Day 03 is over the daily average by €38. Consider moving the dawn tour.
-            </div>
-            <button className="tl-pill" style={{ marginTop: 14, width: '100%' }} onClick={() => navigate('invoice')}>View invoice →</button>
-          </div>
+              <Button variant="outline" size="sm" className="w-full mt-4" onClick={() => navigate('invoice')}>View invoice</Button>
+            </CardContent>
+          </Card>
         </aside>
       </div>
     </div>

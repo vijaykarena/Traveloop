@@ -1,59 +1,67 @@
 import { useState } from 'react'
 import Chrome from '../components/Chrome'
 import Controls from '../components/Controls'
+import TabsSwitcher from '../components/TabsSwitcher'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Edit, Trash2, Plus } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 const notes = [
   { date: 'Day 03 · 20 Jun', title: 'Hotel check-in details — Rome stop', body: 'Check-in after 2pm, room 502, breakfast included (7–10am). Concierge holds bags from 09:00. Code for the building gate: 4421#.', tags: ['Stay', 'Logistics'] },
-  { date: 'Day 03 · 20 Jun', title: 'Reservations — Wednesday', body: "Roscioli at 13:30 (Marco's name). Apertivo 18:30 — no booking. Backup: Pianostrada nearby if line too long.", tags: ['Food'] },
+  { date: 'Day 03 · 20 Jun', title: 'Reservations — Wednesday', body: "Roscioli at 13:30 (Marco's name). Aperitivo 18:30 — no booking. Backup: Pianostrada nearby if line too long.", tags: ['Food'] },
   { date: 'Day 04 · 21 Jun', title: 'Train · Rome → Naples (Frecciarossa)', body: '07:55 from Termini, arrive 09:05 Centrale. Carriage 4, seats 11A/B. Print or have ticket on phone before boarding.', tags: ['Travel'] },
   { date: 'Day 05 · 22 Jun', title: 'Vesuvius hike — bring', body: 'Trail closes 16:00. Bring water (1.5L each), proper shoes, light layer. Park entry €10pp, separate from tour.', tags: ['Hike', 'Buy'] },
-  { date: 'Day 07 · 24 Jun', title: 'Sorrento apartment — quirks', body: 'Hot water needs 20 min. Wifi: TRAVELOOP-301 / sorrento2026. Laundry on Tuesday only. Trash collection 22:00.', tags: ['Stay'] }
+  { date: 'Day 07 · 24 Jun', title: 'Sorrento apartment — quirks', body: 'Hot water needs 20 min. Wifi: TRAVELOOP-301 / sorrento2026. Laundry on Tuesday only.', tags: ['Stay'] },
 ]
 
 export default function Notes() {
-  const [active, setActive] = useState(0)
+  const [tab, setTab] = useState('All')
   return (
-    <div className="tl-screen">
+    <div className="flex flex-col h-screen bg-background text-foreground font-sans overflow-hidden">
       <Chrome active="My Trips" />
-      <Controls q="Search trip notes…" extra={<button className="tl-pill active">+ Add note</button>} />
-      <div style={{ padding: '24px 36px 0', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
+      <Controls q="Search trip notes…" extra={<Button size="sm"><Plus size={14} /> Add note</Button>} />
+      <div className="px-8 py-6 border-b flex items-end justify-between shrink-0">
         <div>
-          <div className="tl-eyebrow">— Trip Notes · Rome &amp; Amalfi</div>
-          <h2 className="tl-display" style={{ fontSize: 36, margin: '6px 0 0' }}>The <i>logbook,</i> in plain words.</h2>
+          <Badge variant="secondary" className="mb-2">Rome &amp; Amalfi</Badge>
+          <h1 className="text-3xl font-semibold tracking-tight">Trip notes</h1>
+          <p className="text-muted-foreground mt-1">Important details, reminders, and confirmations.</p>
         </div>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <button className="tl-pill active">All</button>
-          <button className="tl-pill">By day</button>
-          <button className="tl-pill">By stop</button>
-        </div>
+        <TabsSwitcher tabs={['All', 'By day', 'By stop']} active={tab} onChange={setTab} />
       </div>
-      <div style={{ padding: '20px 36px 28px', display: 'grid', gridTemplateColumns: '120px 1fr', gap: 0, flex: 1 }}>
-        <div style={{ borderRight: '1px solid var(--rule-2)', paddingRight: 18 }}>
-          <div className="tl-eyebrow" style={{ marginBottom: 14 }}>Index</div>
+      <div className="grid grid-cols-[200px_1fr] gap-6 p-8 flex-1 overflow-auto">
+        <aside>
+          <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">Index</h3>
+          <div className="space-y-1">
+            {notes.map((n, i) => (
+              <button key={i} className={cn('w-full text-left p-2 rounded-md text-sm hover:bg-accent', i === 0 && 'bg-accent')}>
+                <div className="font-medium truncate">№ {String(i + 1).padStart(2, '0')} · {n.title.split('—')[0].trim()}</div>
+                <div className="text-xs text-muted-foreground">{n.date}</div>
+              </button>
+            ))}
+          </div>
+        </aside>
+        <div className="space-y-4">
           {notes.map((n, i) => (
-            <div key={i} style={{ padding: '8px 0', fontFamily: 'var(--mono)', fontSize: 11, color: i === active ? 'var(--terracotta)' : 'var(--ink-3)', borderBottom: '1px solid var(--rule-2)', cursor: 'pointer' }} onClick={() => setActive(i)}>
-              <div className="tl-num">№ {String(i + 1).padStart(2, '0')}</div>
-              <div style={{ marginTop: 2 }}>{n.date}</div>
-            </div>
-          ))}
-        </div>
-        <div style={{ paddingLeft: 24 }}>
-          {notes.map((n, i) => (
-            <div key={i} className="tl-card" style={{ padding: '20px 24px', marginBottom: 14, display: 'grid', gridTemplateColumns: '60px 1fr auto', gap: 20, opacity: i === active ? 1 : 0.6 }}>
-              <span style={{ fontFamily: 'var(--serif)', fontSize: 32, color: 'var(--terracotta)' }}>№{String(i + 1).padStart(2, '0')}</span>
-              <div>
-                <div className="tl-num" style={{ fontSize: 11, color: 'var(--ink-3)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{n.date}</div>
-                <div className="tl-display" style={{ fontSize: 22, marginTop: 4 }}>{n.title}</div>
-                <div style={{ color: 'var(--ink-2)', fontSize: 14, marginTop: 8, maxWidth: 660, lineHeight: 1.6 }}>{n.body}</div>
-                <div style={{ display: 'flex', gap: 6, marginTop: 10 }}>
-                  {n.tags.map(t => <span key={t} className="tl-tag">{t}</span>)}
+            <Card key={i} className="rounded-xl border shadow-sm py-0">
+              <CardHeader className="flex-row items-start justify-between space-y-0 p-5 pb-3">
+                <div>
+                  <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{n.date}</div>
+                  <CardTitle className="text-lg">{n.title}</CardTitle>
                 </div>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <button className="tl-pill">Edit</button>
-                <button className="tl-pill">Delete</button>
-              </div>
-            </div>
+                <div className="flex gap-1">
+                  <Button variant="ghost" size="icon"><Edit size={14} /></Button>
+                  <Button variant="ghost" size="icon"><Trash2 size={14} /></Button>
+                </div>
+              </CardHeader>
+              <CardContent className="px-5 pb-5">
+                <p className="text-sm text-foreground/80 leading-relaxed">{n.body}</p>
+                <div className="flex gap-2 mt-3">
+                  {n.tags.map(t => <Badge key={t} variant="outline">{t}</Badge>)}
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>

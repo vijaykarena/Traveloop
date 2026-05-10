@@ -1,86 +1,103 @@
 import Chrome from '../components/Chrome'
 import Controls from '../components/Controls'
 import Img from '../components/Img'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardTitle, CardDescription } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
+import { MapPin, ArrowRight, Plus } from 'lucide-react'
 
 const results = [
-  { name: 'Paragliding · Cape Sounion', meta: 'Athens, Greece · 4h · €120', tag: 'Adventure', body: 'Tandem flights from cliff-tops above the Aegean. Pickup from central Athens; minimum age 12.' },
-  { name: 'Paragliding · Ölüdeniz', meta: 'Fethiye, Türkiye · 3h · €95', tag: 'Adventure', body: 'World-class thermals over the Blue Lagoon. Multiple takeoff altitudes from 1,200–1,960 m.' },
-  { name: 'Paragliding course · Annecy', meta: 'France · 5 days · €860', tag: 'Course', body: 'Beginner-to-solo certification on the Col de la Forclaz. English instructors, weather-flexible.' },
-  { name: 'Tandem · Interlaken', meta: 'Switzerland · 2h · CHF 220', tag: 'Adventure', body: 'Classic alpine flight over Lake Thun. GoPro footage included; transfers from your hotel.' },
-  { name: 'Paragliding · Bir Billing', meta: 'Himachal, India · 3h · ₹3,200', tag: 'Adventure', body: 'Himalayan foothills, second-highest paragliding site in the world. Best Oct–Nov.' },
-  { name: 'Paragliding photography', meta: 'Cappadocia, Türkiye · 1d · €180', tag: 'Photo', body: 'A flight at sunrise alongside the balloons — purpose-built for photographers.' }
+  { name: 'Paragliding · Cape Sounion', meta: 'Athens, Greece', dur: '4h', cost: '€120', tag: 'Adventure', body: 'Tandem flights from cliff-tops above the Aegean. Pickup from central Athens.' },
+  { name: 'Paragliding · Ölüdeniz', meta: 'Fethiye, Türkiye', dur: '3h', cost: '€95', tag: 'Adventure', body: 'World-class thermals over the Blue Lagoon. Multiple takeoff altitudes from 1,200–1,960 m.' },
+  { name: 'Paragliding course', meta: 'Annecy, France', dur: '5 days', cost: '€860', tag: 'Course', body: 'Beginner-to-solo certification on the Col de la Forclaz. English instructors, weather-flexible.' },
+  { name: 'Tandem · Interlaken', meta: 'Switzerland', dur: '2h', cost: 'CHF 220', tag: 'Adventure', body: 'Classic alpine flight over Lake Thun. GoPro footage included.' },
+  { name: 'Paragliding · Bir Billing', meta: 'Himachal, India', dur: '3h', cost: '₹3,200', tag: 'Adventure', body: 'Himalayan foothills, second-highest paragliding site in the world. Best Oct–Nov.' },
+  { name: 'Photography flight', meta: 'Cappadocia, TR', dur: '1d', cost: '€180', tag: 'Photo', body: 'Sunrise flight alongside the balloons — purpose-built for photographers.' },
 ]
 
 export default function Search() {
   return (
-    <div className="tl-screen">
+    <div className="flex flex-col h-screen bg-background text-foreground font-sans overflow-hidden">
       <Chrome active="Discover" />
       <Controls q="paragliding" />
-      <div style={{ padding: '24px 36px', flex: 1, display: 'grid', gridTemplateColumns: '1fr 280px', gap: 28 }}>
+      <div className="grid grid-cols-[1fr_300px] gap-8 p-8 flex-1 overflow-auto">
         <div>
-          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 16 }}>
+          <div className="flex items-baseline justify-between mb-4">
             <div>
-              <div className="tl-eyebrow">— Results</div>
-              <h2 className="tl-display" style={{ fontSize: 32, margin: '6px 0 0' }}>06 places to fly.</h2>
+              <h2 className="text-2xl font-semibold tracking-tight">6 places to fly</h2>
+              <div className="text-sm text-muted-foreground mt-1">Activities matching "paragliding" · sorted by relevance</div>
             </div>
-            <div style={{ display: 'flex', gap: 8 }}>
-              <span className="tl-tag dot terracotta">Adventure</span>
-              <span className="tl-tag">Under €200</span>
-              <span className="tl-tag">Half-day</span>
+            <div className="flex gap-2">
+              <Badge variant="accent">Adventure</Badge>
+              <Badge variant="outline">Under €200</Badge>
+              <Badge variant="outline">Half-day</Badge>
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div className="space-y-3">
             {results.map((r, i) => (
-              <div key={r.name} style={{ display: 'grid', gridTemplateColumns: '40px 140px 1fr auto', gap: 18, padding: '18px 4px', borderTop: i === 0 ? '1px solid var(--rule)' : 'none', borderBottom: '1px solid var(--rule-2)', alignItems: 'center' }}>
-                <span className="tl-num" style={{ fontFamily: 'var(--serif)', fontSize: 24, color: 'var(--ink-3)' }}>{String(i + 1).padStart(2, '0')}</span>
-                <Img ratio="4 / 3" label={r.tag.toLowerCase()} />
-                <div>
-                  <div style={{ fontFamily: 'var(--serif)', fontSize: 22 }}>{r.name}</div>
-                  <div className="tl-num" style={{ fontSize: 12, color: 'var(--ink-3)', marginTop: 4 }}>{r.meta}</div>
-                  <div style={{ color: 'var(--ink-2)', fontSize: 13, marginTop: 8, maxWidth: 520 }}>{r.body}</div>
+              <Card key={r.name} className="hover:shadow-md transition-shadow cursor-pointer rounded-xl border shadow-sm py-0">
+                <div className="grid grid-cols-[40px_140px_1fr_auto] items-center gap-4 p-4">
+                  <span className="text-xs text-muted-foreground font-mono">{String(i + 1).padStart(2, '0')}</span>
+                  <Img ratio="4/3" label={r.tag.toLowerCase()} className="w-full" />
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <CardTitle className="text-lg">{r.name}</CardTitle>
+                      <Badge variant="secondary">{r.tag}</Badge>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm text-muted-foreground mt-1">
+                      <span className="flex items-center gap-1"><MapPin size={12} /> {r.meta}</span>
+                      <span>·</span><span>{r.dur}</span><span>·</span>
+                      <span className="font-medium text-foreground">{r.cost}</span>
+                    </div>
+                    <CardDescription className="mt-2">{r.body}</CardDescription>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Button variant="outline" size="sm">Preview</Button>
+                    <Button size="sm"><Plus size={14} /> Add</Button>
+                  </div>
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  <button className="tl-pill">Preview</button>
-                  <button className="tl-pill active">+ Add to trip</button>
-                </div>
-              </div>
+              </Card>
             ))}
           </div>
         </div>
-        <aside>
-          <div className="tl-eyebrow" style={{ marginBottom: 12 }}>— Refine</div>
-          <div className="tl-card" style={{ padding: 16 }}>
-            <div className="tl-eyebrow" style={{ fontSize: 9 }}>Cost (EUR)</div>
-            <div style={{ position: 'relative', height: 28, marginTop: 14 }}>
-              <div style={{ position: 'absolute', inset: '14px 0', height: 1, background: 'var(--rule)' }} />
-              <div style={{ position: 'absolute', left: '15%', right: '30%', top: 14, height: 1, background: 'var(--terracotta)' }} />
-              <div style={{ position: 'absolute', left: '15%', top: 8, width: 14, height: 14, borderRadius: 999, background: 'var(--paper)', border: '1px solid var(--ink)' }} />
-              <div style={{ position: 'absolute', left: '70%', top: 8, width: 14, height: 14, borderRadius: 999, background: 'var(--ink)' }} />
-            </div>
-            <div className="tl-num" style={{ fontSize: 11, display: 'flex', justifyContent: 'space-between', color: 'var(--ink-3)', marginTop: 6 }}>
-              <span>€80</span><span>€480</span>
-            </div>
-          </div>
-          <div className="tl-card" style={{ padding: 16, marginTop: 14 }}>
-            <div className="tl-eyebrow" style={{ fontSize: 9, marginBottom: 10 }}>Type of activity</div>
-            {['Adventure', 'Course', 'Photo', 'Wellness', 'Sightseeing', 'Food'].map((t, i) => (
-              <label key={t} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', fontSize: 13, color: 'var(--ink-2)', cursor: 'pointer' }}>
-                <span>
-                  <span style={{ display: 'inline-block', width: 12, height: 12, border: '1px solid var(--ink)', background: i < 3 ? 'var(--ink)' : 'transparent', marginRight: 8, verticalAlign: -1 }} />
-                  {t}
-                </span>
-                <span className="tl-num" style={{ color: 'var(--ink-3)' }}>{[24, 6, 11, 38, 92, 140][i]}</span>
-              </label>
-            ))}
-          </div>
-          <div className="tl-card" style={{ padding: 16, marginTop: 14 }}>
-            <div className="tl-eyebrow" style={{ fontSize: 9, marginBottom: 10 }}>Region</div>
-            {['Europe', 'Asia', 'Americas', 'Africa', 'Oceania'].map(r => (
-              <div key={r} style={{ padding: '6px 0', fontSize: 13, color: 'var(--ink-2)', display: 'flex', justifyContent: 'space-between' }}>
-                <span>{r}</span><span style={{ color: 'var(--ink-3)' }}>↗</span>
+
+        <aside className="space-y-4">
+          <Card className="rounded-xl border shadow-sm py-0">
+            <div className="p-4 pb-2 font-medium text-sm">Cost (EUR)</div>
+            <div className="p-4 pt-2">
+              <div className="relative h-6">
+                <div className="absolute inset-x-0 top-1/2 h-px bg-border" />
+                <div className="absolute left-[15%] right-[30%] top-1/2 h-px bg-primary" />
+                <div className="absolute left-[15%] top-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-background border-2 border-primary" />
+                <div className="absolute left-[70%] top-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-primary" />
               </div>
-            ))}
-          </div>
+              <div className="flex justify-between text-xs text-muted-foreground mt-3"><span>€80</span><span>€480</span></div>
+            </div>
+          </Card>
+
+          <Card className="rounded-xl border shadow-sm py-0">
+            <div className="p-4 pb-2 font-medium text-sm">Type</div>
+            <div className="p-4 pt-2 space-y-2">
+              {[['Adventure', 24, true], ['Course', 6, true], ['Photo', 11, true], ['Wellness', 38, false], ['Sightseeing', 92, false], ['Food', 140, false]].map(([t, n, on]) => (
+                <label key={t} className="flex items-center justify-between text-sm cursor-pointer">
+                  <span className="flex items-center gap-2"><Checkbox checked={on} /> {t}</span>
+                  <span className="text-xs text-muted-foreground">{n}</span>
+                </label>
+              ))}
+            </div>
+          </Card>
+
+          <Card className="rounded-xl border shadow-sm py-0">
+            <div className="p-4 pb-2 font-medium text-sm">Region</div>
+            <div className="p-4 pt-2 space-y-2">
+              {['Europe', 'Asia', 'Americas', 'Africa', 'Oceania'].map(r => (
+                <div key={r} className="flex justify-between text-sm cursor-pointer hover:text-primary">
+                  <span>{r}</span><ArrowRight size={14} className="text-muted-foreground" />
+                </div>
+              ))}
+            </div>
+          </Card>
         </aside>
       </div>
     </div>

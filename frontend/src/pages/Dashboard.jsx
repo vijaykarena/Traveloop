@@ -2,88 +2,110 @@ import Chrome from '../components/Chrome'
 import Controls from '../components/Controls'
 import Img from '../components/Img'
 import { useNav } from '../navigation'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
+import { Plus, ArrowRight } from 'lucide-react'
 
 export default function Dashboard() {
   const { navigate } = useNav()
   return (
-    <div className="tl-screen">
+    <div className="flex flex-col h-screen bg-background text-foreground font-sans overflow-hidden">
       <Chrome active="Discover" />
-      <div style={{ position: 'relative', height: 360, borderBottom: '1px solid var(--rule)' }}>
-        <Img label="Banner · Cinque Terre" coord="44.1281° N  9.7088° E" style={{ position: 'absolute', inset: 0, border: 'none', width: '100%', height: '100%' }} />
-        <div style={{ position: 'absolute', left: 36, bottom: 36, right: 36, display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24 }}>
-          <div style={{ background: 'var(--paper)', padding: '24px 28px', maxWidth: 520, borderTop: '2px solid var(--ink)' }}>
-            <div className="tl-eyebrow">Issue 14 · May 2026</div>
-            <div className="tl-display" style={{ fontSize: 44, marginTop: 6 }}>Where to, <i>Amelia?</i></div>
-            <div style={{ color: 'var(--ink-2)', marginTop: 10, fontSize: 14 }}>Three trips on the horizon. Eight days until Rome.</div>
+      <div className="flex-1 overflow-auto">
+        <div className="relative h-72 border-b shrink-0">
+          <Img label="Banner · Cinque Terre" className="absolute inset-0 rounded-none border-0 h-full w-full" style={{ aspectRatio: undefined }} />
+          <div className="absolute left-8 bottom-8 right-8 flex items-end justify-between">
+            <Card className="max-w-md rounded-xl border shadow-sm py-0">
+              <CardHeader className="p-6">
+                <Badge variant="accent" className="w-fit mb-2">May 2026</Badge>
+                <CardTitle className="text-3xl">Where to, Amelia?</CardTitle>
+                <CardDescription>Three trips on the horizon. Eight days until Rome.</CardDescription>
+              </CardHeader>
+            </Card>
+            <Button size="lg" onClick={() => navigate('create-trip')}><Plus size={16} /> Plan a New Trip</Button>
           </div>
-          <button className="tl-btn terracotta" onClick={() => navigate('create-trip')}>＋ Plan a New Trip</button>
         </div>
-      </div>
-      <Controls q="Lisbon, paragliding, slow trains in Japan…" />
-      <div style={{ padding: '28px 36px', display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 36, flex: 1 }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 14 }}>
-            <div className="tl-eyebrow">— Top Regional Selections</div>
-            <span className="tl-num" style={{ fontSize: 11, color: 'var(--ink-3)' }}>05 of 24</span>
+
+        <Controls q="Lisbon, paragliding, slow trains in Japan…" />
+
+        <div className="grid grid-cols-[2fr_1fr] gap-8 p-8">
+          <div>
+            <div className="flex items-baseline justify-between mb-4">
+              <h2 className="text-lg font-semibold">Top regional selections</h2>
+              <span className="text-xs text-muted-foreground">5 of 24</span>
+            </div>
+            <div className="grid grid-cols-5 gap-3">
+              {[['Lisbon', 'PT'], ['Kyoto', 'JP'], ['Marrakesh', 'MA'], ['Reykjavík', 'IS'], ['Oaxaca', 'MX']].map(([n, c]) => (
+                <Card key={n} className="overflow-hidden cursor-pointer hover:shadow-md transition-shadow rounded-xl border shadow-sm py-0">
+                  <Img ratio="1/1" label={c} className="rounded-none border-0" />
+                  <div className="p-3">
+                    <div className="font-medium text-sm">{n}</div>
+                    <div className="text-xs text-muted-foreground">{c}</div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+
+            <div className="flex items-baseline justify-between mt-8 mb-4">
+              <h2 className="text-lg font-semibold">Previous trips</h2>
+              <Button variant="link" size="sm">View all <ArrowRight size={14} /></Button>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              {[
+                ['Hokkaidō Loop', 'Feb 2026', '14 days · ¥184,200'],
+                ['Lofoten Islands', 'Aug 2025', '8 days · €2,140'],
+                ['Cusco → Sacred Valley', 'Apr 2025', '11 days · $1,860'],
+              ].map(([n, d, m]) => (
+                <Card key={n} className="rounded-xl border shadow-sm py-0 cursor-pointer" onClick={() => navigate('my-trips')}>
+                  <Img ratio="16/10" className="rounded-b-none border-0 border-b rounded-t-xl" />
+                  <CardHeader className="p-4">
+                    <div className="flex items-start justify-between">
+                      <CardTitle className="text-base">{n}</CardTitle>
+                      <Badge variant="outline">{d}</Badge>
+                    </div>
+                    <CardDescription>{m}</CardDescription>
+                  </CardHeader>
+                </Card>
+              ))}
+            </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 12 }}>
-            {[
-              ['Lisbon', 'PT', '38.72° N'],
-              ['Kyoto', 'JP', '35.01° N'],
-              ['Marrakesh', 'MA', '31.62° N'],
-              ['Reykjavík', 'IS', '64.14° N'],
-              ['Oaxaca', 'MX', '17.07° N']
-            ].map(([n, c, lat]) => (
-              <div key={n}>
-                <Img ratio="1 / 1" label={c} coord={lat} />
-                <div style={{ fontFamily: 'var(--serif)', fontSize: 22, marginTop: 8 }}>{n}</div>
-              </div>
-            ))}
-          </div>
-          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', margin: '32px 0 14px' }}>
-            <div className="tl-eyebrow">— Previous Trips</div>
-            <span className="tl-num" style={{ fontSize: 11, color: 'var(--ink-3)' }}>03 of 11</span>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
-            {[
-              ['Hokkaidō Loop', '14 days · ¥184,200', 'Feb 2026'],
-              ['Lofoten Islands', '8 days · €2,140', 'Aug 2025'],
-              ['Cusco → Sacred Valley', '11 days · $1,860', 'Apr 2025']
-            ].map(([n, m, d]) => (
-              <div key={n} className="tl-card" style={{ padding: 14, cursor: 'pointer' }} onClick={() => navigate('my-trips')}>
-                <Img ratio="16 / 10" label="archive" />
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 12 }}>
-                  <div style={{ fontFamily: 'var(--serif)', fontSize: 20 }}>{n}</div>
-                  <span className="tl-num" style={{ fontSize: 11, color: 'var(--ink-3)' }}>{d}</span>
+
+          <aside>
+            <h2 className="text-lg font-semibold mb-4">Up next</h2>
+            <Card className="rounded-xl border shadow-sm py-0 cursor-pointer" onClick={() => navigate('itinerary')}>
+              <CardHeader className="p-5">
+                <Badge variant="accent" className="w-fit">In 8 days</Badge>
+                <CardTitle className="text-2xl mt-2">Rome &amp; the Amalfi</CardTitle>
+                <CardDescription>18 May → 02 Jun · 6 stops</CardDescription>
+              </CardHeader>
+              <CardContent className="px-5 pb-5">
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="text-muted-foreground">Budget</span>
+                  <span className="font-medium">€2,400 / €3,200</span>
                 </div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-3)', marginTop: 4 }}>{m}</div>
-              </div>
-            ))}
-          </div>
+                <Progress value={75} />
+              </CardContent>
+            </Card>
+
+            <h3 className="text-sm font-semibold mt-6 mb-3 text-muted-foreground uppercase tracking-wide">From the community</h3>
+            <div className="space-y-3">
+              {[
+                'Three days in Naples — by mouth',
+                'A walking guide to Hanoi at dawn',
+                'Patagonia in the off-season',
+              ].map(t => (
+                <Card key={t} className="cursor-pointer hover:bg-accent transition-colors rounded-xl border shadow-sm py-0" onClick={() => navigate('community')}>
+                  <CardContent className="p-4">
+                    <div className="text-sm font-medium">{t}</div>
+                    <div className="text-xs text-muted-foreground mt-1">Shared 2d ago</div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </aside>
         </div>
-        <aside>
-          <div className="tl-eyebrow" style={{ marginBottom: 14 }}>— Up Next</div>
-          <div className="tl-card" style={{ padding: 18, cursor: 'pointer' }} onClick={() => navigate('itinerary')}>
-            <div className="tl-tag dot terracotta">In 8 days</div>
-            <div className="tl-display" style={{ fontSize: 28, marginTop: 10 }}>Rome <i>&amp;</i><br />the Amalfi.</div>
-            <div className="tl-num" style={{ fontSize: 12, color: 'var(--ink-3)', marginTop: 6 }}>18 May → 02 Jun · 6 stops</div>
-            <div style={{ height: 1, background: 'var(--rule)', margin: '14px 0' }} />
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}>
-              <span style={{ color: 'var(--ink-3)' }}>Budget</span>
-              <span className="tl-num">€2,400 / €3,200</span>
-            </div>
-            <div style={{ height: 4, background: 'var(--paper-2)', marginTop: 8, borderRadius: 2 }}>
-              <div style={{ width: '75%', height: '100%', background: 'var(--terracotta)', borderRadius: 2 }} />
-            </div>
-          </div>
-          <div className="tl-eyebrow" style={{ marginTop: 24, marginBottom: 12 }}>— From the community</div>
-          {['"Three days in Naples — by mouth"', '"A walking guide to Hanoi at dawn"', '"Patagonia in the off-season"'].map(t => (
-            <div key={t} style={{ padding: '12px 0', borderBottom: '1px solid var(--rule-2)', cursor: 'pointer' }} onClick={() => navigate('community')}>
-              <div style={{ fontFamily: 'var(--serif)', fontSize: 17, fontStyle: 'italic' }}>{t}</div>
-              <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-3)', marginTop: 4, letterSpacing: '0.1em' }}>SHARED · 2D AGO</div>
-            </div>
-          ))}
-        </aside>
       </div>
     </div>
   )

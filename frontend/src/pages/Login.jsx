@@ -1,49 +1,66 @@
 import { useNav } from '../navigation'
 import Img from '../components/Img'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
+import { ArrowRight } from 'lucide-react'
 
 export default function Login() {
   const { navigate } = useNav()
   return (
-    <div className="tl-screen" style={{ flexDirection: 'row' }}>
-      <div style={{ flex: '0 0 46%', padding: '56px 56px 40px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-        <div className="tl-brand" style={{ fontSize: 28 }}>Trave<i>loop</i></div>
-        <div>
-          <div className="tl-eyebrow" style={{ marginBottom: 18 }}>— Sign In · Member 0001</div>
-          <h1 className="tl-display" style={{ fontSize: 64, margin: 0 }}>Welcome <i>back,</i><br />traveller.</h1>
-          <p style={{ color: 'var(--ink-2)', maxWidth: 360, marginTop: 18, fontSize: 15 }}>
-            Pick up where you left off. Your itineraries, notes, and dog-eared pages are right where you left them.
-          </p>
-          <div style={{ marginTop: 36, display: 'flex', flexDirection: 'column', gap: 18, maxWidth: 360 }}>
-            <div className="tl-input">
-              <label>Username or email</label>
-              <div className="field placeholder">amelia.stone@traveloop.io</div>
+    <div className="flex h-screen bg-background">
+      <div className="flex-[0.46] flex flex-col justify-between p-12">
+        <div className="flex items-center gap-2">
+          <div className="h-9 w-9 rounded-md bg-primary text-primary-foreground flex items-center justify-center font-semibold">T</div>
+          <span className="text-xl font-semibold tracking-tight">Traveloop</span>
+        </div>
+
+        <div className="max-w-sm w-full">
+          <Badge variant="secondary" className="mb-4">Sign in</Badge>
+          <h1 className="text-4xl font-semibold tracking-tight mb-2">Welcome back.</h1>
+          <p className="text-muted-foreground mb-8">Pick up where you left off — your itineraries and notes are right where you left them.</p>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>Email</Label>
+              <Input type="email" placeholder="name@traveloop.io" defaultValue="amelia.stone@traveloop.io" />
             </div>
-            <div className="tl-input">
-              <label>Password</label>
-              <div className="field placeholder">• • • • • • • •</div>
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <Label>Password</Label>
+                <a className="text-xs text-primary hover:underline cursor-pointer">Forgot password?</a>
+              </div>
+              <Input type="password" defaultValue="••••••••" />
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4 }}>
-              <label style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 13, color: 'var(--ink-2)' }}>
-                <span style={{ width: 14, height: 14, border: '1px solid var(--ink)', display: 'inline-block', background: 'var(--ink)' }} /> Remember me
-              </label>
-              <a style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--terracotta)' }}>Forgot Password</a>
-            </div>
-            <button className="tl-btn" style={{ marginTop: 8 }} onClick={() => navigate('dashboard')}>Sign In →</button>
-            <div style={{ fontSize: 13, color: 'var(--ink-3)', textAlign: 'center', marginTop: 6 }}>
-              New here? <a style={{ color: 'var(--ink)', textDecoration: 'underline' }} onClick={() => navigate('register')}>Create an account</a>
+            <label className="flex items-center gap-2 text-sm cursor-pointer">
+              <Checkbox checked />
+              Keep me signed in
+            </label>
+            <Button className="w-full" onClick={() => navigate('dashboard')}>
+              Sign in <ArrowRight size={14} />
+            </Button>
+            <div className="text-sm text-muted-foreground text-center">
+              New here? <a className="text-foreground underline cursor-pointer" onClick={() => navigate('register')}>Create an account</a>
             </div>
           </div>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--ink-3)' }}>
-          <span>© 2026 Traveloop</span><span>Issue Nº 14</span>
+
+        <div className="text-xs text-muted-foreground flex justify-between">
+          <span>© 2026 Traveloop</span><span>v1.4.0</span>
         </div>
       </div>
-      <div style={{ flex: 1, position: 'relative', borderLeft: '1px solid var(--rule)' }}>
-        <Img label="Cover · Lisbon Rooftops" coord="38.7223° N  9.1393° W" style={{ position: 'absolute', inset: 0, border: 'none', width: '100%', height: '100%' }} />
-        <div style={{ position: 'absolute', bottom: 40, left: 40, right: 40, color: 'var(--ink)', background: 'var(--paper)', padding: '20px 24px', borderTop: '1px solid var(--ink)' }}>
-          <div className="tl-eyebrow">Featured Itinerary · 7 Days</div>
-          <div className="tl-display" style={{ fontSize: 32, marginTop: 6 }}>The slow road through <i>Iberia</i>.</div>
-        </div>
+
+      <div className="flex-1 relative bg-muted">
+        <Img label="Lisbon · 38.72° N" className="absolute inset-0 rounded-none border-0 border-l h-full w-full" style={{ aspectRatio: undefined }} />
+        <Card className="absolute bottom-10 left-10 right-10 max-w-md rounded-xl border shadow-sm py-0">
+          <CardHeader className="p-6">
+            <Badge variant="accent" className="w-fit mb-2">Featured · 7 days</Badge>
+            <CardTitle className="text-xl">The slow road through Iberia</CardTitle>
+            <CardDescription>From Porto's wineries to Granada's old quarter — a hand-built itinerary.</CardDescription>
+          </CardHeader>
+        </Card>
       </div>
     </div>
   )

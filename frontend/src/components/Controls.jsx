@@ -1,13 +1,17 @@
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Search, Filter } from 'lucide-react'
+
 export default function Controls({ q = 'Search destinations, activities, trips…', extra }) {
   return (
-    <div className="tl-controls">
-      <div className="tl-search">
-        <span style={{ fontSize: 14 }}>⌕</span>
-        <span>{q}</span>
+    <div className="flex items-center gap-2 px-8 py-3 border-b bg-background shrink-0">
+      <div className="relative flex-1 max-w-2xl">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
+        <Input className="pl-10" placeholder={q} />
       </div>
-      <button className="tl-pill">Group by</button>
-      <button className="tl-pill">Filter</button>
-      <button className="tl-pill">Sort</button>
+      <Button variant="outline" size="sm"><Filter size={14} /> Filter</Button>
+      <Button variant="outline" size="sm">Group by</Button>
+      <Button variant="outline" size="sm">Sort</Button>
       {extra}
     </div>
   )
