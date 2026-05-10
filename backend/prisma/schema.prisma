@@ -53,13 +53,15 @@ enum ExpenseCategory {
 // ── User ───────────────────────────────────────────────────────────────────
 
 model User {
-  id        Int    @id @default(autoincrement())
-  email     String @unique
-  password  String
-  firstName String
-  lastName  String
-  city      String
-  phoneNo   String @unique
+  id          Int    @id @default(autoincrement())
+  email       String @unique
+  password    String
+  firstName   String
+  lastName    String
+  city        String
+  country     String?
+  countryCode String?
+  phoneNo     String @unique
   role        Role     @default(USER)
   avatarUrl   String?
   bio         String?
@@ -111,6 +113,7 @@ model Activity {
 model Trip {
   id            Int      @id @default(autoincrement())
   title         String
+  destination   String?
   description   String?
   coverPhotoUrl String?
   startDate     DateTime
