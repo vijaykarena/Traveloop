@@ -17,6 +17,7 @@ router.get("/stats", async (_req: Request, res: Response) => {
       topCities,
       topActivities,
       recentUsers,
+      budgetAggregate,
     ] = await Promise.all([
       prisma.user.count(),
       prisma.trip.count(),
@@ -44,6 +45,10 @@ router.get("/stats", async (_req: Request, res: Response) => {
           _count: { select: { trips: true } },
         },
       }),
+      prisma.trip.aggregate({
+        _avg: { budgetLimit: true },
+        where: { budgetLimit: { not: null } },
+      }),
     ]);
 
     res.json({
@@ -51,6 +56,7 @@ router.get("/stats", async (_req: Request, res: Response) => {
       totalTrips,
       publicTrips,
       totalCities,
+      avgBudget: budgetAggregate._avg.budgetLimit ?? 0,
       topCities,
       topActivities,
       recentUsers,

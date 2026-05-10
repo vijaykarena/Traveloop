@@ -39,6 +39,7 @@ enum PackingCategory {
   TOILETRIES
   ELECTRONICS
   MEDICATIONS
+  WELLNESS
   OTHER
 }
 
@@ -64,6 +65,8 @@ model User {
   avatarUrl   String?
   bio         String?
   language    String   @default("en")
+  currency    String?
+  visibility  String   @default("public")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -149,6 +152,7 @@ model TripStop {
   transportFrom TripTransport[]    @relation("FromStop")
   transportTo   TripTransport[]    @relation("ToStop")
   expenses      TripExpense[]
+  tripNotes     TripNote[]  @relation("StopNotes")
 
   @@unique([tripId, order])
 }
@@ -232,16 +236,19 @@ model PackingItem {
 // ── TripNote ───────────────────────────────────────────────────────────────
 
 model TripNote {
-  id        Int       @id @default(autoincrement())
-  tripId    Int
-  trip      Trip      @relation(fields: [tripId], references: [id], onDelete: Cascade)
-  userId    Int
-  user      User      @relation(fields: [userId], references: [id])
-  title     String?
-  content   String
-  noteDate  DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id         Int       @id @default(autoincrement())
+  tripId     Int
+  trip       Trip      @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  userId     Int
+  user       User      @relation(fields: [userId], references: [id])
+  tripStopId Int?
+  tripStop   TripStop? @relation(fields: [tripStopId], references: [id], name: "StopNotes")
+  title      String?
+  content    String
+  tags       String[]
+  noteDate   DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 // ── SavedDestination ───────────────────────────────────────────────────────

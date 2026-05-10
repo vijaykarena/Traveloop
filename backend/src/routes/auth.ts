@@ -23,6 +23,7 @@ router.post("/register", async (req: Request, res: Response) => {
       country,
       countryCode,
       phoneNo,
+      bio,
     } = req.body;
 
     // 1. Validation
@@ -58,7 +59,8 @@ router.post("/register", async (req: Request, res: Response) => {
         country,
         countryCode,
         phoneNo,
-        role: "USER", // Default role for registration
+        bio,
+        role: "USER",
       },
     });
 
@@ -165,7 +167,7 @@ router.post("/forgot-password", async (req: Request, res: Response) => {
 
     // Send email
     const resetLink = `${
-      process.env.FRONTEND_URL || "http://localhost:5174"
+      process.env.FRONTEND_URL || "http://localhost:5173"
     }/reset-password?token=${token}`;
 
     console.log(`Attempting to send reset email to: ${email}`);
