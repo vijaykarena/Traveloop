@@ -152,7 +152,7 @@ model TripStop {
   transportFrom TripTransport[]    @relation("FromStop")
   transportTo   TripTransport[]    @relation("ToStop")
   expenses      TripExpense[]
-  tripNotes     TripNote[]  @relation("StopNotes")
+  tripNotes     TripNote[]         @relation("StopNotes")
 
   @@unique([tripId, order])
 }
@@ -242,11 +242,11 @@ model TripNote {
   userId     Int
   user       User      @relation(fields: [userId], references: [id])
   tripStopId Int?
-  tripStop   TripStop? @relation(fields: [tripStopId], references: [id], name: "StopNotes")
   title      String?
   content    String
   tags       String[]
   noteDate   DateTime?
+  tripStop   TripStop? @relation(fields: [tripStopId], references: [id], name: "StopNotes")
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 }

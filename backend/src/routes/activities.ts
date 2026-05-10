@@ -37,14 +37,15 @@ router.get("/", async (req: Request, res: Response) => {
         skip: (page - 1) * limit,
         take: limit,
         include: {
-          city: { select: { id: true, name: true, latitude: true, longitude: true } },
+          city: { select: { id: true, name: true } },
         },
       }),
       prisma.activity.count({ where }),
     ]);
 
     res.json({ activities, total, page, limit });
-  } catch {
+  } catch (error) {
+    console.error("Activities search error:", error);
     res.status(500).json({ error: "Failed to search activities" });
   }
 });

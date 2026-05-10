@@ -141,8 +141,9 @@ router.post("/", async (req: Request, res: Response) => {
       },
     });
     res.status(201).json(trip);
-  } catch {
-    res.status(500).json({ error: "Failed to create trip" });
+  } catch (error: any) {
+    console.error("Trip creation error:", error);
+    res.status(500).json({ error: "Failed to create trip", details: error.message });
   }
 });
 
