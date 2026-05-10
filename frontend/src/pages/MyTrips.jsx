@@ -15,6 +15,7 @@ export default function MyTrips() {
   const { navigate } = useNav()
   const [trips, setTrips] = useState([])
   const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     const fetchTrips = async () => {
@@ -35,9 +36,18 @@ export default function MyTrips() {
   // Normalize dates to start of day for comparison
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
 
-  const ongoing = trips.filter(t => new Date(t.startDate) <= today && new Date(t.endDate) >= today)
-  const upcoming = trips.filter(t => new Date(t.startDate) > today)
-  const completed = trips.filter(t => new Date(t.endDate) < today)
+  const filteredTrips = trips.filter(t => {
+    if (!searchQuery) return true
+    const q = searchQuery.toLowerCase()
+    return (
+      (t.title && t.title.toLowerCase().includes(q)) ||
+      (t.destination && t.destination.toLowerCase().includes(q))
+    )
+  })
+
+  const ongoing = filteredTrips.filter(t => new Date(t.startDate) <= today && new Date(t.endDate) >= today)
+  const upcoming = filteredTrips.filter(t => new Date(t.startDate) > today)
+  const completed = filteredTrips.filter(t => new Date(t.endDate) < today)
 
   const groups = [
     { label: 'Ongoing', count: ongoing.length, variant: 'success', items: ongoing },
@@ -60,7 +70,12 @@ export default function MyTrips() {
   return (
     <div className="flex flex-col min-h-screen lg:h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body lg:overflow-hidden">
       <Chrome active="My Trips" />
-      <Controls q="Search your trips…" />
+      <Controls 
+        q="Search your trips…" 
+        search={searchQuery}
+        onSearch={setSearchQuery}
+        hideFilters={true}
+      />
       <div className="px-4 sm:px-8 py-4 sm:py-6 space-y-6 flex-1 lg:overflow-auto">
         {loading ? (
           <div className="text-[var(--text-tertiary)] py-10">Loading trips...</div>
@@ -97,7 +112,6 @@ export default function MyTrips() {
                     </div>
                     <div className="flex sm:flex-col gap-2 p-4 sm:p-5 border-t sm:border-t-0 sm:border-l border-[var(--border-subtle)]">
                       <Button size="sm" className="flex-1 sm:flex-none" onClick={() => navigate(`build-itinerary/${trip.id}`)}>Open <ArrowRight size={14} /></Button>
-                      <Button variant="outline" size="sm" className="flex-1 sm:flex-none">Duplicate</Button>
                     </div>
                   </div>
                 </Card>
