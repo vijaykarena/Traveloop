@@ -31,13 +31,13 @@ export default function Packing() {
   const done = cats.reduce((a, c) => a + c.items.filter(i => i[1]).length, 0)
 
   return (
-    <div className="flex flex-col h-screen bg-background text-foreground font-sans overflow-hidden">
+    <div className="flex flex-col h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body overflow-hidden">
       <Chrome active="Plan" />
       <Controls q="Search this checklist…" />
-      <div className="px-8 py-6 border-b flex items-end justify-between shrink-0">
+      <div className="px-8 py-6 border-b border-[var(--border-subtle)] flex items-end justify-between shrink-0 bg-[var(--bg-surface)]">
         <div className="flex-1">
           <Badge variant="secondary" className="mb-2">Trip to Europe Adventure</Badge>
-          <h1 className="text-3xl font-semibold tracking-tight">Packing checklist</h1>
+          <h1 className="font-display text-3xl font-bold tracking-tight">Packing checklist</h1>
           <div className="flex items-center gap-3 mt-3 max-w-md">
             <Progress value={(done / total) * 100} className="flex-1" />
             <span className="text-sm font-medium">{done} / {total}</span>
@@ -54,7 +54,7 @@ export default function Packing() {
           const Icon = ICONS[c.name] ?? Package
           const catDone = c.items.filter(i => i[1]).length
           return (
-            <Card key={c.name} className="rounded-xl border shadow-sm py-0">
+            <Card key={c.name} className="py-0">
               <CardHeader className="flex-row items-center justify-between space-y-0 p-5 pb-3">
                 <div className="flex items-center gap-2">
                   <Icon size={16} />
@@ -64,10 +64,10 @@ export default function Packing() {
               </CardHeader>
               <CardContent className="p-0">
                 {c.items.map(([label, on], ii) => (
-                  <label key={ii} className={cn('flex items-center gap-3 px-5 py-3 cursor-pointer hover:bg-accent/50', ii < c.items.length - 1 && 'border-t')}>
+                  <label key={ii} className={cn('flex items-center gap-3 px-5 py-3 cursor-pointer hover:bg-[var(--bg-muted)]/50 transition-colors', ii < c.items.length - 1 && 'border-t border-[var(--border-subtle)]')}>
                     <Checkbox checked={on} onCheckedChange={() => toggle(ci, ii)} />
-                    <span className={cn('text-sm flex-1', on && 'line-through text-muted-foreground')}>{label}</span>
-                    <button className="text-muted-foreground hover:text-destructive" onClick={e => e.preventDefault()}>
+                    <span className={cn('text-sm flex-1', on && 'line-through text-[var(--text-tertiary)]')}>{label}</span>
+                    <button className="text-[var(--text-tertiary)] hover:text-[var(--color-error)] transition-colors" onClick={e => e.preventDefault()}>
                       <Trash2 size={14} />
                     </button>
                   </label>

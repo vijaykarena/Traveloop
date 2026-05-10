@@ -18,15 +18,15 @@ const results = [
 
 export default function Search() {
   return (
-    <div className="flex flex-col h-screen bg-background text-foreground font-sans overflow-hidden">
+    <div className="flex flex-col h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body overflow-hidden">
       <Chrome active="Discover" />
       <Controls q="paragliding" />
       <div className="grid grid-cols-[1fr_300px] gap-8 p-8 flex-1 overflow-auto">
         <div>
           <div className="flex items-baseline justify-between mb-4">
             <div>
-              <h2 className="text-2xl font-semibold tracking-tight">6 places to fly</h2>
-              <div className="text-sm text-muted-foreground mt-1">Activities matching "paragliding" · sorted by relevance</div>
+              <h2 className="font-display text-2xl font-bold tracking-tight">6 places to fly</h2>
+              <div className="text-sm text-[var(--text-tertiary)] mt-1">Activities matching "paragliding" · sorted by relevance</div>
             </div>
             <div className="flex gap-2">
               <Badge variant="accent">Adventure</Badge>
@@ -36,19 +36,19 @@ export default function Search() {
           </div>
           <div className="space-y-3">
             {results.map((r, i) => (
-              <Card key={r.name} className="hover:shadow-md transition-shadow cursor-pointer rounded-xl border shadow-sm py-0">
+              <Card key={r.name} className="hover:shadow-[var(--shadow-md)] transition-shadow cursor-pointer py-0">
                 <div className="grid grid-cols-[40px_140px_1fr_auto] items-center gap-4 p-4">
-                  <span className="text-xs text-muted-foreground font-mono">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="text-xs text-[var(--text-tertiary)] font-mono">{String(i + 1).padStart(2, '0')}</span>
                   <Img ratio="4/3" label={r.tag.toLowerCase()} className="w-full" />
                   <div>
                     <div className="flex items-center gap-2">
                       <CardTitle className="text-lg">{r.name}</CardTitle>
                       <Badge variant="secondary">{r.tag}</Badge>
                     </div>
-                    <div className="flex items-center gap-3 text-sm text-muted-foreground mt-1">
+                    <div className="flex items-center gap-3 text-sm text-[var(--text-tertiary)] mt-1">
                       <span className="flex items-center gap-1"><MapPin size={12} /> {r.meta}</span>
                       <span>·</span><span>{r.dur}</span><span>·</span>
-                      <span className="font-medium text-foreground">{r.cost}</span>
+                      <span className="font-medium text-[var(--text-primary)]">{r.cost}</span>
                     </div>
                     <CardDescription className="mt-2">{r.body}</CardDescription>
                   </div>
@@ -63,37 +63,37 @@ export default function Search() {
         </div>
 
         <aside className="space-y-4">
-          <Card className="rounded-xl border shadow-sm py-0">
+          <Card className="py-0">
             <div className="p-4 pb-2 font-medium text-sm">Cost (EUR)</div>
             <div className="p-4 pt-2">
               <div className="relative h-6">
-                <div className="absolute inset-x-0 top-1/2 h-px bg-border" />
-                <div className="absolute left-[15%] right-[30%] top-1/2 h-px bg-primary" />
-                <div className="absolute left-[15%] top-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-background border-2 border-primary" />
-                <div className="absolute left-[70%] top-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-primary" />
+                <div className="absolute inset-x-0 top-1/2 h-px bg-[var(--border-subtle)]" />
+                <div className="absolute left-[15%] right-[30%] top-1/2 h-px bg-[var(--brand-primary)]" />
+                <div className="absolute left-[15%] top-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-[var(--bg-surface)] border-2 border-[var(--brand-primary)]" />
+                <div className="absolute left-[70%] top-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-[var(--brand-primary)]" />
               </div>
-              <div className="flex justify-between text-xs text-muted-foreground mt-3"><span>€80</span><span>€480</span></div>
+              <div className="flex justify-between text-xs text-[var(--text-tertiary)] mt-3"><span>€80</span><span>€480</span></div>
             </div>
           </Card>
 
-          <Card className="rounded-xl border shadow-sm py-0">
+          <Card className="py-0">
             <div className="p-4 pb-2 font-medium text-sm">Type</div>
             <div className="p-4 pt-2 space-y-2">
               {[['Adventure', 24, true], ['Course', 6, true], ['Photo', 11, true], ['Wellness', 38, false], ['Sightseeing', 92, false], ['Food', 140, false]].map(([t, n, on]) => (
                 <label key={t} className="flex items-center justify-between text-sm cursor-pointer">
                   <span className="flex items-center gap-2"><Checkbox checked={on} /> {t}</span>
-                  <span className="text-xs text-muted-foreground">{n}</span>
+                  <span className="text-xs text-[var(--text-tertiary)]">{n}</span>
                 </label>
               ))}
             </div>
           </Card>
 
-          <Card className="rounded-xl border shadow-sm py-0">
+          <Card className="py-0">
             <div className="p-4 pb-2 font-medium text-sm">Region</div>
             <div className="p-4 pt-2 space-y-2">
               {['Europe', 'Asia', 'Americas', 'Africa', 'Oceania'].map(r => (
-                <div key={r} className="flex justify-between text-sm cursor-pointer hover:text-primary">
-                  <span>{r}</span><ArrowRight size={14} className="text-muted-foreground" />
+                <div key={r} className="flex justify-between text-sm cursor-pointer hover:text-[var(--brand-primary)] transition-colors">
+                  <span>{r}</span><ArrowRight size={14} className="text-[var(--text-tertiary)]" />
                 </div>
               ))}
             </div>
