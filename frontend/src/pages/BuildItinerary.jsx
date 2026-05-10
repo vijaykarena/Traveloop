@@ -1,20 +1,85 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Chrome from '../components/Chrome'
 import TabsSwitcher from '../components/TabsSwitcher'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardTitle, CardDescription } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
-import { Calendar, Edit, Plus } from 'lucide-react'
-
-const sections = [
-  { n: 1, title: 'Rome — three slow days', dates: '18 → 21 May', budget: '₹620', body: "Settle into Trastevere, visit the Pantheon at golden hour, find a small enoteca near Campo de' Fiori.", tags: ['Walking', 'Food', 'Architecture'] },
-  { n: 2, title: 'Naples & a day on Vesuvius', dates: '22 → 24 May', budget: '₹480', body: 'Pizza pilgrimage. A day trip up the volcano. Espresso at every stop, on principle.', tags: ['Hike', 'Food', 'Day trip'] },
-  { n: 3, title: 'The Amalfi by ferry', dates: '25 → 30 May', budget: '₹1,180', body: 'Sorrento as base camp. Ferries to Positano and Capri. Read on the deck, swim in coves.', tags: ['Coast', 'Slow', 'Swim'] },
-]
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Calendar, Edit, Plus, X } from 'lucide-react'
+import { useParams } from 'react-router-dom'
+import api, { ENDPOINTS } from '../api'
 
 export default function BuildItinerary() {
+  const { id } = useParams()
   const [tab, setTab] = useState('Sections')
+  const [trip, setTrip] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  // Add stop state
+  const [isAdding, setIsAdding] = useState(false)
+  const [cities, setCities] = useState([])
+  const [search, setSearch] = useState('')
+  const [selectedCity, setSelectedCity] = useState(null)
+  const [arrivalDate, setArrivalDate] = useState('')
+  const [departureDate, setDepartureDate] = useState('')
+  const [notes, setNotes] = useState('')
+
+  const fetchTrip = async () => {
+    try {
+      const res = await api.get(ENDPOINTS.TRIP_BY_ID(id))
+      setTrip(res.data)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchTrip()
+  }, [id])
+
+  useEffect(() => {
+    if (search.length >= 2) {
+      api.get(`${ENDPOINTS.CITIES}?search=${search}`).then(res => setCities(res.data.cities)).catch(console.error)
+    } else {
+      setCities([])
+    }
+  }, [search])
+
+  const handleAddStop = async () => {
+    if (!selectedCity || !arrivalDate || !departureDate) return
+    try {
+      await api.post(`${ENDPOINTS.TRIP_BY_ID(id)}/stops`, {
+        cityId: selectedCity.id,
+        order: trip.stops ? trip.stops.length + 1 : 1,
+        arrivalDate,
+        departureDate,
+        notes
+      })
+      setIsAdding(false)
+      setSelectedCity(null)
+      setArrivalDate('')
+      setDepartureDate('')
+      setNotes('')
+      setSearch('')
+      fetchTrip()
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+  }
+
+  if (loading) return <div className="p-10 text-[var(--text-secondary)]">Loading itinerary...</div>
+  if (!trip) return <div className="p-10 text-[var(--text-secondary)]">Trip not found</div>
+
+  const durationDays = Math.max(1, Math.ceil((new Date(trip.endDate) - new Date(trip.startDate)) / (1000 * 60 * 60 * 24)))
+
   return (
     <div className="flex flex-col min-h-screen lg:h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body lg:overflow-hidden">
       <Chrome active="Plan" />
@@ -22,47 +87,111 @@ export default function BuildItinerary() {
       {/* Page Header — stacks on mobile */}
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 px-4 sm:px-8 py-4 sm:py-6 border-b border-[var(--border-subtle)] shrink-0 bg-[var(--bg-surface)]">
         <div>
-          <Badge variant="secondary" className="mb-2">Itinerary builder · 16 days</Badge>
-          <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight">Rome &amp; the Amalfi Coast</h1>
+          <Badge variant="secondary" className="mb-2">Itinerary builder · {durationDays} days</Badge>
+          <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight">{trip.title}</h1>
         </div>
         <TabsSwitcher tabs={['Sections', 'Calendar', 'Map']} active={tab} onChange={setTab} />
       </div>
 
       {/* Section Cards */}
-      <div className="p-4 sm:p-8 space-y-4 flex-1 lg:overflow-y-auto">
-        {sections.map(s => (
-          <Card key={s.n} className="py-0">
+      <div className="p-4 sm:p-8 space-y-4 flex-1 lg:overflow-y-auto relative">
+        {trip.stops && trip.stops.map((s, idx) => (
+          <Card key={s.id} className="py-0">
             {/* Desktop: 3-col [number | content | meta]  Mobile: stacked */}
             <div className="flex flex-col md:grid md:grid-cols-[80px_1fr_280px]">
               {/* Number */}
               <div className="flex md:flex-col items-center gap-3 p-4 md:p-6 md:border-r border-b md:border-b-0 border-[var(--border-subtle)] justify-start md:justify-center">
-                <div className="h-10 w-10 rounded-full bg-[var(--brand-primary)] text-white grid place-items-center font-display font-bold shrink-0">{s.n}</div>
-                <span className="md:hidden font-display font-bold text-base">{s.title}</span>
+                <div className="h-10 w-10 rounded-full bg-[var(--brand-primary)] text-white grid place-items-center font-display font-bold shrink-0">{s.order || idx + 1}</div>
+                <span className="md:hidden font-display font-bold text-base">{s.city?.name}</span>
               </div>
               {/* Content */}
               <CardContent className="pt-4 md:pt-6 pb-4 md:pb-6">
-                <CardTitle className="text-base hidden md:block">{s.title}</CardTitle>
-                <CardDescription className="mt-2">{s.body}</CardDescription>
+                <CardTitle className="text-base hidden md:block">{s.city?.name}</CardTitle>
+                <CardDescription className="mt-2">{s.notes || s.city?.description || 'No notes added.'}</CardDescription>
                 <div className="flex flex-wrap gap-2 mt-3">
-                  {s.tags.map(t => <Badge key={t} variant="secondary">{t}</Badge>)}
+                  {s.activities && s.activities.map(act => (
+                    <Badge key={act.id} variant="secondary">{act.activity?.name}</Badge>
+                  ))}
                 </div>
               </CardContent>
               {/* Meta */}
               <div className="p-4 md:p-6 md:border-l border-t md:border-t-0 border-[var(--border-subtle)] space-y-3 bg-[var(--bg-muted)]/30 flex flex-row md:flex-col flex-wrap gap-4 md:gap-0 items-center md:items-start">
                 <div>
                   <Label className="text-xs text-[var(--text-tertiary)]">Date range</Label>
-                  <div className="font-medium mt-1 flex items-center gap-1.5 text-sm"><Calendar size={14} /> {s.dates}</div>
+                  <div className="font-medium mt-1 flex items-center gap-1.5 text-sm"><Calendar size={14} /> {formatDate(s.arrivalDate)} → {formatDate(s.departureDate)}</div>
                 </div>
                 <div>
                   <Label className="text-xs text-[var(--text-tertiary)]">Section budget</Label>
-                  <div className="font-bold mt-1 text-[var(--brand-primary)] text-lg">{s.budget}</div>
+                  <div className="font-bold mt-1 text-[var(--text-tertiary)] text-lg">---</div>
                 </div>
                 <Button variant="outline" size="sm" className="w-full md:w-full"><Edit size={14} /> Edit section</Button>
               </div>
             </div>
           </Card>
         ))}
-        <Button variant="outline" className="w-full h-14 border-dashed"><Plus size={16} /> Add another section</Button>
+
+        {!isAdding ? (
+          <Button variant="outline" className="w-full h-14 border-dashed" onClick={() => setIsAdding(true)}>
+            <Plus size={16} className="mr-2" /> Add another section
+          </Button>
+        ) : (
+          <Card className="p-6 border-dashed border-[var(--brand-primary)] border-2 bg-[var(--brand-primary)]/5">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-display font-bold text-lg text-[var(--brand-primary)]">Add a Stop</h3>
+              <Button variant="ghost" size="icon" onClick={() => setIsAdding(false)}><X size={16} /></Button>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="space-y-2 col-span-2 relative">
+                <Label>Search City</Label>
+                <Input 
+                  value={search} 
+                  onChange={e => setSearch(e.target.value)} 
+                  placeholder="e.g., Rome" 
+                  autoFocus
+                />
+                {cities.length > 0 && !selectedCity && (
+                  <div className="absolute top-full left-0 right-0 bg-white border border-[var(--border-subtle)] shadow-lg rounded-md mt-1 max-h-48 overflow-auto z-10">
+                    {cities.map(city => (
+                      <div 
+                        key={city.id} 
+                        className="px-4 py-2 hover:bg-[var(--bg-muted)] cursor-pointer text-sm"
+                        onClick={() => { setSelectedCity(city); setSearch(city.name); setCities([]); }}
+                      >
+                        {city.name} <span className="text-[var(--text-tertiary)] text-xs ml-2">{city.country}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {selectedCity && (
+                  <div className="text-xs text-[var(--color-success)] mt-1 flex items-center gap-1">
+                    ✓ Selected: {selectedCity.name}
+                  </div>
+                )}
+              </div>
+              
+              <div className="space-y-2">
+                <Label>Arrival Date</Label>
+                <Input type="date" value={arrivalDate} onChange={e => setArrivalDate(e.target.value)} min={trip.startDate.split('T')[0]} max={trip.endDate.split('T')[0]} />
+              </div>
+              
+              <div className="space-y-2">
+                <Label>Departure Date</Label>
+                <Input type="date" value={departureDate} onChange={e => setDepartureDate(e.target.value)} min={arrivalDate || trip.startDate.split('T')[0]} max={trip.endDate.split('T')[0]} />
+              </div>
+              
+              <div className="space-y-2 col-span-2">
+                <Label>Notes (Optional)</Label>
+                <Textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="What's the plan here?" />
+              </div>
+            </div>
+            
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={() => setIsAdding(false)}>Cancel</Button>
+              <Button onClick={handleAddStop} disabled={!selectedCity || !arrivalDate || !departureDate}>Save Stop</Button>
+            </div>
+          </Card>
+        )}
       </div>
     </div>
   )

@@ -8,6 +8,7 @@ import {Textarea} from '@/components/ui/textarea';
 import {ArrowRight, Plus, Loader2} from 'lucide-react';
 import {useState} from 'react';
 import {useForm} from 'react-hook-form';
+import api, { ENDPOINTS } from '../api';
 
 export default function Register() {
   const {navigate} = useNav();
@@ -29,22 +30,17 @@ export default function Register() {
 
     try {
       const {confirmPassword, ...registerData} = formData;
-      const res = await fetch('http://localhost:4000/auth/register', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(registerData),
-      });
+      const res = await api.post(ENDPOINTS.REGISTER, registerData);
 
-      const data = await res.json();
-      if (res.ok) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        navigate('dashboard');
-      } else {
-        setServerError(data.error || 'Registration failed');
-      }
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+      navigate('dashboard');
     } catch (err) {
-      setServerError('Failed to connect to server');
+      if (err.response && err.response.data && err.response.data.error) {
+        setServerError(err.response.data.error);
+      } else {
+        setServerError('Failed to connect to server');
+      }
     } finally {
       setLoading(false);
     }

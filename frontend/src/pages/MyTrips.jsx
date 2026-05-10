@@ -8,57 +8,103 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardTitle } from '@/components/ui/card'
 import { ArrowRight } from 'lucide-react'
 
-const groups = [
-  { label: 'Ongoing', count: 1, variant: 'success', sample: { title: 'Rome & the Amalfi', dates: '18 May → 02 Jun', stops: '6 stops', budget: '₹2,400 / ₹3,200', img: 'rome' }, page: 'itinerary' },
-  { label: 'Up-coming', count: 2, variant: 'info', sample: { title: 'Tokyo · neighbourhood loop', dates: '12 Jun → 24 Jun', stops: '4 stops', budget: '₹2,10,000 of ₹2,60,000', img: 'tokyo' }, page: 'itinerary' },
-  { label: 'Completed', count: 8, variant: 'outline', sample: { title: 'Hokkaidō Loop', dates: 'Feb 2026', stops: '14 days', budget: 'Archived', img: 'hokkaido' }, page: 'my-trips' },
-]
+import { useState, useEffect } from 'react'
+import api, { ENDPOINTS } from '../api'
 
 export default function MyTrips() {
   const { navigate } = useNav()
+  const [trips, setTrips] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchTrips = async () => {
+      try {
+        const res = await api.get(ENDPOINTS.TRIPS)
+        setTrips(res.data)
+      } catch (err) {
+        console.error('Failed to fetch trips', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchTrips()
+  }, [])
+
+  const now = new Date()
+
+  // Normalize dates to start of day for comparison
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
+  const ongoing = trips.filter(t => new Date(t.startDate) <= today && new Date(t.endDate) >= today)
+  const upcoming = trips.filter(t => new Date(t.startDate) > today)
+  const completed = trips.filter(t => new Date(t.endDate) < today)
+
+  const groups = [
+    { label: 'Ongoing', count: ongoing.length, variant: 'success', items: ongoing },
+    { label: 'Up-coming', count: upcoming.length, variant: 'info', items: upcoming },
+    { label: 'Completed', count: completed.length, variant: 'outline', items: completed },
+  ].filter(g => g.count > 0)
+
+  const formatDateRange = (start, end) => {
+    const s = new Date(start).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+    const e = new Date(end).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+    return `${s} → ${e}`
+  }
+
+  const formatBudget = (trip) => {
+    if (!trip.budgetLimit) return 'No budget set'
+    const spent = trip.expenses?.reduce((acc, curr) => acc + curr.amount, 0) || 0
+    return `₹${spent.toLocaleString()} of ₹${trip.budgetLimit.toLocaleString()}`
+  }
+
   return (
     <div className="flex flex-col min-h-screen lg:h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body lg:overflow-hidden">
       <Chrome active="My Trips" />
       <Controls q="Search your trips…" />
       <div className="px-4 sm:px-8 py-4 sm:py-6 space-y-6 flex-1 lg:overflow-auto">
-        {groups.map(g => (
-          <div key={g.label}>
-            <SectionHeader
-              title={g.label}
-              trailing={<Button variant="link" size="sm">View all <ArrowRight size={14} /></Button>}
-            >
-              <Badge variant={g.variant} className="ml-2">{g.count}</Badge>
-            </SectionHeader>
+        {loading ? (
+          <div className="text-[var(--text-tertiary)] py-10">Loading trips...</div>
+        ) : groups.length === 0 ? (
+          <div className="text-[var(--text-tertiary)] py-10">No trips found. Create one to get started!</div>
+        ) : (
+          groups.map(g => (
+            <div key={g.label} className="space-y-4">
+              <SectionHeader
+                title={g.label}
+              >
+                <Badge variant={g.variant} className="ml-2">{g.count}</Badge>
+              </SectionHeader>
 
-            <Card className="overflow-hidden py-0">
-              {/* Desktop: image | content | actions  Mobile: stacked */}
-              <div className="flex flex-col sm:grid sm:grid-cols-[160px_1fr_auto] sm:items-center">
-                {/* Image */}
-                <Img
-                  ratio="3/2"
-                  label={g.sample.img}
-                  className="rounded-none border-0 sm:border-r rounded-t-[var(--radius-xl)] sm:rounded-t-none sm:rounded-l-[var(--radius-xl)]"
-                  style={{ aspectRatio: undefined, height: undefined }}
-                />
-                {/* Content */}
-                <div className="p-4 sm:p-5">
-                  <CardTitle className="text-lg sm:text-xl">{g.sample.title}</CardTitle>
-                  <div className="text-sm text-[var(--text-tertiary)] mt-1">{g.sample.dates} · {g.sample.stops}</div>
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    <Badge variant="accent">{g.sample.budget}</Badge>
-                    <Badge variant="outline">Notes · 6</Badge>
-                    <Badge variant="outline">Activities · 14</Badge>
+              {g.items.map(trip => (
+                <Card key={trip.id} className="overflow-hidden py-0">
+                  <div className="flex flex-col sm:grid sm:grid-cols-[160px_1fr_auto] lg:grid-cols-[200px_1fr_auto] sm:items-center">
+                    <Img 
+                      ratio="3/2" 
+                      label={trip.coverPhotoUrl || 'placeholder'} 
+                      className="rounded-none border-0 sm:border-r rounded-t-[var(--radius-xl)] sm:rounded-t-none sm:rounded-l-[var(--radius-xl)]" 
+                      style={{ aspectRatio: undefined, height: '100%' }} 
+                    />
+                    <div className="p-4 sm:p-5">
+                      <CardTitle className="text-lg sm:text-xl">{trip.title}</CardTitle>
+                      <div className="text-sm text-[var(--text-tertiary)] mt-1">
+                        {formatDateRange(trip.startDate, trip.endDate)} · {trip._count?.stops || 0} stops
+                      </div>
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        <Badge variant="accent">{formatBudget(trip)}</Badge>
+                        <Badge variant="outline">Notes · {trip._count?.notes || 0}</Badge>
+                        <Badge variant="outline">Activities · 0</Badge>
+                      </div>
+                    </div>
+                    <div className="flex sm:flex-col gap-2 p-4 sm:p-5 border-t sm:border-t-0 sm:border-l border-[var(--border-subtle)]">
+                      <Button size="sm" className="flex-1 sm:flex-none" onClick={() => navigate(`build-itinerary/${trip.id}`)}>Open <ArrowRight size={14} /></Button>
+                      <Button variant="outline" size="sm" className="flex-1 sm:flex-none">Duplicate</Button>
+                    </div>
                   </div>
-                </div>
-                {/* Actions */}
-                <div className="flex sm:flex-col gap-2 p-4 sm:p-5 border-t sm:border-t-0 sm:border-l border-[var(--border-subtle)]">
-                  <Button size="sm" className="flex-1 sm:flex-none" onClick={() => navigate(g.page)}>Open <ArrowRight size={14} /></Button>
-                  <Button variant="outline" size="sm" className="flex-1 sm:flex-none">Duplicate</Button>
-                </div>
-              </div>
-            </Card>
-          </div>
-        ))}
+                </Card>
+              ))}
+            </div>
+          ))
+        )}
       </div>
     </div>
   )

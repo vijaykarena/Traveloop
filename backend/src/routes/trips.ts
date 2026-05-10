@@ -102,7 +102,8 @@ router.get("/", async (req: Request, res: Response) => {
         publicSlug: true,
         budgetLimit: true,
         createdAt: true,
-        _count: { select: { stops: true } },
+        expenses: { select: { amount: true } },
+        _count: { select: { stops: true, notes: true } },
       },
     });
     res.json(trips);

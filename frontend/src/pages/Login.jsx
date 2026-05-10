@@ -9,6 +9,7 @@ import {Card, CardHeader, CardTitle, CardDescription} from '@/components/ui/card
 import {Checkbox} from '@/components/ui/checkbox';
 import {ArrowRight, Loader2} from 'lucide-react';
 import {useForm} from 'react-hook-form';
+import api, { ENDPOINTS } from '../api';
 
 export default function Login() {
   const {navigate} = useNav();
@@ -26,22 +27,17 @@ export default function Login() {
     setServerError('');
 
     try {
-      const res = await fetch('http://localhost:4000/auth/login', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        navigate('dashboard');
-      } else {
-        setServerError(data.error || 'Invalid email or password');
-      }
+      const res = await api.post(ENDPOINTS.LOGIN, formData)
+      
+      localStorage.setItem('token', res.data.token)
+      localStorage.setItem('user', JSON.stringify(res.data.user))
+      navigate('dashboard')
     } catch (err) {
-      setServerError('Failed to connect to the server');
+      if (err.response && err.response.data && err.response.data.error) {
+        setServerError(err.response.data.error)
+      } else {
+        setServerError('Failed to connect to the server')
+      }
     } finally {
       setLoading(false);
     }

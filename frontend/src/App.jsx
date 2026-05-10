@@ -33,7 +33,7 @@ export default function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/create-trip" element={<CreateTrip />} />
-                <Route path="/build-itinerary" element={<BuildItinerary />} />
+                <Route path="/build-itinerary/:id" element={<BuildItinerary />} />
                 <Route path="/my-trips" element={<MyTrips />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/search" element={<Search />} />

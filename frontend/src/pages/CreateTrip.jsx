@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
 import { ArrowRight, Plus } from 'lucide-react'
+import api, { ENDPOINTS } from '../api'
 
 export default function CreateTrip() {
   const { navigate } = useNav()
@@ -19,25 +20,16 @@ export default function CreateTrip() {
   const onSubmit = async (data) => {
     setErrorMsg('')
     try {
-      const token = localStorage.getItem('token')
-      const res = await fetch('http://localhost:4000/trips', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(data)
-      })
+      await api.post(ENDPOINTS.TRIPS, data)
 
-      if (!res.ok) {
-        const errData = await res.json()
-        throw new Error(errData.error || 'Failed to create trip')
-      }
-
-      await res.json()
+      // Navigate to dashboard after creation
       navigate('dashboard')
     } catch (err) {
-      setErrorMsg(err.message)
+      if (err.response && err.response.data && err.response.data.error) {
+        setErrorMsg(err.response.data.error)
+      } else {
+        setErrorMsg(err.message || 'Failed to create trip')
+      }
     }
   }
 

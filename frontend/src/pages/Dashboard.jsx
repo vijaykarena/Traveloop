@@ -8,9 +8,54 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Plus, ArrowRight } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import api, { ENDPOINTS } from '../api'
 
 export default function Dashboard() {
   const { navigate } = useNav()
+  const [trips, setTrips] = useState([])
+  const [user, setUser] = useState(null)
+  
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const storedUser = localStorage.getItem('user')
+        if (storedUser) setUser(JSON.parse(storedUser))
+        
+        const res = await api.get(ENDPOINTS.TRIPS)
+        setTrips(res.data)
+      } catch (err) {
+        console.error('Failed to fetch dashboard data', err)
+      }
+    }
+    fetchDashboardData()
+  }, [])
+
+  const now = new Date()
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  
+  const upcoming = trips.filter(t => new Date(t.startDate) >= today).sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
+  const previous = trips.filter(t => new Date(t.endDate) < today).sort((a, b) => new Date(b.endDate) - new Date(a.endDate))
+  
+  const nextTrip = upcoming[0]
+  
+  const formatDates = (start, end) => {
+    const s = new Date(start).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+    const e = new Date(end).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+    return `${s} → ${e}`
+  }
+  
+  const formatBudget = (trip) => {
+    if (!trip.budgetLimit) return 'No budget set'
+    const spent = trip.expenses?.reduce((acc, curr) => acc + curr.amount, 0) || 0
+    return `₹${spent.toLocaleString()} / ₹${trip.budgetLimit.toLocaleString()}`
+  }
+
+  const getDaysUntil = (date) => {
+    const diffTime = new Date(date) - now
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    return diffDays
+  }
   return (
     <div className="flex flex-col min-h-screen lg:h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body lg:overflow-hidden">
       <Chrome active="Discover" />
@@ -23,8 +68,11 @@ export default function Dashboard() {
             <Card className="max-w-xs sm:max-w-md py-0">
               <CardHeader className="p-4 sm:p-6">
                 <Badge variant="accent" className="w-fit mb-2">May 2026</Badge>
-                <CardTitle className="text-xl sm:text-3xl">Where to, Amelia?</CardTitle>
-                <CardDescription className="hidden sm:block">Three trips on the horizon. Eight days until Rome.</CardDescription>
+                <CardTitle className="text-xl sm:text-3xl">Where to, {user?.firstName || 'Explorer'}?</CardTitle>
+                <CardDescription className="hidden sm:block">
+                  {upcoming.length > 0 ? `${upcoming.length} trips on the horizon.` : 'No upcoming trips planned yet.'} 
+                  {nextTrip && ` ${getDaysUntil(nextTrip.startDate)} days until ${nextTrip.title}.`}
+                </CardDescription>
               </CardHeader>
             </Card>
             <Button size="sm" className="sm:hidden self-start" onClick={() => navigate('create-trip')}>
@@ -69,42 +117,58 @@ export default function Dashboard() {
             />
             {/* Previous trip cards: 1 col mobile → 2 tablet → 3 desktop */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[
-                ['Hokkaidō Loop', 'Feb 2026', '14 days · ₹1,84,200'],
-                ['Lofoten Islands', 'Aug 2025', '8 days · ₹2,140'],
-                ['Cusco → Sacred Valley', 'Apr 2025', '11 days · ₹1,860'],
-              ].map(([n, d, m]) => (
-                <Card key={n} className="py-0 cursor-pointer" onClick={() => navigate('my-trips')}>
-                  <Img ratio="16/10" className="rounded-b-none border-0 border-b rounded-t-[var(--radius-xl)]" />
-                  <CardHeader className="p-4">
-                    <div className="flex items-start justify-between">
-                      <CardTitle className="text-base">{n}</CardTitle>
-                      <Badge variant="outline">{d}</Badge>
-                    </div>
-                    <CardDescription>{m}</CardDescription>
-                  </CardHeader>
-                </Card>
-              ))}
+              {previous.length === 0 ? (
+                <div className="text-[var(--text-tertiary)] col-span-1 sm:col-span-2 lg:col-span-3 text-sm">No previous trips found.</div>
+              ) : (
+                previous.slice(0, 3).map((trip) => {
+                  const duration = Math.max(1, Math.ceil((new Date(trip.endDate) - new Date(trip.startDate)) / (1000 * 60 * 60 * 24)))
+                  const spent = trip.expenses?.reduce((acc, curr) => acc + curr.amount, 0) || 0
+                  
+                  return (
+                    <Card key={trip.id} className="py-0 cursor-pointer" onClick={() => navigate(`build-itinerary/${trip.id}`)}>
+                      <Img ratio="16/10" label={trip.coverPhotoUrl || 'placeholder'} className="rounded-b-none border-0 border-b rounded-t-[var(--radius-xl)]" />
+                      <CardHeader className="p-4">
+                        <div className="flex items-start justify-between">
+                          <CardTitle className="text-base truncate mr-2">{trip.title}</CardTitle>
+                          <Badge variant="outline" className="shrink-0">{new Date(trip.startDate).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}</Badge>
+                        </div>
+                        <CardDescription>{duration} days {spent > 0 && `· ₹${spent.toLocaleString()}`}</CardDescription>
+                      </CardHeader>
+                    </Card>
+                  )
+                })
+              )}
             </div>
           </div>
 
           {/* RIGHT ASIDE — stacks below on mobile */}
           <aside>
             <SectionHeader title="Up next" />
-            <Card className="py-0 cursor-pointer" onClick={() => navigate('itinerary')}>
-              <CardHeader className="p-5">
-                <Badge variant="accent" className="w-fit">In 8 days</Badge>
-                <CardTitle className="text-2xl mt-2">Rome &amp; the Amalfi</CardTitle>
-                <CardDescription>18 May → 02 Jun · 6 stops</CardDescription>
-              </CardHeader>
-              <CardContent className="px-5 pb-5">
-                <div className="flex justify-between text-sm mb-2">
-                  <span className="text-[var(--text-tertiary)]">Budget</span>
-                  <span className="font-medium">₹2,400 / ₹3,200</span>
-                </div>
-                <Progress value={75} />
-              </CardContent>
-            </Card>
+            {nextTrip ? (
+              <Card className="py-0 cursor-pointer" onClick={() => navigate(`build-itinerary/${nextTrip.id}`)}>
+                <CardHeader className="p-5">
+                  <Badge variant="accent" className="w-fit">In {getDaysUntil(nextTrip.startDate)} days</Badge>
+                  <CardTitle className="text-2xl mt-2">{nextTrip.title}</CardTitle>
+                  <CardDescription>{formatDates(nextTrip.startDate, nextTrip.endDate)} · {nextTrip._count?.stops || 0} stops</CardDescription>
+                </CardHeader>
+                <CardContent className="px-5 pb-5">
+                  <div className="flex justify-between text-sm mb-2">
+                    <span className="text-[var(--text-tertiary)]">Budget</span>
+                    <span className="font-medium">{formatBudget(nextTrip)}</span>
+                  </div>
+                  {nextTrip.budgetLimit && (
+                    <Progress value={Math.min(100, ((nextTrip.expenses?.reduce((acc, curr) => acc + curr.amount, 0) || 0) / nextTrip.budgetLimit) * 100)} />
+                  )}
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="py-0">
+                <CardContent className="p-5 flex flex-col items-center text-center">
+                  <CardDescription className="mb-4">No upcoming trips</CardDescription>
+                  <Button size="sm" onClick={() => navigate('create-trip')}><Plus size={14} className="mr-2"/> Plan a Trip</Button>
+                </CardContent>
+              </Card>
+            )}
 
             <h3 className="text-xs font-semibold mt-6 mb-3 text-[var(--text-tertiary)] uppercase tracking-wider">From the community</h3>
             <div className="space-y-3">
