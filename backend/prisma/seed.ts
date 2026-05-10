@@ -51,7 +51,7 @@ async function main() {
         popularity: 92,
         description:
           "The Pink City — forts, palaces, and vibrant bazaars in Rajasthan's royal heartland.",
-        imageUrl: "https://images.unsplash.com/photo-1477587458883-47145ed68b6f?w=800",
+        imageUrl: "https://images.unsplash.com/photo-1603262110263-fb0112e7cc33",
         latitude: 26.9124,
         longitude: 75.7873,
       },
@@ -79,7 +79,7 @@ async function main() {
         popularity: 88,
         description:
           "One of the world's oldest cities — ghats, temples, and the sacred Ganga Aarti.",
-        imageUrl: "https://images.unsplash.com/photo-1561361058-c24e017aac73?w=800",
+        imageUrl: "https://images.unsplash.com/photo-1627938823193-fd13c1c867dd?q=80&w=1170",
         latitude: 25.3176,
         longitude: 82.9739,
       },
