@@ -3,7 +3,7 @@ import usersRouter from "./routes/users";
 import tripsRouter from "./routes/trips";
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 4000;
 
 app.use(express.json());
 
