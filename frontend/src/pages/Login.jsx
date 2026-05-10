@@ -30,7 +30,7 @@ export default function Login() {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <Label>Password</Label>
-                <a className="text-xs text-primary hover:underline cursor-pointer">Forgot password?</a>
+                <a className="text-xs text-primary hover:underline cursor-pointer" onClick={() => navigate('forgot-password')}>Forgot password?</a>
               </div>
               <Input type="password" defaultValue="••••••••" />
             </div>
