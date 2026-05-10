@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router, type Request, type Response } from "express";
 import prisma from "../lib/prisma";
 
 const router = Router();
@@ -26,7 +26,9 @@ router.post("/", async (req: Request, res: Response) => {
     userId: number;
   };
   if (!title || !destination || !startDate || !endDate || !userId)
-    return res.status(400).json({ error: "title, destination, startDate, endDate, userId required" });
+    return res.status(400).json({
+      error: "title, destination, startDate, endDate, userId required",
+    });
   const trip = await prisma.trip.create({
     data: {
       title,

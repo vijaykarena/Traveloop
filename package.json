@@ -19,11 +19,8 @@
   ],
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"bun run dev:backend\" \"bun run dev:frontend\"",
+    "dev": "bun run --filter * dev",
     "dev:backend": "bun run --filter backend dev",
     "dev:frontend": "bun run --filter frontend dev"
-  },
-  "devDependencies": {
-    "concurrently": "^9.2.1"
   }
 }
