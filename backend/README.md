@@ -1,15 +1,43 @@
 # backend
 
-To install dependencies:
+## Setup
 
 ```bash
 bun install
+bunx prisma generate
 ```
 
-To run:
+Copy `.env` and set your values:
+
+```
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/traveloop"
+PORT=4000
+```
+
+Run migrations (requires Postgres running):
 
 ```bash
-bun run 
+bunx prisma migrate dev
 ```
 
-This project was created using `bun init` in bun v1.3.7. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+## Run
+
+```bash
+bun dev        # watch mode
+bun run src/app.ts  # single run
+```
+
+## API
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/users` | list users |
+| GET | `/users/:id` | get user |
+| POST | `/users` | create user |
+| PUT | `/users/:id` | update user |
+| DELETE | `/users/:id` | delete user |
+| GET | `/trips` | list trips |
+| GET | `/trips/:id` | get trip |
+| POST | `/trips` | create trip |
+| PUT | `/trips/:id` | update trip |
+| DELETE | `/trips/:id` | delete trip |
