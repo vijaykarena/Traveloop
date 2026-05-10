@@ -212,7 +212,7 @@ async function main() {
   const passwordHash = await bcrypt.hash("password123", 10);
   const adminHash = await bcrypt.hash("admin123", 10);
 
-  const [adminUser, testUser1, testUser2] = await Promise.all([
+  const [adminUser, testUser1, testUser2, testUser3] = await Promise.all([
     prisma.user.upsert({
       where: { email: "admin@traveloop.com" },
       update: {},
@@ -264,9 +264,26 @@ async function main() {
         language: "en",
       },
     }),
+    prisma.user.upsert({
+      where: { email: "arjun@example.com" },
+      update: {},
+      create: {
+        email: "arjun@example.com",
+        password: passwordHash,
+        firstName: "Arjun",
+        lastName: "Mehta",
+        city: "Mumbai",
+        country: "India",
+        countryCode: "IN",
+        phoneNo: "+917654321098",
+        role: "USER",
+        bio: "Adventure seeker. Kerala backwaters changed my life.",
+        language: "en",
+      },
+    }),
   ]);
 
-  console.log(`Created 3 users (admin: admin@traveloop.com / admin123, users: *@example.com / password123)`);
+  console.log(`Created 4 users (admin: admin@traveloop.com / admin123, users: *@example.com / password123)`);
 
   // ── Trip 1: Golden Triangle (Raj) ────────────────────────────────────────────
 
@@ -286,14 +303,13 @@ async function main() {
     },
   });
 
-  // Stops for Trip 1
   const [stop1Delhi, stop1Agra, stop1Jaipur] = await Promise.all([
     prisma.tripStop.upsert({
       where: { tripId_order: { tripId: trip1.id, order: 1 } },
       update: {},
       create: {
         tripId: trip1.id,
-        cityId: 2, // Delhi
+        cityId: 2,
         order: 1,
         arrivalDate: new Date("2026-11-01"),
         departureDate: new Date("2026-11-03"),
@@ -305,7 +321,7 @@ async function main() {
       update: {},
       create: {
         tripId: trip1.id,
-        cityId: 6, // Agra
+        cityId: 6,
         order: 2,
         arrivalDate: new Date("2026-11-03"),
         departureDate: new Date("2026-11-06"),
@@ -317,7 +333,7 @@ async function main() {
       update: {},
       create: {
         tripId: trip1.id,
-        cityId: 3, // Jaipur
+        cityId: 3,
         order: 3,
         arrivalDate: new Date("2026-11-06"),
         departureDate: new Date("2026-11-10"),
@@ -326,7 +342,8 @@ async function main() {
     }),
   ]);
 
-  // Activities for stops
+  // Idempotent derived data: delete then recreate
+  await prisma.tripActivity.deleteMany({ where: { tripStop: { tripId: trip1.id } } });
   await Promise.all([
     prisma.tripActivity.create({ data: { tripStopId: stop1Delhi.id, activityId: actById("Red Fort")!, scheduledDate: new Date("2026-11-01T10:00:00Z"), actualCost: 500 } }),
     prisma.tripActivity.create({ data: { tripStopId: stop1Delhi.id, activityId: actById("Chandni Chowk Food Walk")!, scheduledDate: new Date("2026-11-02T18:00:00Z") } }),
@@ -337,21 +354,20 @@ async function main() {
     prisma.tripActivity.create({ data: { tripStopId: stop1Jaipur.id, activityId: actById("Rajasthani Cooking Class")!, scheduledDate: new Date("2026-11-09T17:00:00Z"), actualCost: 1200 } }),
   ]);
 
-  // Accommodation for stops
   await Promise.all([
     prisma.tripAccommodation.upsert({ where: { tripStopId: stop1Delhi.id }, update: {}, create: { tripStopId: stop1Delhi.id, name: "Zostel Delhi", address: "Paharganj, New Delhi", checkIn: new Date("2026-11-01T14:00:00Z"), checkOut: new Date("2026-11-03T11:00:00Z"), costPerNight: 800, bookingRef: "ZOS-DEL-001" } }),
     prisma.tripAccommodation.upsert({ where: { tripStopId: stop1Agra.id }, update: {}, create: { tripStopId: stop1Agra.id, name: "Hotel Taj Resorts", address: "Fatehabad Road, Agra", checkIn: new Date("2026-11-03T14:00:00Z"), checkOut: new Date("2026-11-06T11:00:00Z"), costPerNight: 2200, bookingRef: "HTR-AGR-221" } }),
     prisma.tripAccommodation.upsert({ where: { tripStopId: stop1Jaipur.id }, update: {}, create: { tripStopId: stop1Jaipur.id, name: "Pearl Palace Heritage", address: "Hari Kishan Somani Marg, Jaipur", checkIn: new Date("2026-11-06T14:00:00Z"), checkOut: new Date("2026-11-10T11:00:00Z"), costPerNight: 1800 } }),
   ]);
 
-  // Transport for Trip 1
+  await prisma.tripTransport.deleteMany({ where: { tripId: trip1.id } });
   await Promise.all([
     prisma.tripTransport.create({ data: { tripId: trip1.id, fromStopId: stop1Delhi.id, toStopId: stop1Agra.id, mode: "TRAIN", carrier: "Gatimaan Express", departureTime: new Date("2026-11-03T08:10:00Z"), arrivalTime: new Date("2026-11-03T09:50:00Z"), cost: 1200, bookingRef: "PNR-12345678" } }),
     prisma.tripTransport.create({ data: { tripId: trip1.id, fromStopId: stop1Agra.id, toStopId: stop1Jaipur.id, mode: "BUS", carrier: "Rajasthan Roadways", departureTime: new Date("2026-11-06T07:00:00Z"), arrivalTime: new Date("2026-11-06T11:30:00Z"), cost: 600 } }),
     prisma.tripTransport.create({ data: { tripId: trip1.id, toStopId: stop1Delhi.id, mode: "FLIGHT", carrier: "IndiGo", departureTime: new Date("2026-11-01T05:30:00Z"), arrivalTime: new Date("2026-11-01T07:45:00Z"), cost: 4500, bookingRef: "6E-2341" } }),
   ]);
 
-  // Expenses for Trip 1
+  await prisma.tripExpense.deleteMany({ where: { tripId: trip1.id } });
   await Promise.all([
     prisma.tripExpense.create({ data: { tripId: trip1.id, tripStopId: stop1Delhi.id, category: "MEAL", description: "Dinner at Karim's, Old Delhi", amount: 950, expenseDate: new Date("2026-11-01") } }),
     prisma.tripExpense.create({ data: { tripId: trip1.id, tripStopId: stop1Delhi.id, category: "MISC", description: "Metro day pass", amount: 200, expenseDate: new Date("2026-11-02") } }),
@@ -360,8 +376,8 @@ async function main() {
     prisma.tripExpense.create({ data: { tripId: trip1.id, category: "MISC", description: "Travel insurance", amount: 800 } }),
   ]);
 
-  // Packing list
-  const packingItems = [
+  await prisma.packingItem.deleteMany({ where: { tripId: trip1.id } });
+  const packingItems1 = [
     { name: "Passport", category: "DOCUMENTS", order: 1 },
     { name: "Travel insurance docs", category: "DOCUMENTS", order: 2 },
     { name: "Hotel booking printouts", category: "DOCUMENTS", order: 3 },
@@ -374,18 +390,21 @@ async function main() {
     { name: "Universal adapter", category: "ELECTRONICS", order: 10 },
     { name: "Antidiarrheal tablets", category: "MEDICATIONS", order: 11 },
   ];
+  await prisma.packingItem.createMany({
+    data: packingItems1.map((item) => ({
+      tripId: trip1.id,
+      userId: testUser1.id,
+      name: item.name,
+      category: item.category as never,
+      order: item.order,
+    })),
+  });
 
-  for (const item of packingItems) {
-    await prisma.packingItem.create({
-      data: { tripId: trip1.id, userId: testUser1.id, name: item.name, category: item.category as never, order: item.order },
-    });
-  }
-
-  // Notes for Trip 1
+  await prisma.tripNote.deleteMany({ where: { tripId: trip1.id } });
   await Promise.all([
-    prisma.tripNote.create({ data: { tripId: trip1.id, userId: testUser1.id, title: "Agra Taj entry tips", content: "Buy tickets online at asi.payumoney.com to avoid queues. Dawn entry (6am) is most photogenic. No food or tripods inside. Shoe covers provided free.", noteDate: new Date("2026-11-04") } }),
-    prisma.tripNote.create({ data: { tripId: trip1.id, userId: testUser1.id, title: "Delhi contacts", content: "Driver: Suresh — +91 98765 00001\nHotel front desk: +91 11 2345 6789\nNearest hospital: Safdarjung, 10 min by auto.", noteDate: new Date("2026-11-01") } }),
-    prisma.tripNote.create({ data: { tripId: trip1.id, userId: testUser1.id, title: "Budget tracker note", content: "Flight cheaper if booked 3 months out. Agra hotel price dropped 20% mid-week. Total spent so far within budget.", noteDate: new Date("2026-11-06") } }),
+    prisma.tripNote.create({ data: { tripId: trip1.id, userId: testUser1.id, title: "Agra Taj entry tips", content: "Buy tickets online at asi.payumoney.com to avoid queues. Dawn entry (6am) is most photogenic. No food or tripods inside. Shoe covers provided free.", noteDate: new Date("2026-11-04"), tags: ["logistics", "monuments"] } }),
+    prisma.tripNote.create({ data: { tripId: trip1.id, userId: testUser1.id, title: "Delhi contacts", content: "Driver: Suresh — +91 98765 00001\nHotel front desk: +91 11 2345 6789\nNearest hospital: Safdarjung, 10 min by auto.", noteDate: new Date("2026-11-01"), tags: ["contacts", "emergency"] } }),
+    prisma.tripNote.create({ data: { tripId: trip1.id, userId: testUser1.id, title: "Budget tracker note", content: "Flight cheaper if booked 3 months out. Agra hotel price dropped 20% mid-week. Total spent so far within budget.", noteDate: new Date("2026-11-06"), tags: ["budget"] } }),
   ]);
 
   // ── Trip 2: Goa Beach Escape (Priya) ────────────────────────────────────────
@@ -418,6 +437,7 @@ async function main() {
     },
   });
 
+  await prisma.tripActivity.deleteMany({ where: { tripStop: { tripId: trip2.id } } });
   await Promise.all([
     prisma.tripActivity.create({ data: { tripStopId: stop2Goa.id, activityId: actById("Baga Beach")!, scheduledDate: new Date("2026-12-21T10:00:00Z") } }),
     prisma.tripActivity.create({ data: { tripStopId: stop2Goa.id, activityId: actById("Old Goa Churches Tour")!, scheduledDate: new Date("2026-12-22T09:00:00Z") } }),
@@ -427,18 +447,134 @@ async function main() {
 
   await prisma.tripAccommodation.upsert({ where: { tripStopId: stop2Goa.id }, update: {}, create: { tripStopId: stop2Goa.id, name: "The Leela Goa", address: "Mobor, Cavelossim, South Goa", checkIn: new Date("2026-12-20T14:00:00Z"), checkOut: new Date("2026-12-25T12:00:00Z"), costPerNight: 6500, bookingRef: "LEELA-GOA-88" } });
 
+  await prisma.tripTransport.deleteMany({ where: { tripId: trip2.id } });
+  await prisma.tripTransport.create({ data: { tripId: trip2.id, toStopId: stop2Goa.id, mode: "FLIGHT", carrier: "IndiGo", departureTime: new Date("2026-12-20T06:00:00Z"), arrivalTime: new Date("2026-12-20T07:50:00Z"), cost: 5200, bookingRef: "6E-4890" } });
+
+  await prisma.tripExpense.deleteMany({ where: { tripId: trip2.id } });
   await Promise.all([
     prisma.tripExpense.create({ data: { tripId: trip2.id, tripStopId: stop2Goa.id, category: "MEAL", description: "Seafood at Fisherman's Wharf", amount: 2200, expenseDate: new Date("2026-12-21") } }),
     prisma.tripExpense.create({ data: { tripId: trip2.id, tripStopId: stop2Goa.id, category: "MISC", description: "Scooter rental (4 days)", amount: 1600, expenseDate: new Date("2026-12-21") } }),
   ]);
 
-  // ── Saved Destinations (Raj) ─────────────────────────────────────────────────
+  await prisma.packingItem.deleteMany({ where: { tripId: trip2.id } });
+  await prisma.packingItem.createMany({
+    data: [
+      { tripId: trip2.id, userId: testUser2.id, name: "Swimsuit (x2)", category: "CLOTHING" as never, order: 1 },
+      { tripId: trip2.id, userId: testUser2.id, name: "Sunscreen SPF 50+", category: "TOILETRIES" as never, order: 2 },
+      { tripId: trip2.id, userId: testUser2.id, name: "Passport", category: "DOCUMENTS" as never, order: 3 },
+      { tripId: trip2.id, userId: testUser2.id, name: "Waterproof phone pouch", category: "ELECTRONICS" as never, order: 4 },
+      { tripId: trip2.id, userId: testUser2.id, name: "Insect repellent", category: "TOILETRIES" as never, order: 5 },
+    ],
+  });
+
+  await prisma.tripNote.deleteMany({ where: { tripId: trip2.id } });
+  await Promise.all([
+    prisma.tripNote.create({ data: { tripId: trip2.id, userId: testUser2.id, title: "Scooter hire spots", content: "Best rates near Calangute junction — ₹400/day for Activa. Bring licence. Fill tank before returning.", noteDate: new Date("2026-12-21"), tags: ["logistics", "transport"] } }),
+    prisma.tripNote.create({ data: { tripId: trip2.id, userId: testUser2.id, title: "Beach restaurant recs", content: "Brittos at Baga — fish curry rice is unbeatable. La Plage at Ashvem for a quieter vibe. Book Fisherman's Wharf ahead.", noteDate: new Date("2026-12-22"), tags: ["food"] } }),
+  ]);
+
+  // ── Trip 3: Kerala & Kochi (Arjun) ──────────────────────────────────────────
+
+  const trip3 = await prisma.trip.upsert({
+    where: { id: 3 },
+    update: {},
+    create: {
+      userId: testUser3.id,
+      title: "Kerala Backwaters & Kochi",
+      destination: "Kochi → Alleppey → Munnar",
+      description: "7-day journey through Fort Kochi, backwater houseboats, and misty tea estates.",
+      startDate: new Date("2027-01-10"),
+      endDate: new Date("2027-01-17"),
+      isPublic: true,
+      publicSlug: "kerala-arjun2027",
+      budgetLimit: 45000,
+    },
+  });
+
+  const [stop3Kochi, stop3Varanasi] = await Promise.all([
+    prisma.tripStop.upsert({
+      where: { tripId_order: { tripId: trip3.id, order: 1 } },
+      update: {},
+      create: {
+        tripId: trip3.id,
+        cityId: 8,
+        order: 1,
+        arrivalDate: new Date("2027-01-10"),
+        departureDate: new Date("2027-01-14"),
+        notes: "Fly into Cochin International. Fort Kochi is 30 min by ferry from Ernakulam.",
+      },
+    }),
+    prisma.tripStop.upsert({
+      where: { tripId_order: { tripId: trip3.id, order: 2 } },
+      update: {},
+      create: {
+        tripId: trip3.id,
+        cityId: 5,
+        order: 2,
+        arrivalDate: new Date("2027-01-14"),
+        departureDate: new Date("2027-01-17"),
+        notes: "Overnight train from Ernakulam to Varanasi — 36hr journey. Book 2A class.",
+      },
+    }),
+  ]);
+
+  await prisma.tripActivity.deleteMany({ where: { tripStop: { tripId: trip3.id } } });
+  await Promise.all([
+    prisma.tripActivity.create({ data: { tripStopId: stop3Kochi.id, activityId: actById("Fort Kochi Heritage Walk")!, scheduledDate: new Date("2027-01-10T09:00:00Z") } }),
+    prisma.tripActivity.create({ data: { tripStopId: stop3Kochi.id, activityId: actById("Kerala Backwater Houseboat")!, scheduledDate: new Date("2027-01-11T08:00:00Z"), actualCost: 4500 } }),
+    prisma.tripActivity.create({ data: { tripStopId: stop3Kochi.id, activityId: actById("Kathakali Performance")!, scheduledDate: new Date("2027-01-12T18:00:00Z"), actualCost: 350 } }),
+    prisma.tripActivity.create({ data: { tripStopId: stop3Kochi.id, activityId: actById("Spice Market Tour Mattancherry")!, scheduledDate: new Date("2027-01-13T10:00:00Z") } }),
+    prisma.tripActivity.create({ data: { tripStopId: stop3Varanasi.id, activityId: actById("Ganga Aarti at Dashashwamedh Ghat")!, scheduledDate: new Date("2027-01-15T18:00:00Z") } }),
+    prisma.tripActivity.create({ data: { tripStopId: stop3Varanasi.id, activityId: actById("Sunrise Boat Ride on the Ganga")!, scheduledDate: new Date("2027-01-16T05:30:00Z"), actualCost: 400 } }),
+  ]);
 
   await Promise.all([
-    prisma.savedDestination.upsert({ where: { userId_cityId: { userId: testUser1.id, cityId: 4 } }, update: {}, create: { userId: testUser1.id, cityId: 4 } }), // Goa
-    prisma.savedDestination.upsert({ where: { userId_cityId: { userId: testUser1.id, cityId: 5 } }, update: {}, create: { userId: testUser1.id, cityId: 5 } }), // Varanasi
-    prisma.savedDestination.upsert({ where: { userId_cityId: { userId: testUser1.id, cityId: 8 } }, update: {}, create: { userId: testUser1.id, cityId: 8 } }), // Kochi
-    prisma.savedDestination.upsert({ where: { userId_cityId: { userId: testUser2.id, cityId: 7 } }, update: {}, create: { userId: testUser2.id, cityId: 7 } }), // Udaipur
+    prisma.tripAccommodation.upsert({ where: { tripStopId: stop3Kochi.id }, update: {}, create: { tripStopId: stop3Kochi.id, name: "Brunton Boatyard", address: "Calvathy Road, Fort Kochi", checkIn: new Date("2027-01-10T14:00:00Z"), checkOut: new Date("2027-01-14T11:00:00Z"), costPerNight: 5500, bookingRef: "BB-KCH-102" } }),
+    prisma.tripAccommodation.upsert({ where: { tripStopId: stop3Varanasi.id }, update: {}, create: { tripStopId: stop3Varanasi.id, name: "Brijrama Palace", address: "Darbhanga Ghat, Varanasi", checkIn: new Date("2027-01-14T15:00:00Z"), checkOut: new Date("2027-01-17T11:00:00Z"), costPerNight: 3800, bookingRef: "BRIJ-VAR-07" } }),
+  ]);
+
+  await prisma.tripTransport.deleteMany({ where: { tripId: trip3.id } });
+  await Promise.all([
+    prisma.tripTransport.create({ data: { tripId: trip3.id, toStopId: stop3Kochi.id, mode: "FLIGHT", carrier: "Air India", departureTime: new Date("2027-01-10T07:00:00Z"), arrivalTime: new Date("2027-01-10T09:15:00Z"), cost: 6800, bookingRef: "AI-441" } }),
+    prisma.tripTransport.create({ data: { tripId: trip3.id, fromStopId: stop3Kochi.id, toStopId: stop3Varanasi.id, mode: "TRAIN", carrier: "Ernakulam–Varanasi Express", departureTime: new Date("2027-01-14T19:30:00Z"), arrivalTime: new Date("2027-01-16T08:00:00Z"), cost: 2200, bookingRef: "PNR-87654321" } }),
+  ]);
+
+  await prisma.tripExpense.deleteMany({ where: { tripId: trip3.id } });
+  await Promise.all([
+    prisma.tripExpense.create({ data: { tripId: trip3.id, tripStopId: stop3Kochi.id, category: "MEAL", description: "Karimeen pollichathu at Old Harbour Hotel", amount: 1800, expenseDate: new Date("2027-01-10") } }),
+    prisma.tripExpense.create({ data: { tripId: trip3.id, tripStopId: stop3Kochi.id, category: "MISC", description: "Spices and cashews at Mattancherry", amount: 2200, expenseDate: new Date("2027-01-13") } }),
+    prisma.tripExpense.create({ data: { tripId: trip3.id, tripStopId: stop3Varanasi.id, category: "MEAL", description: "Lassi at Blue Lassi shop", amount: 120, expenseDate: new Date("2027-01-15") } }),
+    prisma.tripExpense.create({ data: { tripId: trip3.id, category: "MISC", description: "Travel insurance", amount: 950 } }),
+  ]);
+
+  await prisma.packingItem.deleteMany({ where: { tripId: trip3.id } });
+  await prisma.packingItem.createMany({
+    data: [
+      { tripId: trip3.id, userId: testUser3.id, name: "Passport", category: "DOCUMENTS" as never, order: 1 },
+      { tripId: trip3.id, userId: testUser3.id, name: "Cotton kurtas (x4)", category: "CLOTHING" as never, order: 2 },
+      { tripId: trip3.id, userId: testUser3.id, name: "Mosquito repellent", category: "TOILETRIES" as never, order: 3 },
+      { tripId: trip3.id, userId: testUser3.id, name: "Camera (waterproof bag)", category: "ELECTRONICS" as never, order: 4 },
+      { tripId: trip3.id, userId: testUser3.id, name: "Motion sickness tablets", category: "MEDICATIONS" as never, order: 5 },
+      { tripId: trip3.id, userId: testUser3.id, name: "Flip-flops", category: "CLOTHING" as never, order: 6 },
+    ],
+  });
+
+  await prisma.tripNote.deleteMany({ where: { tripId: trip3.id } });
+  await Promise.all([
+    prisma.tripNote.create({ data: { tripId: trip3.id, userId: testUser3.id, title: "Houseboat booking tips", content: "Book directly with operator at Alleppey jetty for better rates. Premium boats include AC bedroom, attached bath, meals. Overnight stay is worth the extra ₹2000.", noteDate: new Date("2027-01-11"), tags: ["accommodation", "budget"] } }),
+    prisma.tripNote.create({ data: { tripId: trip3.id, userId: testUser3.id, title: "Ganga Aarti timing", content: "Starts at 6:30pm sharp in winter. Arrive at Dashashwamedh Ghat by 5:45pm for a good spot. Boat viewing (₹300) gives the best angle.", noteDate: new Date("2027-01-15"), tags: ["culture", "logistics"] } }),
+    prisma.tripNote.create({ data: { tripId: trip3.id, userId: testUser3.id, title: "Kerala food must-tries", content: "Appam with stew (breakfast). Karimeen pollichathu. Prawn moilee. Parotta with beef curry. Kerala banana chips from Lulu Mall.", noteDate: new Date("2027-01-10"), tags: ["food"] } }),
+  ]);
+
+  // ── Saved Destinations ───────────────────────────────────────────────────────
+
+  await Promise.all([
+    prisma.savedDestination.upsert({ where: { userId_cityId: { userId: testUser1.id, cityId: 4 } }, update: {}, create: { userId: testUser1.id, cityId: 4 } }),
+    prisma.savedDestination.upsert({ where: { userId_cityId: { userId: testUser1.id, cityId: 5 } }, update: {}, create: { userId: testUser1.id, cityId: 5 } }),
+    prisma.savedDestination.upsert({ where: { userId_cityId: { userId: testUser1.id, cityId: 8 } }, update: {}, create: { userId: testUser1.id, cityId: 8 } }),
+    prisma.savedDestination.upsert({ where: { userId_cityId: { userId: testUser2.id, cityId: 7 } }, update: {}, create: { userId: testUser2.id, cityId: 7 } }),
+    prisma.savedDestination.upsert({ where: { userId_cityId: { userId: testUser3.id, cityId: 1 } }, update: {}, create: { userId: testUser3.id, cityId: 1 } }),
+    prisma.savedDestination.upsert({ where: { userId_cityId: { userId: testUser3.id, cityId: 4 } }, update: {}, create: { userId: testUser3.id, cityId: 4 } }),
   ]);
 
   console.log("Done. Seed complete.");
@@ -447,8 +583,9 @@ async function main() {
   console.log("  Admin  — admin@traveloop.com  / admin123");
   console.log("  User 1 — raj@example.com      / password123");
   console.log("  User 2 — priya@example.com    / password123");
+  console.log("  User 3 — arjun@example.com    / password123");
   console.log("");
-  console.log("Public trip slug: golden-triangle-raj2026");
+  console.log("Public trip slugs: golden-triangle-raj2026, kerala-arjun2027");
 }
 
 main()
