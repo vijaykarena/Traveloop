@@ -1,0 +1,2224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traveloop Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* === BRAND COLORS === */
+  --flame-50: #FFF3EE;
+  --flame-100: #FFD9C4;
+  --flame-200: #FFB899;
+  --flame-300: #FF8C5A;
+  --flame-400: #FF6B2B;
+  --flame-500: #F04E00;
+  --flame-600: #C03D00;
+  --flame-700: #902D00;
+  --flame-800: #601E00;
+  --flame-900: #300F00;
+
+  --ocean-50: #E8F8F5;
+  --ocean-100: #BBEEE5;
+  --ocean-200: #7DDDD1;
+  --ocean-300: #3DCABA;
+  --ocean-400: #00B4A0;
+  --ocean-500: #009182;
+  --ocean-600: #006E63;
+  --ocean-700: #004D46;
+  --ocean-800: #002E2A;
+  --ocean-900: #00120E;
+
+  --sand-50: #FDFAF3;
+  --sand-100: #F8F0D9;
+  --sand-200: #EFE0B2;
+  --sand-300: #E2CB82;
+  --sand-400: #D4B051;
+  --sand-500: #B8902C;
+  --sand-600: #8F6C18;
+  --sand-700: #654C0B;
+  --sand-800: #3C2D06;
+  --sand-900: #150F02;
+
+  --ink-50: #F5F4F2;
+  --ink-100: #E2E0DA;
+  --ink-200: #C6C2B8;
+  --ink-300: #A39E90;
+  --ink-400: #7E7869;
+  --ink-500: #5C5649;
+  --ink-600: #42403A;
+  --ink-700: #2D2C28;
+  --ink-800: #1A1917;
+  --ink-900: #0A0907;
+
+  --error: #E53E3E;
+  --warning: #DD6B20;
+  --success: #38A169;
+  --info: #3182CE;
+
+  /* === LIGHT MODE SEMANTIC === */
+  --bg-page: #FDFAF3;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #FFFFFF;
+  --bg-muted: #F5F4F2;
+
+  --text-primary: #1A1917;
+  --text-secondary: #42403A;
+  --text-tertiary: #7E7869;
+  --text-inverse: #FDFAF3;
+
+  --border-default: #C6C2B8;
+  --border-subtle: #E2E0DA;
+  --border-strong: #7E7869;
+
+  --brand-primary: #FF6B2B;
+  --brand-primary-hover: #F04E00;
+  --brand-secondary: #00B4A0;
+  --brand-secondary-hover: #009182;
+  --brand-accent: #D4B051;
+
+  /* === SPACING === */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* === RADII === */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* === SHADOWS === */
+  --shadow-sm: 0 1px 3px rgba(26,25,23,0.08), 0 1px 2px rgba(26,25,23,0.04);
+  --shadow-md: 0 4px 12px rgba(26,25,23,0.10), 0 2px 4px rgba(26,25,23,0.06);
+  --shadow-lg: 0 12px 32px rgba(26,25,23,0.12), 0 4px 8px rgba(26,25,23,0.06);
+  --shadow-xl: 0 24px 48px rgba(26,25,23,0.14), 0 8px 16px rgba(26,25,23,0.08);
+
+  /* === TYPOGRAPHY === */
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+
+  /* === TRANSITIONS === */
+  --transition-fast: 120ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 350ms ease;
+
+  /* === Z-INDEX === */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+}
+
+[data-theme="dark"] {
+  --bg-page: #0A0907;
+  --bg-surface: #1A1917;
+  --bg-elevated: #2D2C28;
+  --bg-muted: #42403A;
+
+  --text-primary: #F5F4F2;
+  --text-secondary: #C6C2B8;
+  --text-tertiary: #7E7869;
+  --text-inverse: #0A0907;
+
+  --border-default: #42403A;
+  --border-subtle: #2D2C28;
+  --border-strong: #7E7869;
+
+  --brand-primary: #FF8C5A;
+  --brand-primary-hover: #FFB899;
+  --brand-secondary: #3DCABA;
+  --brand-secondary-hover: #7DDDD1;
+  --brand-accent: #E2CB82;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.35), 0 2px 4px rgba(0,0,0,0.2);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.4), 0 4px 8px rgba(0,0,0,0.2);
+  --shadow-xl: 0 24px 48px rgba(0,0,0,0.45), 0 8px 16px rgba(0,0,0,0.25);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-page);
+  color: var(--text-primary);
+  line-height: 1.7;
+  font-size: 16px;
+  transition: background var(--transition-base), color var(--transition-base);
+}
+
+/* ===== LAYOUT ===== */
+.ds-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-8);
+  height: 64px;
+}
+
+.ds-nav-logo {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--brand-primary);
+  letter-spacing: -0.5px;
+  text-decoration: none;
+}
+
+.ds-nav-links {
+  display: flex;
+  gap: var(--space-2);
+  list-style: none;
+  overflow-x: auto;
+}
+
+.ds-nav-links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.ds-nav-links a:hover {
+  color: var(--brand-primary);
+  background: var(--bg-muted);
+}
+
+.theme-btn {
+  background: var(--bg-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: var(--space-2) var(--space-4);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.theme-btn:hover { background: var(--bg-elevated); color: var(--text-primary); }
+
+.ds-sidebar {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  bottom: 0;
+  width: 220px;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-subtle);
+  overflow-y: auto;
+  padding: var(--space-6) var(--space-4);
+  z-index: var(--z-raised);
+}
+
+.ds-sidebar-section { margin-bottom: var(--space-6); }
+
+.ds-sidebar-title {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-2);
+  padding: 0 var(--space-2);
+}
+
+.ds-sidebar-link {
+  display: block;
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: var(--space-1) var(--space-2) var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  border-left: 2px solid transparent;
+  transition: all var(--transition-fast);
+  margin-bottom: 2px;
+}
+
+.ds-sidebar-link:hover {
+  color: var(--brand-primary);
+  background: var(--flame-50);
+  border-left-color: var(--brand-primary);
+}
+
+[data-theme="dark"] .ds-sidebar-link:hover {
+  background: var(--bg-muted);
+}
+
+.ds-main {
+  margin-left: 220px;
+  padding-top: 64px;
+}
+
+/* ===== SECTIONS ===== */
+.ds-section {
+  padding: var(--space-20) var(--space-16);
+  border-bottom: 1px solid var(--border-subtle);
+  max-width: 1100px;
+}
+
+.ds-section-hero {
+  padding: var(--space-24) var(--space-16);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.page-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--flame-100);
+  color: var(--flame-700);
+  font-size: 12px;
+  font-weight: 600;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: var(--space-5);
+}
+
+[data-theme="dark"] .page-badge {
+  background: var(--flame-800);
+  color: var(--flame-200);
+}
+
+.ds-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  color: var(--text-primary);
+  margin-bottom: var(--space-5);
+}
+
+.ds-hero-title span {
+  color: var(--brand-primary);
+}
+
+.ds-hero-desc {
+  font-size: 18px;
+  color: var(--text-secondary);
+  max-width: 580px;
+  line-height: 1.6;
+  margin-bottom: var(--space-8);
+}
+
+.ds-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-4);
+  max-width: 680px;
+}
+
+.ds-meta-card {
+  background: var(--bg-muted);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+}
+
+.ds-meta-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-1);
+}
+
+.ds-meta-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* ===== SECTION HEADERS ===== */
+.section-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--brand-primary);
+  margin-bottom: var(--space-3);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: var(--space-3);
+}
+
+.section-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin-bottom: var(--space-10);
+}
+
+/* ===== TOKENS TABLE ===== */
+.token-table { width: 100%; border-collapse: collapse; }
+.token-table th {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-tertiary);
+  text-align: left;
+  padding: var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.token-table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle;
+}
+
+.token-name {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--brand-primary);
+}
+
+.token-value {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.token-preview {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ===== COLOR PALETTE ===== */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-6);
+}
+
+.color-group { }
+
+.color-group-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-3);
+}
+
+.color-swatches {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  height: 56px;
+}
+
+.color-swatch {
+  position: relative;
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+
+.color-swatch:hover { transform: scaleY(1.1); z-index: 1; }
+
+.color-swatch-label {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink-800);
+  color: white;
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.color-swatch:hover .color-swatch-label { display: block; }
+
+.semantic-color-row {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-6);
+}
+
+.semantic-color-card {
+  flex: 1;
+  min-width: 180px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+}
+
+.semantic-color-swatch {
+  height: 72px;
+}
+
+.semantic-color-info {
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-surface);
+}
+
+.semantic-color-name {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.semantic-color-hex {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+/* ===== TYPOGRAPHY ===== */
+.type-specimen { margin-bottom: var(--space-8); }
+.type-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-2);
+}
+
+.type-meta {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-top: var(--space-1);
+  font-family: var(--font-mono);
+}
+
+.type-divider {
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+  margin: var(--space-8) 0;
+}
+
+/* ===== SPACING ===== */
+.space-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.space-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.space-bar-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.space-bar {
+  height: 24px;
+  background: var(--brand-primary);
+  border-radius: var(--radius-sm);
+  opacity: 0.8;
+}
+
+.space-token { font-family: var(--font-mono); font-size: 12px; color: var(--brand-primary); width: 80px; }
+.space-px { font-family: var(--font-mono); font-size: 12px; color: var(--text-tertiary); width: 40px; }
+.space-desc { font-size: 12px; color: var(--text-secondary); }
+
+/* ===== COMPONENTS ===== */
+.component-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-6);
+}
+
+.component-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.component-card-demo {
+  padding: var(--space-8) var(--space-6);
+  background: var(--bg-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  min-height: 120px;
+}
+
+.component-card-info {
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.component-card-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.component-card-desc {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* ===== BUTTON SYSTEM ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-sm { height: 32px; padding: 0 var(--space-4); font-size: 13px; border-radius: var(--radius-md); }
+.btn-md { height: 40px; padding: 0 var(--space-5); font-size: 14px; border-radius: var(--radius-lg); }
+.btn-lg { height: 52px; padding: 0 var(--space-8); font-size: 16px; border-radius: var(--radius-xl); }
+
+.btn-primary {
+  background: var(--brand-primary);
+  color: white;
+}
+.btn-primary:hover { background: var(--brand-primary-hover); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+.btn-secondary {
+  background: var(--brand-secondary);
+  color: white;
+}
+.btn-secondary:hover { background: var(--brand-secondary-hover); transform: translateY(-1px); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--brand-primary);
+  border: 1.5px solid var(--brand-primary);
+}
+.btn-outline:hover { background: var(--flame-50); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1.5px solid var(--border-default);
+}
+.btn-ghost:hover { background: var(--bg-muted); color: var(--text-primary); }
+
+.btn-danger {
+  background: var(--error);
+  color: white;
+}
+.btn-danger:hover { background: #C53030; }
+
+/* ===== FORM ELEMENTS ===== */
+.input-demo {
+  font-family: var(--font-body);
+  font-size: 14px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1.5px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+  width: 240px;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.input-demo:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(255,107,43,0.15);
+}
+.input-demo::placeholder { color: var(--text-tertiary); }
+
+/* ===== BADGE ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.3px;
+}
+.badge-primary { background: var(--flame-100); color: var(--flame-700); }
+.badge-secondary { background: var(--ocean-50); color: var(--ocean-700); }
+.badge-success { background: #C6F6D5; color: #276749; }
+.badge-warning { background: #FEFCBF; color: #975A16; }
+.badge-error { background: #FED7D7; color: #9B2C2C; }
+.badge-neutral { background: var(--ink-100); color: var(--ink-700); }
+
+[data-theme="dark"] .badge-primary { background: var(--flame-800); color: var(--flame-200); }
+[data-theme="dark"] .badge-secondary { background: var(--ocean-800); color: var(--ocean-200); }
+
+/* ===== CARDS ===== */
+.trip-card {
+  background: var(--bg-surface);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  width: 220px;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+.trip-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+
+.trip-card-img {
+  height: 110px;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-3);
+  position: relative;
+}
+.trip-card-body { padding: var(--space-3) var(--space-4) var(--space-4); }
+.trip-card-title { font-weight: 700; font-size: 14px; color: var(--text-primary); margin-bottom: 3px; }
+.trip-card-sub { font-size: 12px; color: var(--text-tertiary); }
+
+/* ===== AVATAR ===== */
+.avatar {
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: white;
+}
+.avatar-sm { width: 28px; height: 28px; font-size: 11px; }
+.avatar-md { width: 40px; height: 40px; font-size: 15px; }
+.avatar-lg { width: 56px; height: 56px; font-size: 20px; }
+
+/* ===== ICON SYSTEM ===== */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: var(--space-3);
+}
+.icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--bg-muted);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-3);
+  text-align: center;
+}
+.icon-item svg { width: 24px; height: 24px; stroke: var(--brand-primary); }
+.icon-item span { font-size: 10px; color: var(--text-tertiary); }
+
+/* ===== RESPONSIVE TABLE ===== */
+.resp-table { width: 100%; border-collapse: collapse; }
+.resp-table th {
+  background: var(--bg-muted);
+  padding: var(--space-3) var(--space-4);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  text-align: left;
+}
+.resp-table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* ===== BREAKPOINT CARDS ===== */
+.bp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.bp-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  position: relative;
+  overflow: hidden;
+}
+
+.bp-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+}
+
+.bp-card.mobile::before { background: var(--brand-primary); }
+.bp-card.tablet::before { background: var(--brand-secondary); }
+.bp-card.laptop::before { background: var(--brand-accent); }
+.bp-card.desktop::before { background: var(--ink-400); }
+.bp-card.wide::before { background: var(--ink-600); }
+
+.bp-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: var(--space-2);
+}
+
+.bp-range {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.bp-cols {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-1);
+}
+
+.bp-gutter {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* ===== MOTION ===== */
+.motion-demo {
+  display: flex;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.motion-box {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-lg);
+  background: var(--brand-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+}
+
+.motion-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: var(--space-2);
+  text-align: center;
+}
+
+.anim-fade:hover { animation: fadeIn 200ms ease; }
+.anim-scale:hover { transform: scale(1.08); transition: transform 200ms cubic-bezier(.34,1.56,.64,1); }
+.anim-slide { transition: transform 200ms ease; }
+.anim-slide:hover { transform: translateY(-4px); }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-muted) 25%, var(--border-subtle) 50%, var(--bg-muted) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-md);
+}
+
+/* ===== ELEVATION ===== */
+.elevation-grid {
+  display: flex;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.elevation-card {
+  width: 140px;
+  height: 100px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.elevation-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.elevation-value {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-tertiary);
+  text-align: center;
+  padding: 0 var(--space-3);
+}
+
+/* ===== CODE BLOCK ===== */
+.code-block {
+  background: var(--ink-800);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
+  overflow-x: auto;
+  margin: var(--space-4) 0;
+}
+
+[data-theme="dark"] .code-block {
+  background: #0A0907;
+  border: 1px solid var(--border-subtle);
+}
+
+.code-block pre {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: #e2e8f0;
+  margin: 0;
+}
+
+.code-comment { color: #718096; }
+.code-var { color: #90CDF4; }
+.code-val { color: #FBD38D; }
+.code-str { color: #9AE6B4; }
+.code-prop { color: #F6AD55; }
+
+/* ===== DO/DONT ===== */
+.do-dont-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+}
+
+.do-card, .dont-card {
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  border: 1.5px solid;
+}
+
+.do-card {
+  border-color: #38A169;
+  background: #F0FFF4;
+}
+
+.dont-card {
+  border-color: #E53E3E;
+  background: #FFF5F5;
+}
+
+[data-theme="dark"] .do-card {
+  background: rgba(56,161,105,0.1);
+}
+
+[data-theme="dark"] .dont-card {
+  background: rgba(229,62,62,0.1);
+}
+
+.do-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #38A169;
+  margin-bottom: var(--space-3);
+}
+
+.dont-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #E53E3E;
+  margin-bottom: var(--space-3);
+}
+
+.do-card p, .dont-card p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ===== PAGE NUMBER INDICATOR ===== */
+.page-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-4);
+}
+
+.page-num {
+  width: 24px;
+  height: 24px;
+  background: var(--brand-primary);
+  color: white;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* ===== ACCESSIBILITY SECTION ===== */
+.a11y-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-5);
+}
+
+.a11y-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+}
+
+.a11y-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--flame-100);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+[data-theme="dark"] .a11y-icon {
+  background: var(--flame-800);
+}
+
+.a11y-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.a11y-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ===== CONTRAST CHECKER ===== */
+.contrast-row {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+  align-items: center;
+}
+
+.contrast-sample {
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 14px;
+  min-width: 180px;
+}
+
+.contrast-info {
+  font-size: 12px;
+}
+
+.contrast-ratio {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.contrast-pass {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: #C6F6D5;
+  color: #276749;
+}
+
+/* ===== TAILWIND REFERENCE ===== */
+.tw-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.tw-card {
+  background: var(--bg-muted);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+.tw-class {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--brand-primary);
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+
+.tw-value {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* ===== PRINT / HIDE ===== */
+@media print {
+  .ds-nav, .ds-sidebar { display: none; }
+  .ds-main { margin-left: 0; }
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .ds-sidebar { display: none; }
+  .ds-main { margin-left: 0; }
+  .ds-nav-links { display: none; }
+  .ds-section { padding: var(--space-12) var(--space-6); }
+  .ds-section-hero { padding: var(--space-16) var(--space-6); }
+  .do-dont-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="ds-nav">
+  <a class="ds-nav-logo" href="#hero">Traveloop DS</a>
+  <ul class="ds-nav-links">
+    <li><a href="#colors">Colors</a></li>
+    <li><a href="#typography">Typography</a></li>
+    <li><a href="#spacing">Spacing</a></li>
+    <li><a href="#components">Components</a></li>
+    <li><a href="#responsive">Responsive</a></li>
+    <li><a href="#motion">Motion</a></li>
+    <li><a href="#accessibility">Accessibility</a></li>
+    <li><a href="#tokens">Tokens</a></li>
+  </ul>
+  <button class="theme-btn" onclick="toggleTheme()">☀ / ☽ Theme</button>
+</nav>
+
+<!-- SIDEBAR -->
+<aside class="ds-sidebar">
+  <div class="ds-sidebar-section">
+    <div class="ds-sidebar-title">Foundation</div>
+    <a class="ds-sidebar-link" href="#colors">Color System</a>
+    <a class="ds-sidebar-link" href="#typography">Typography</a>
+    <a class="ds-sidebar-link" href="#spacing">Spacing Scale</a>
+    <a class="ds-sidebar-link" href="#elevation">Elevation</a>
+  </div>
+  <div class="ds-sidebar-section">
+    <div class="ds-sidebar-title">Components</div>
+    <a class="ds-sidebar-link" href="#buttons">Buttons</a>
+    <a class="ds-sidebar-link" href="#forms">Form Elements</a>
+    <a class="ds-sidebar-link" href="#badges">Badges & Tags</a>
+    <a class="ds-sidebar-link" href="#cards">Cards</a>
+    <a class="ds-sidebar-link" href="#avatars">Avatars</a>
+    <a class="ds-sidebar-link" href="#icons">Icon System</a>
+  </div>
+  <div class="ds-sidebar-section">
+    <div class="ds-sidebar-title">Patterns</div>
+    <a class="ds-sidebar-link" href="#responsive">Responsive Grid</a>
+    <a class="ds-sidebar-link" href="#motion">Motion</a>
+    <a class="ds-sidebar-link" href="#accessibility">Accessibility</a>
+    <a class="ds-sidebar-link" href="#tokens">CSS Tokens</a>
+    <a class="ds-sidebar-link" href="#tailwind">Tailwind Map</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="ds-main">
+
+<!-- ===== PAGE 1: HERO ===== -->
+<section id="hero" class="ds-section-hero">
+  <div class="page-badge">Design System · v1.0</div>
+  <h1 class="ds-hero-title">Traveloop<br><span>Design System</span></h1>
+  <p class="ds-hero-desc">A bold, adventurous design language for the Traveloop travel planning platform. Built for adventure seekers, responsive on every device, and consistent across light &amp; dark modes.</p>
+  <div class="ds-meta-grid">
+    <div class="ds-meta-card">
+      <div class="ds-meta-label">Brand Vibe</div>
+      <div class="ds-meta-value">Adventure &amp; Bold</div>
+    </div>
+    <div class="ds-meta-card">
+      <div class="ds-meta-label">Platform</div>
+      <div class="ds-meta-value">Web + Mobile</div>
+    </div>
+    <div class="ds-meta-card">
+      <div class="ds-meta-label">Font Source</div>
+      <div class="ds-meta-value">Google Fonts</div>
+    </div>
+    <div class="ds-meta-card">
+      <div class="ds-meta-label">Theming</div>
+      <div class="ds-meta-value">Light + Dark</div>
+    </div>
+    <div class="ds-meta-card">
+      <div class="ds-meta-label">Tech Stack</div>
+      <div class="ds-meta-value">CSS Vars + Tailwind</div>
+    </div>
+    <div class="ds-meta-card">
+      <div class="ds-meta-label">Language</div>
+      <div class="ds-meta-value">Multi-lang (LTR)</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PAGE 2: COLOR SYSTEM ===== -->
+<section id="colors" class="ds-section">
+  <div class="page-indicator"><span class="page-num">2</span>Foundation</div>
+  <div class="section-eyebrow">Color System</div>
+  <h2 class="section-title">Brand Palette</h2>
+  <p class="section-desc">Three primary brand ramps (Flame, Ocean, Sand) backed by a neutral Ink scale. Each ramp has 9 stops for precise usage across backgrounds, borders, text, and icons.</p>
+
+  <!-- Brand Colors Full Ramp -->
+  <div style="margin-bottom: var(--space-10);">
+    <div style="margin-bottom: var(--space-6);">
+      <div class="color-group-label">Flame — Primary Brand</div>
+      <div class="color-swatches">
+        <div class="color-swatch" style="background:#FFF3EE"><span class="color-swatch-label">50</span></div>
+        <div class="color-swatch" style="background:#FFD9C4"><span class="color-swatch-label">100</span></div>
+        <div class="color-swatch" style="background:#FFB899"><span class="color-swatch-label">200</span></div>
+        <div class="color-swatch" style="background:#FF8C5A"><span class="color-swatch-label">300</span></div>
+        <div class="color-swatch" style="background:#FF6B2B"><span class="color-swatch-label">400 ✦</span></div>
+        <div class="color-swatch" style="background:#F04E00"><span class="color-swatch-label">500</span></div>
+        <div class="color-swatch" style="background:#C03D00"><span class="color-swatch-label">600</span></div>
+        <div class="color-swatch" style="background:#902D00"><span class="color-swatch-label">700</span></div>
+        <div class="color-swatch" style="background:#601E00"><span class="color-swatch-label">800</span></div>
+      </div>
+      <div style="font-size:11px; color:var(--text-tertiary); margin-top:var(--space-2);">✦ Primary CTA, active states, key highlights</div>
+    </div>
+
+    <div style="margin-bottom: var(--space-6);">
+      <div class="color-group-label">Ocean — Secondary Brand</div>
+      <div class="color-swatches">
+        <div class="color-swatch" style="background:#E8F8F5"><span class="color-swatch-label">50</span></div>
+        <div class="color-swatch" style="background:#BBEEE5"><span class="color-swatch-label">100</span></div>
+        <div class="color-swatch" style="background:#7DDDD1"><span class="color-swatch-label">200</span></div>
+        <div class="color-swatch" style="background:#3DCABA"><span class="color-swatch-label">300</span></div>
+        <div class="color-swatch" style="background:#00B4A0"><span class="color-swatch-label">400 ✦</span></div>
+        <div class="color-swatch" style="background:#009182"><span class="color-swatch-label">500</span></div>
+        <div class="color-swatch" style="background:#006E63"><span class="color-swatch-label">600</span></div>
+        <div class="color-swatch" style="background:#004D46"><span class="color-swatch-label">700</span></div>
+        <div class="color-swatch" style="background:#002E2A"><span class="color-swatch-label">800</span></div>
+      </div>
+      <div style="font-size:11px; color:var(--text-tertiary); margin-top:var(--space-2);">✦ Secondary CTAs, links, success/explore states</div>
+    </div>
+
+    <div style="margin-bottom: var(--space-6);">
+      <div class="color-group-label">Sand — Accent</div>
+      <div class="color-swatches">
+        <div class="color-swatch" style="background:#FDFAF3"><span class="color-swatch-label">50</span></div>
+        <div class="color-swatch" style="background:#F8F0D9"><span class="color-swatch-label">100</span></div>
+        <div class="color-swatch" style="background:#EFE0B2"><span class="color-swatch-label">200</span></div>
+        <div class="color-swatch" style="background:#E2CB82"><span class="color-swatch-label">300</span></div>
+        <div class="color-swatch" style="background:#D4B051"><span class="color-swatch-label">400 ✦</span></div>
+        <div class="color-swatch" style="background:#B8902C"><span class="color-swatch-label">500</span></div>
+        <div class="color-swatch" style="background:#8F6C18"><span class="color-swatch-label">600</span></div>
+        <div class="color-swatch" style="background:#654C0B"><span class="color-swatch-label">700</span></div>
+        <div class="color-swatch" style="background:#3C2D06"><span class="color-swatch-label">800</span></div>
+      </div>
+      <div style="font-size:11px; color:var(--text-tertiary); margin-top:var(--space-2);">✦ Page backgrounds, decorative accents, illustrations</div>
+    </div>
+
+    <div>
+      <div class="color-group-label">Ink — Neutral</div>
+      <div class="color-swatches">
+        <div class="color-swatch" style="background:#F5F4F2"><span class="color-swatch-label">50</span></div>
+        <div class="color-swatch" style="background:#E2E0DA"><span class="color-swatch-label">100</span></div>
+        <div class="color-swatch" style="background:#C6C2B8"><span class="color-swatch-label">200</span></div>
+        <div class="color-swatch" style="background:#A39E90"><span class="color-swatch-label">300</span></div>
+        <div class="color-swatch" style="background:#7E7869"><span class="color-swatch-label">400</span></div>
+        <div class="color-swatch" style="background:#5C5649"><span class="color-swatch-label">500</span></div>
+        <div class="color-swatch" style="background:#42403A"><span class="color-swatch-label">600</span></div>
+        <div class="color-swatch" style="background:#2D2C28"><span class="color-swatch-label">700</span></div>
+        <div class="color-swatch" style="background:#1A1917"><span class="color-swatch-label">800</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Semantic Colors -->
+  <h3 style="font-family:var(--font-display); font-size:22px; font-weight:700; margin-bottom:var(--space-5); color:var(--text-primary);">Semantic Colors</h3>
+  <div class="semantic-color-row">
+    <div class="semantic-color-card">
+      <div class="semantic-color-swatch" style="background:#E53E3E;"></div>
+      <div class="semantic-color-info">
+        <div class="semantic-color-name">Error / Danger</div>
+        <div class="semantic-color-hex">#E53E3E</div>
+      </div>
+    </div>
+    <div class="semantic-color-card">
+      <div class="semantic-color-swatch" style="background:#DD6B20;"></div>
+      <div class="semantic-color-info">
+        <div class="semantic-color-name">Warning</div>
+        <div class="semantic-color-hex">#DD6B20</div>
+      </div>
+    </div>
+    <div class="semantic-color-card">
+      <div class="semantic-color-swatch" style="background:#38A169;"></div>
+      <div class="semantic-color-info">
+        <div class="semantic-color-name">Success</div>
+        <div class="semantic-color-hex">#38A169</div>
+      </div>
+    </div>
+    <div class="semantic-color-card">
+      <div class="semantic-color-swatch" style="background:#3182CE;"></div>
+      <div class="semantic-color-info">
+        <div class="semantic-color-name">Info</div>
+        <div class="semantic-color-hex">#3182CE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dark Mode Color Map -->
+  <h3 style="font-family:var(--font-display); font-size:22px; font-weight:700; margin-bottom:var(--space-5); color:var(--text-primary);">Light vs Dark Mode Mapping</h3>
+  <div style="overflow-x:auto;">
+    <table class="token-table">
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Light Mode</th>
+          <th>Dark Mode</th>
+          <th>Usage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="token-name">--bg-page</td><td class="token-value">#FDFAF3</td><td class="token-value">#0A0907</td><td class="token-preview">Page background</td></tr>
+        <tr><td class="token-name">--bg-surface</td><td class="token-value">#FFFFFF</td><td class="token-value">#1A1917</td><td class="token-preview">Cards, panels</td></tr>
+        <tr><td class="token-name">--bg-elevated</td><td class="token-value">#FFFFFF</td><td class="token-value">#2D2C28</td><td class="token-preview">Dropdowns, modals</td></tr>
+        <tr><td class="token-name">--bg-muted</td><td class="token-value">#F5F4F2</td><td class="token-value">#42403A</td><td class="token-preview">Muted sections</td></tr>
+        <tr><td class="token-name">--text-primary</td><td class="token-value">#1A1917</td><td class="token-value">#F5F4F2</td><td class="token-preview">Headlines, body</td></tr>
+        <tr><td class="token-name">--text-secondary</td><td class="token-value">#42403A</td><td class="token-value">#C6C2B8</td><td class="token-preview">Supporting text</td></tr>
+        <tr><td class="token-name">--text-tertiary</td><td class="token-value">#7E7869</td><td class="token-value">#7E7869</td><td class="token-preview">Placeholders, hints</td></tr>
+        <tr><td class="token-name">--brand-primary</td><td class="token-value">#FF6B2B</td><td class="token-value">#FF8C5A</td><td class="token-preview">Primary CTA</td></tr>
+        <tr><td class="token-name">--brand-secondary</td><td class="token-value">#00B4A0</td><td class="token-value">#3DCABA</td><td class="token-preview">Secondary CTA</td></tr>
+        <tr><td class="token-name">--border-default</td><td class="token-value">#C6C2B8</td><td class="token-value">#42403A</td><td class="token-preview">Default borders</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== PAGE 3: TYPOGRAPHY ===== -->
+<section id="typography" class="ds-section">
+  <div class="page-indicator"><span class="page-num">3</span>Foundation</div>
+  <div class="section-eyebrow">Typography</div>
+  <h2 class="section-title">Type System</h2>
+  <p class="section-desc">Two Google Font families form the typographic backbone. Syne for bold display headings; DM Sans for body, UI, and micro text. DM Mono for code and data.</p>
+
+  <!-- Font Families -->
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:var(--space-6); margin-bottom:var(--space-10);">
+    <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-xl); padding:var(--space-6);">
+      <div class="type-label">Display / Headings</div>
+      <div style="font-family:var(--font-display); font-size:36px; font-weight:800; letter-spacing:-1px; color:var(--text-primary); margin:var(--space-3) 0;">Syne</div>
+      <div style="font-family:var(--font-display); font-size:14px; color:var(--text-secondary); margin-bottom:var(--space-4);">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789 !@#$%^&*()</div>
+      <div class="type-meta">Google Fonts · Syne · Weights: 400, 500, 600, 700, 800</div>
+    </div>
+    <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-xl); padding:var(--space-6);">
+      <div class="type-label">Body / UI</div>
+      <div style="font-family:var(--font-body); font-size:36px; font-weight:400; color:var(--text-primary); margin:var(--space-3) 0;">DM Sans</div>
+      <div style="font-family:var(--font-body); font-size:14px; color:var(--text-secondary); margin-bottom:var(--space-4);">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789 !@#$%^&*()</div>
+      <div class="type-meta">Google Fonts · DM Sans · Weights: 300, 400, 500, 600</div>
+    </div>
+    <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-xl); padding:var(--space-6);">
+      <div class="type-label">Code / Mono</div>
+      <div style="font-family:var(--font-mono); font-size:30px; font-weight:500; color:var(--brand-primary); margin:var(--space-3) 0;">DM Mono</div>
+      <div style="font-family:var(--font-mono); font-size:13px; color:var(--text-secondary); margin-bottom:var(--space-4);">--color-flame-400: #FF6B2B;<br>font-size: 16px;<br>line-height: 1.7;</div>
+      <div class="type-meta">Google Fonts · DM Mono · Weights: 400, 500</div>
+    </div>
+  </div>
+
+  <!-- Type Scale -->
+  <h3 style="font-family:var(--font-display); font-size:22px; font-weight:700; margin-bottom:var(--space-6); color:var(--text-primary);">Type Scale</h3>
+
+  <div class="type-specimen">
+    <div class="type-label">Display XL — Hero Headlines</div>
+    <div style="font-family:var(--font-display); font-size:clamp(48px,7vw,80px); font-weight:800; letter-spacing:-3px; line-height:1.0; color:var(--text-primary);">Explore<br>the World</div>
+    <div class="type-meta">font-family: Syne · font-size: clamp(48px, 7vw, 80px) · font-weight: 800 · letter-spacing: -3px · line-height: 1.0</div>
+  </div>
+  <hr class="type-divider">
+
+  <div class="type-specimen">
+    <div class="type-label">Display L — Page Titles</div>
+    <div style="font-family:var(--font-display); font-size:clamp(32px,5vw,56px); font-weight:800; letter-spacing:-2px; line-height:1.05; color:var(--text-primary);">Plan Your Next Adventure</div>
+    <div class="type-meta">font-family: Syne · font-size: clamp(32px, 5vw, 56px) · font-weight: 800 · letter-spacing: -2px</div>
+  </div>
+  <hr class="type-divider">
+
+  <div class="type-specimen">
+    <div class="type-label">H1 — Section Headers</div>
+    <div style="font-family:var(--font-display); font-size:clamp(26px,4vw,40px); font-weight:700; letter-spacing:-1px; color:var(--text-primary);">My Upcoming Trips</div>
+    <div class="type-meta">font-family: Syne · font-size: clamp(26px, 4vw, 40px) · font-weight: 700 · letter-spacing: -1px</div>
+  </div>
+  <hr class="type-divider">
+
+  <div class="type-specimen">
+    <div class="type-label">H2 — Card / Panel Titles</div>
+    <div style="font-family:var(--font-display); font-size:24px; font-weight:700; color:var(--text-primary);">Tokyo Itinerary</div>
+    <div class="type-meta">font-family: Syne · font-size: 24px · font-weight: 700</div>
+  </div>
+  <hr class="type-divider">
+
+  <div class="type-specimen">
+    <div class="type-label">H3 — Sub-headings</div>
+    <div style="font-family:var(--font-display); font-size:20px; font-weight:600; color:var(--text-primary);">Day 3 — Shibuya & Harajuku</div>
+    <div class="type-meta">font-family: Syne · font-size: 20px · font-weight: 600</div>
+  </div>
+  <hr class="type-divider">
+
+  <div class="type-specimen">
+    <div class="type-label">Body L — Lead Text</div>
+    <div style="font-family:var(--font-body); font-size:18px; font-weight:400; line-height:1.7; color:var(--text-secondary); max-width:600px;">Plan multi-city trips with ease. Traveloop helps you discover, organize, and share your perfect travel itinerary.</div>
+    <div class="type-meta">font-family: DM Sans · font-size: 18px · font-weight: 400 · line-height: 1.7</div>
+  </div>
+  <hr class="type-divider">
+
+  <div class="type-specimen">
+    <div class="type-label">Body M — Standard Text</div>
+    <div style="font-family:var(--font-body); font-size:16px; font-weight:400; line-height:1.7; color:var(--text-secondary); max-width:600px;">Your itinerary for the Japan trip has been updated. Tokyo is confirmed for 3 nights with all activities scheduled. Next stop: Kyoto from June 15.</div>
+    <div class="type-meta">font-family: DM Sans · font-size: 16px · font-weight: 400 · line-height: 1.7</div>
+  </div>
+  <hr class="type-divider">
+
+  <div class="type-specimen">
+    <div class="type-label">Body S — Supporting / Captions</div>
+    <div style="font-family:var(--font-body); font-size:14px; font-weight:400; line-height:1.6; color:var(--text-tertiary);">Last updated 2 hours ago · 3 cities · 14 days</div>
+    <div class="type-meta">font-family: DM Sans · font-size: 14px · font-weight: 400 · line-height: 1.6</div>
+  </div>
+  <hr class="type-divider">
+
+  <div class="type-specimen">
+    <div class="type-label">Label / UI — Buttons, Tabs, Nav</div>
+    <div style="font-family:var(--font-body); font-size:13px; font-weight:600; letter-spacing:0.2px; text-transform:uppercase; color:var(--text-primary);">Add New Stop</div>
+    <div class="type-meta">font-family: DM Sans · font-size: 13px · font-weight: 600 · letter-spacing: 0.2px</div>
+  </div>
+  <hr class="type-divider">
+
+  <div class="type-specimen">
+    <div class="type-label">Eyebrow — Section Tags</div>
+    <div style="font-family:var(--font-body); font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--brand-primary);">Trending Destinations</div>
+    <div class="type-meta">font-family: DM Sans · font-size: 11px · font-weight: 700 · letter-spacing: 1.5px · text-transform: uppercase</div>
+  </div>
+</section>
+
+<!-- ===== PAGE 4: SPACING & LAYOUT ===== -->
+<section id="spacing" class="ds-section">
+  <div class="page-indicator"><span class="page-num">4</span>Foundation</div>
+  <div class="section-eyebrow">Spacing</div>
+  <h2 class="section-title">Spacing Scale</h2>
+  <p class="section-desc">A consistent 4px base grid. All spacing, padding, margin, and gap values derive from this scale. Never use arbitrary pixel values.</p>
+
+  <div class="space-grid" style="margin-bottom:var(--space-12);">
+    <div class="space-row"><span class="space-token">--space-1</span><div class="space-bar-wrap"><div class="space-bar" style="width:4px;"></div><span class="space-px">4px</span></div><span class="space-desc">Icon gap, tight inline</span></div>
+    <div class="space-row"><span class="space-token">--space-2</span><div class="space-bar-wrap"><div class="space-bar" style="width:8px;"></div><span class="space-px">8px</span></div><span class="space-desc">Badge padding, compact items</span></div>
+    <div class="space-row"><span class="space-token">--space-3</span><div class="space-bar-wrap"><div class="space-bar" style="width:12px;"></div><span class="space-px">12px</span></div><span class="space-desc">List item gap, label margin</span></div>
+    <div class="space-row"><span class="space-token">--space-4</span><div class="space-bar-wrap"><div class="space-bar" style="width:16px;"></div><span class="space-px">16px</span></div><span class="space-desc">Input padding, card gap</span></div>
+    <div class="space-row"><span class="space-token">--space-5</span><div class="space-bar-wrap"><div class="space-bar" style="width:20px;"></div><span class="space-px">20px</span></div><span class="space-desc">Card inner padding</span></div>
+    <div class="space-row"><span class="space-token">--space-6</span><div class="space-bar-wrap"><div class="space-bar" style="width:24px;"></div><span class="space-px">24px</span></div><span class="space-desc">Section gap, component padding</span></div>
+    <div class="space-row"><span class="space-token">--space-8</span><div class="space-bar-wrap"><div class="space-bar" style="width:32px;"></div><span class="space-px">32px</span></div><span class="space-desc">Large component gap</span></div>
+    <div class="space-row"><span class="space-token">--space-10</span><div class="space-bar-wrap"><div class="space-bar" style="width:40px;"></div><span class="space-px">40px</span></div><span class="space-desc">Section header bottom margin</span></div>
+    <div class="space-row"><span class="space-token">--space-12</span><div class="space-bar-wrap"><div class="space-bar" style="width:48px;"></div><span class="space-px">48px</span></div><span class="space-desc">Mobile section padding</span></div>
+    <div class="space-row"><span class="space-token">--space-16</span><div class="space-bar-wrap"><div class="space-bar" style="width:64px;"></div><span class="space-px">64px</span></div><span class="space-desc">Desktop content padding</span></div>
+    <div class="space-row"><span class="space-token">--space-20</span><div class="space-bar-wrap"><div class="space-bar" style="width:80px;"></div><span class="space-px">80px</span></div><span class="space-desc">Section vertical padding</span></div>
+    <div class="space-row"><span class="space-token">--space-24</span><div class="space-bar-wrap"><div class="space-bar" style="width:96px;"></div><span class="space-px">96px</span></div><span class="space-desc">Hero section padding</span></div>
+  </div>
+
+  <!-- Border Radius -->
+  <h3 style="font-family:var(--font-display); font-size:22px; font-weight:700; margin-bottom:var(--space-6); color:var(--text-primary);">Border Radius</h3>
+  <div style="display:flex; gap:var(--space-5); flex-wrap:wrap; margin-bottom:var(--space-12);">
+    <div style="text-align:center;">
+      <div style="width:60px; height:60px; background:var(--brand-primary); border-radius:4px; margin:0 auto var(--space-2);"></div>
+      <div class="type-meta">sm · 4px</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="width:60px; height:60px; background:var(--brand-primary); border-radius:8px; margin:0 auto var(--space-2);"></div>
+      <div class="type-meta">md · 8px</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="width:60px; height:60px; background:var(--brand-primary); border-radius:12px; margin:0 auto var(--space-2);"></div>
+      <div class="type-meta">lg · 12px</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="width:60px; height:60px; background:var(--brand-primary); border-radius:16px; margin:0 auto var(--space-2);"></div>
+      <div class="type-meta">xl · 16px</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="width:60px; height:60px; background:var(--brand-primary); border-radius:24px; margin:0 auto var(--space-2);"></div>
+      <div class="type-meta">2xl · 24px</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="width:60px; height:60px; background:var(--brand-primary); border-radius:9999px; margin:0 auto var(--space-2);"></div>
+      <div class="type-meta">full · pill</div>
+    </div>
+  </div>
+
+  <!-- Elevation -->
+  <div id="elevation">
+    <h3 style="font-family:var(--font-display); font-size:22px; font-weight:700; margin-bottom:var(--space-6); color:var(--text-primary);">Elevation / Shadow</h3>
+    <div class="elevation-grid">
+      <div class="elevation-card" style="box-shadow:none; border:1px solid var(--border-subtle);">
+        <div class="elevation-name">Flat</div>
+        <div class="elevation-value">No shadow — Subtle cards, ghost buttons</div>
+      </div>
+      <div class="elevation-card" style="box-shadow:var(--shadow-sm);">
+        <div class="elevation-name">Shadow SM</div>
+        <div class="elevation-value">Default trip cards, inputs</div>
+      </div>
+      <div class="elevation-card" style="box-shadow:var(--shadow-md);">
+        <div class="elevation-name">Shadow MD</div>
+        <div class="elevation-value">Hover states, floating nav</div>
+      </div>
+      <div class="elevation-card" style="box-shadow:var(--shadow-lg);">
+        <div class="elevation-name">Shadow LG</div>
+        <div class="elevation-value">Dropdowns, popovers</div>
+      </div>
+      <div class="elevation-card" style="box-shadow:var(--shadow-xl);">
+        <div class="elevation-name">Shadow XL</div>
+        <div class="elevation-value">Modals, dialogs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PAGE 5: COMPONENTS ===== -->
+<section id="components" class="ds-section">
+  <div class="page-indicator"><span class="page-num">5</span>Components</div>
+  <div class="section-eyebrow">Component Library</div>
+  <h2 class="section-title">UI Components</h2>
+  <p class="section-desc">Reusable UI building blocks for every screen in Traveloop — from buttons and forms to cards, badges, and avatars.</p>
+
+  <!-- BUTTONS -->
+  <div id="buttons" style="margin-bottom:var(--space-12);">
+    <h3 style="font-family:var(--font-display); font-size:22px; font-weight:700; margin-bottom:var(--space-2); color:var(--text-primary);">Buttons</h3>
+    <p style="font-size:14px; color:var(--text-secondary); margin-bottom:var(--space-6);">Buttons communicate actions. Flame primary for main CTA, Ocean secondary, Outline for secondary actions, Ghost for subtle.</p>
+
+    <div style="display:flex; flex-wrap:wrap; gap:var(--space-4); align-items:center; margin-bottom:var(--space-6); background:var(--bg-muted); padding:var(--space-6); border-radius:var(--radius-xl);">
+      <button class="btn btn-primary btn-lg">Plan New Trip</button>
+      <button class="btn btn-secondary btn-lg">Explore Cities</button>
+      <button class="btn btn-outline btn-lg">View Itinerary</button>
+      <button class="btn btn-ghost btn-lg">Cancel</button>
+      <button class="btn btn-danger btn-md">Delete Trip</button>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table class="token-table">
+        <thead><tr><th>Variant</th><th>Size</th><th>Use Case</th><th>CSS Class</th></tr></thead>
+        <tbody>
+          <tr><td>Primary</td><td>SM / MD / LG</td><td>Main CTAs: Plan Trip, Add Stop, Save</td><td class="token-name">.btn-primary</td></tr>
+          <tr><td>Secondary</td><td>SM / MD / LG</td><td>Explore, Search, Discover</td><td class="token-name">.btn-secondary</td></tr>
+          <tr><td>Outline</td><td>SM / MD / LG</td><td>Secondary actions alongside primary</td><td class="token-name">.btn-outline</td></tr>
+          <tr><td>Ghost</td><td>SM / MD</td><td>Cancel, dismiss, low-priority actions</td><td class="token-name">.btn-ghost</td></tr>
+          <tr><td>Danger</td><td>SM / MD</td><td>Delete, remove, destructive actions</td><td class="token-name">.btn-danger</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FORMS -->
+  <div id="forms" style="margin-bottom:var(--space-12);">
+    <h3 style="font-family:var(--font-display); font-size:22px; font-weight:700; margin-bottom:var(--space-2); color:var(--text-primary);">Form Elements</h3>
+    <p style="font-size:14px; color:var(--text-secondary); margin-bottom:var(--space-6);">Height 44px for desktop inputs, 48px for primary mobile inputs. Focus ring: 3px Flame-400 at 15% opacity.</p>
+    <div style="background:var(--bg-muted); padding:var(--space-6); border-radius:var(--radius-xl); display:flex; flex-wrap:wrap; gap:var(--space-5);">
+      <div>
+        <label style="display:block; font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:var(--space-2);">Trip Name</label>
+        <input class="input-demo" type="text" placeholder="e.g. Japan Backpacking 2025">
+      </div>
+      <div>
+        <label style="display:block; font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:var(--space-2);">Start Date</label>
+        <input class="input-demo" type="date">
+      </div>
+      <div>
+        <label style="display:block; font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:var(--space-2);">Budget (USD)</label>
+        <input class="input-demo" type="number" placeholder="3000">
+      </div>
+      <div>
+        <label style="display:block; font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:var(--space-2);">Search Cities</label>
+        <input class="input-demo" type="search" placeholder="Tokyo, Paris, Bali…">
+      </div>
+    </div>
+  </div>
+
+  <!-- BADGES -->
+  <div id="badges" style="margin-bottom:var(--space-12);">
+    <h3 style="font-family:var(--font-display); font-size:22px; font-weight:700; margin-bottom:var(--space-2); color:var(--text-primary);">Badges &amp; Tags</h3>
+    <p style="font-size:14px; color:var(--text-secondary); margin-bottom:var(--space-6);">Used for trip status, activity categories, budget alerts, and packing item states.</p>
+    <div style="background:var(--bg-muted); padding:var(--space-6); border-radius:var(--radius-xl); display:flex; flex-wrap:wrap; gap:var(--space-3);">
+      <span class="badge badge-primary">Adventure</span>
+      <span class="badge badge-secondary">Beach</span>
+      <span class="badge badge-success">On Budget</span>
+      <span class="badge badge-warning">Near Limit</span>
+      <span class="badge badge-error">Over Budget</span>
+      <span class="badge badge-neutral">Draft</span>
+      <span class="badge" style="background:var(--flame-100);color:var(--flame-700);">Upcoming</span>
+      <span class="badge" style="background:var(--ocean-50);color:var(--ocean-700);">Shared</span>
+      <span class="badge" style="background:var(--sand-100);color:var(--sand-700);">Solo</span>
+    </div>
+  </div>
+
+  <!-- CARDS -->
+  <div id="cards" style="margin-bottom:var(--space-12);">
+    <h3 style="font-family:var(--font-display); font-size:22px; font-weight:700; margin-bottom:var(--space-2); color:var(--text-primary);">Trip Cards</h3>
+    <p style="font-size:14px; color:var(--text-secondary); margin-bottom:var(--space-6);">Used on the Dashboard and My Trips screens. Hover lifts with shadow-lg. Border-radius: 16px (xl).</p>
+    <div style="background:var(--bg-muted); padding:var(--space-6); border-radius:var(--radius-xl); display:flex; flex-wrap:wrap; gap:var(--space-5);">
+      <div class="trip-card">
+        <div class="trip-card-img" style="background:linear-gradient(135deg,#FF6B2B 0%,#F04E00 100%);">
+          <span class="badge badge-primary" style="background:rgba(255,255,255,0.25); color:white;">3 Cities</span>
+        </div>
+        <div class="trip-card-body">
+          <div class="trip-card-title">Japan Adventure</div>
+          <div class="trip-card-sub">Jun 15 – Jun 29, 2025</div>
+          <div style="margin-top:var(--space-3); display:flex; justify-content:space-between; align-items:center;">
+            <span class="badge badge-success">On Budget</span>
+            <span style="font-size:13px; font-weight:600; color:var(--brand-primary);">$2,400</span>
+          </div>
+        </div>
+      </div>
+      <div class="trip-card">
+        <div class="trip-card-img" style="background:linear-gradient(135deg,#00B4A0 0%,#009182 100%);">
+          <span class="badge" style="background:rgba(255,255,255,0.25); color:white;">5 Cities</span>
+        </div>
+        <div class="trip-card-body">
+          <div class="trip-card-title">Europe Rail Tour</div>
+          <div class="trip-card-sub">Aug 1 – Aug 21, 2025</div>
+          <div style="margin-top:var(--space-3); display:flex; justify-content:space-between; align-items:center;">
+            <span class="badge badge-warning">Near Limit</span>
+            <span style="font-size:13px; font-weight:600; color:var(--brand-secondary);">$4,800</span>
+          </div>
+        </div>
+      </div>
+      <div class="trip-card">
+        <div class="trip-card-img" style="background:linear-gradient(135deg,#D4B051 0%,#B8902C 100%);">
+          <span class="badge" style="background:rgba(255,255,255,0.25); color:white;">2 Cities</span>
+        </div>
+        <div class="trip-card-body">
+          <div class="trip-card-title">Bali Retreat</div>
+          <div class="trip-card-sub">Oct 5 – Oct 12, 2025</div>
+          <div style="margin-top:var(--space-3); display:flex; justify-content:space-between; align-items:center;">
+            <span class="badge badge-neutral">Draft</span>
+            <span style="font-size:13px; font-weight:600; color:var(--text-tertiary);">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AVATARS -->
+  <div id="avatars" style="margin-bottom:var(--space-12);">
+    <h3 style="font-family:var(--font-display); font-size:22px; font-weight:700; margin-bottom:var(--space-2); color:var(--text-primary);">Avatars</h3>
+    <p style="font-size:14px; color:var(--text-secondary); margin-bottom:var(--space-6);">Used in profile screens, shared itinerary views, and comment threads.</p>
+    <div style="background:var(--bg-muted); padding:var(--space-6); border-radius:var(--radius-xl); display:flex; align-items:center; gap:var(--space-5); flex-wrap:wrap;">
+      <div>
+        <div class="avatar avatar-sm" style="background:var(--flame-500);">AJ</div>
+        <div class="type-meta" style="text-align:center;margin-top:4px;">28px</div>
+      </div>
+      <div>
+        <div class="avatar avatar-md" style="background:var(--ocean-500);">MT</div>
+        <div class="type-meta" style="text-align:center;margin-top:4px;">40px</div>
+      </div>
+      <div>
+        <div class="avatar avatar-lg" style="background:var(--sand-500);">RK</div>
+        <div class="type-meta" style="text-align:center;margin-top:4px;">56px</div>
+      </div>
+      <!-- Avatar group -->
+      <div style="display:flex; align-items:center;">
+        <div class="avatar avatar-md" style="background:var(--flame-500); margin-right:-10px; border:2px solid var(--bg-surface); z-index:3;">S</div>
+        <div class="avatar avatar-md" style="background:var(--ocean-500); margin-right:-10px; border:2px solid var(--bg-surface); z-index:2;">A</div>
+        <div class="avatar avatar-md" style="background:var(--sand-500); border:2px solid var(--bg-surface); z-index:1;">J</div>
+        <div style="font-size:12px; color:var(--text-tertiary); margin-left:var(--space-4);">Avatar Stack<br>(shared trips)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ICONS -->
+  <div id="icons" style="margin-bottom:var(--space-6);">
+    <h3 style="font-family:var(--font-display); font-size:22px; font-weight:700; margin-bottom:var(--space-2); color:var(--text-primary);">Icon System</h3>
+    <p style="font-size:14px; color:var(--text-secondary); margin-bottom:var(--space-6);">Recommended: Phosphor Icons or Lucide (outlined, 24px base). Sizes: 16px inline, 20px UI, 24px standalone, 32px feature icons.</p>
+    <div class="icon-grid">
+      <div class="icon-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg><span>Location</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Calendar</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>Duration</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span>Featured</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><path d="M7 7h.01"/></svg><span>Category</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg><span>Menu</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Search</span></div>
+      <div class="icon-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg><span>Community</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PAGE 6: RESPONSIVE ===== -->
+<section id="responsive" class="ds-section">
+  <div class="page-indicator"><span class="page-num">6</span>Layout</div>
+  <div class="section-eyebrow">Responsive UI</div>
+  <h2 class="section-title">Breakpoints &amp; Grid</h2>
+  <p class="section-desc">5 breakpoints covering all device sizes. Traveloop uses a 12-column fluid grid with adaptive gutters and max-width containers.</p>
+
+  <div class="bp-grid" style="margin-bottom:var(--space-10);">
+    <div class="bp-card mobile">
+      <div class="bp-label" style="color:var(--flame-500);">Mobile</div>
+      <div class="bp-range">0 – 639px</div>
+      <div class="bp-cols">4 columns</div>
+      <div class="bp-gutter">Gutter: 16px · Margin: 16px</div>
+      <div style="font-size:11px; color:var(--text-tertiary); margin-top:var(--space-3); font-family:var(--font-mono);">sm: (none / default)</div>
+    </div>
+    <div class="bp-card tablet">
+      <div class="bp-label" style="color:var(--ocean-500);">Tablet</div>
+      <div class="bp-range">640 – 767px</div>
+      <div class="bp-cols">8 columns</div>
+      <div class="bp-gutter">Gutter: 20px · Margin: 24px</div>
+      <div style="font-size:11px; color:var(--text-tertiary); margin-top:var(--space-3); font-family:var(--font-mono);">sm: 640px</div>
+    </div>
+    <div class="bp-card laptop">
+      <div class="bp-label" style="color:var(--sand-600);">Laptop</div>
+      <div class="bp-range">768 – 1023px</div>
+      <div class="bp-cols">12 columns</div>
+      <div class="bp-gutter">Gutter: 24px · Margin: 32px</div>
+      <div style="font-size:11px; color:var(--text-tertiary); margin-top:var(--space-3); font-family:var(--font-mono);">md: 768px</div>
+    </div>
+    <div class="bp-card desktop">
+      <div class="bp-label" style="color:var(--ink-500);">Desktop</div>
+      <div class="bp-range">1024 – 1279px</div>
+      <div class="bp-cols">12 columns</div>
+      <div class="bp-gutter">Gutter: 32px · Margin: 48px</div>
+      <div style="font-size:11px; color:var(--text-tertiary); margin-top:var(--space-3); font-family:var(--font-mono);">lg: 1024px</div>
+    </div>
+    <div class="bp-card wide">
+      <div class="bp-label" style="color:var(--ink-600);">Wide</div>
+      <div class="bp-range">1280px+</div>
+      <div class="bp-cols">12 columns</div>
+      <div class="bp-gutter">Gutter: 40px · Max: 1280px</div>
+      <div style="font-size:11px; color:var(--text-tertiary); margin-top:var(--space-3); font-family:var(--font-mono);">xl: 1280px</div>
+    </div>
+  </div>
+
+  <!-- Screen-by-Screen Layout Rules -->
+  <h3 style="font-family:var(--font-display); font-size:22px; font-weight:700; margin-bottom:var(--space-6); color:var(--text-primary);">Screen Layout Reference</h3>
+  <div style="overflow-x:auto; margin-bottom:var(--space-10);">
+    <table class="resp-table">
+      <thead>
+        <tr>
+          <th>Screen</th>
+          <th>Mobile (0-639)</th>
+          <th>Tablet (640-767)</th>
+          <th>Laptop+ (768+)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="font-weight:600;">Dashboard</td><td>Single col, stacked cards</td><td>2-col card grid</td><td>3-col + sidebar nav</td></tr>
+        <tr><td style="font-weight:600;">My Trips</td><td>Full-width list cards</td><td>2-col trip grid</td><td>3-col trip grid</td></tr>
+        <tr><td style="font-weight:600;">Create Trip</td><td>Full-width form, stacked</td><td>Centered form (540px)</td><td>Centered form (600px)</td></tr>
+        <tr><td style="font-weight:600;">Itinerary Builder</td><td>Day accordion, no split</td><td>Left timeline, right details</td><td>3-pane: days / details / map</td></tr>
+        <tr><td style="font-weight:600;">City Search</td><td>Full-width, vertical list</td><td>2-col results grid</td><td>3-col results grid</td></tr>
+        <tr><td style="font-weight:600;">Budget Screen</td><td>Stacked charts, full-width</td><td>2-col breakdown + chart</td><td>Side-by-side chart + table</td></tr>
+        <tr><td style="font-weight:600;">Packing Checklist</td><td>Single col, tabs for categories</td><td>2-col by category</td><td>3-col by category</td></tr>
+        <tr><td style="font-weight:600;">Public Itinerary</td><td>Single col, full-width</td><td>Content 720px max</td><td>Content 860px max</td></tr>
+        <tr><td style="font-weight:600;">Profile/Settings</td><td>Stacked sections</td><td>2-col: nav + content</td><td>2-col: nav (240px) + content</td></tr>
+        <tr><td style="font-weight:600;">Admin Dashboard</td><td>Stacked stats + tables</td><td>2-col stats grid</td><td>4-col stats + side charts</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Tailwind Config -->
+  <h3 style="font-family:var(--font-display); font-size:22px; font-weight:700; margin-bottom:var(--space-5); color:var(--text-primary);">Tailwind Breakpoint Config</h3>
+  <div class="code-block">
+<pre><span class="code-comment">// tailwind.config.js</span>
+<span class="code-var">module</span>.exports = {
+  theme: {
+    screens: {
+      <span class="code-prop">sm</span>: <span class="code-str">'640px'</span>,   <span class="code-comment">// Tablet</span>
+      <span class="code-prop">md</span>: <span class="code-str">'768px'</span>,   <span class="code-comment">// Laptop</span>
+      <span class="code-prop">lg</span>: <span class="code-str">'1024px'</span>,  <span class="code-comment">// Desktop</span>
+      <span class="code-prop">xl</span>: <span class="code-str">'1280px'</span>,  <span class="code-comment">// Wide</span>
+    },
+    container: {
+      <span class="code-prop">center</span>: <span class="code-val">true</span>,
+      <span class="code-prop">padding</span>: {
+        <span class="code-prop">DEFAULT</span>: <span class="code-str">'1rem'</span>,
+        <span class="code-prop">sm</span>: <span class="code-str">'1.5rem'</span>,
+        <span class="code-prop">md</span>: <span class="code-str">'2rem'</span>,
+        <span class="code-prop">lg</span>: <span class="code-str">'3rem'</span>,
+        <span class="code-prop">xl</span>: <span class="code-str">'4rem'</span>,
+      },
+    },
+  }
+}</pre>
+  </div>
+</section>
+
+<!-- ===== PAGE 7: MOTION ===== -->
+<section id="motion" class="ds-section">
+  <div class="page-indicator"><span class="page-num">7</span>Motion</div>
+  <div class="section-eyebrow">Motion &amp; Animation</div>
+  <h2 class="section-title">Motion System</h2>
+  <p class="section-desc">Motion should feel purposeful and energetic — reinforcing the adventurous brand. Use fast transitions for micro-interactions and slower ones for page transitions.</p>
+
+  <!-- Duration Scale -->
+  <div style="overflow-x:auto; margin-bottom:var(--space-10);">
+    <table class="token-table">
+      <thead><tr><th>Token</th><th>Duration</th><th>Easing</th><th>Use Case</th></tr></thead>
+      <tbody>
+        <tr><td class="token-name">--transition-fast</td><td class="token-value">120ms</td><td class="token-value">ease</td><td class="token-preview">Hover, focus rings, button active</td></tr>
+        <tr><td class="token-name">--transition-base</td><td class="token-value">200ms</td><td class="token-value">ease</td><td class="token-preview">Card hover lift, theme switch, dropdowns</td></tr>
+        <tr><td class="token-name">--transition-slow</td><td class="token-value">350ms</td><td class="token-value">ease</td><td class="token-preview">Modal open/close, page fade, slide panels</td></tr>
+        <tr><td class="token-name">spring-enter</td><td class="token-value">300ms</td><td class="token-value">cubic-bezier(.34,1.56,.64,1)</td><td class="token-preview">Button hover scale, card pop-in</td></tr>
+        <tr><td class="token-name">spring-exit</td><td class="token-value">200ms</td><td class="token-value">cubic-bezier(.36,.07,.19,.97)</td><td class="token-preview">Bounce-out, error shake</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Animation demos -->
+  <h3 style="font-family:var(--font-display); font-size:20px; font-weight:700; margin-bottom:var(--space-5); color:var(--text-primary);">Interaction Patterns</h3>
+  <div style="background:var(--bg-muted); padding:var(--space-8); border-radius:var(--radius-xl); margin-bottom:var(--space-10);">
+    <div class="motion-demo">
+      <div>
+        <div class="motion-box anim-scale">Hover</div>
+        <div class="motion-label">Scale spring<br>on hover</div>
+      </div>
+      <div>
+        <div class="motion-box anim-slide" style="background:var(--brand-secondary);">Hover</div>
+        <div class="motion-label">Lift Y -4px<br>on hover</div>
+      </div>
+      <div>
+        <div class="motion-box" style="background:var(--brand-accent); animation:pulse 2s infinite;">Live</div>
+        <div class="motion-label">Pulse<br>live status</div>
+      </div>
+      <div>
+        <div class="skeleton" style="width:56px; height:56px; border-radius:var(--radius-lg);"></div>
+        <div class="motion-label">Skeleton<br>loading</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Transitions -->
+  <h3 style="font-family:var(--font-display); font-size:20px; font-weight:700; margin-bottom:var(--space-5); color:var(--text-primary);">Page Transition Rules</h3>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:var(--space-4); margin-bottom:var(--space-10);">
+    <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-xl); padding:var(--space-5);">
+      <div style="font-weight:700; font-size:14px; color:var(--text-primary); margin-bottom:var(--space-2);">Screen Enter</div>
+      <div style="font-size:13px; color:var(--text-secondary);">Fade in + slide up 12px. Duration: 300ms. Ease: ease-out.</div>
+    </div>
+    <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-xl); padding:var(--space-5);">
+      <div style="font-weight:700; font-size:14px; color:var(--text-primary); margin-bottom:var(--space-2);">Screen Exit</div>
+      <div style="font-size:13px; color:var(--text-secondary);">Fade out + slide up 8px. Duration: 200ms. Ease: ease-in.</div>
+    </div>
+    <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-xl); padding:var(--space-5);">
+      <div style="font-weight:700; font-size:14px; color:var(--text-primary); margin-bottom:var(--space-2);">Modal Open</div>
+      <div style="font-size:13px; color:var(--text-secondary);">Backdrop fade 200ms. Panel slide from bottom (mobile) or scale from center (desktop). 350ms.</div>
+    </div>
+    <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-xl); padding:var(--space-5);">
+      <div style="font-weight:700; font-size:14px; color:var(--text-primary); margin-bottom:var(--space-2);">List Stagger</div>
+      <div style="font-size:13px; color:var(--text-secondary);">Trip cards stagger in with 60ms delay between items. Max stagger: 5 items (300ms total).</div>
+    </div>
+  </div>
+
+  <!-- Reduced Motion -->
+  <div class="code-block">
+<pre><span class="code-comment">/* Always respect reduced motion preference */</span>
+@media (prefers-reduced-motion: reduce) {
+  <span class="code-prop">*</span> {
+    <span class="code-var">animation-duration</span>: <span class="code-val">0.01ms</span> !important;
+    <span class="code-var">animation-iteration-count</span>: <span class="code-val">1</span> !important;
+    <span class="code-var">transition-duration</span>: <span class="code-val">0.01ms</span> !important;
+  }
+}</pre>
+  </div>
+</section>
+
+<!-- ===== PAGE 8: ACCESSIBILITY ===== -->
+<section id="accessibility" class="ds-section">
+  <div class="page-indicator"><span class="page-num">8</span>Accessibility</div>
+  <div class="section-eyebrow">Accessibility</div>
+  <h2 class="section-title">A11y Standards</h2>
+  <p class="section-desc">Traveloop targets WCAG 2.1 Level AA compliance. Color contrast, keyboard navigation, focus management, and screen reader support are non-negotiable.</p>
+
+  <div class="a11y-grid" style="margin-bottom:var(--space-10);">
+    <div class="a11y-card">
+      <div class="a11y-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--flame-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <div class="a11y-title">Color Contrast</div>
+      <div class="a11y-desc">All text must meet 4.5:1 contrast ratio (AA). Large text (18px+) requires 3:1. Never convey info through color alone.</div>
+    </div>
+    <div class="a11y-card">
+      <div class="a11y-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--flame-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+      </div>
+      <div class="a11y-title">Keyboard Navigation</div>
+      <div class="a11y-desc">All interactive elements must be focusable. Tab order follows visual flow. Focus ring: 3px Flame-400 with 2px offset, no removal via CSS outline:none.</div>
+    </div>
+    <div class="a11y-card">
+      <div class="a11y-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--flame-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <div class="a11y-title">Touch Targets</div>
+      <div class="a11y-desc">Minimum 44×44px touch targets on mobile. Buttons: 44px height. Icon-only buttons must have aria-label. Spacing between targets: min 8px.</div>
+    </div>
+    <div class="a11y-card">
+      <div class="a11y-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--flame-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      </div>
+      <div class="a11y-title">Screen Readers</div>
+      <div class="a11y-desc">Use semantic HTML. All images need alt text. Forms need associated labels. Modals trap focus and announce to screen readers via role="dialog".</div>
+    </div>
+    <div class="a11y-card">
+      <div class="a11y-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--flame-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      </div>
+      <div class="a11y-title">Form Errors</div>
+      <div class="a11y-desc">Error messages appear inline below the field. Use role="alert" for dynamic errors. Never rely solely on red color — include an icon and text description.</div>
+    </div>
+    <div class="a11y-card">
+      <div class="a11y-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--flame-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      </div>
+      <div class="a11y-title">Multi-language</div>
+      <div class="a11y-desc">Set lang attribute per page. Use logical properties (margin-inline) over left/right. Font DM Sans supports 200+ Latin-based languages including all LTR scripts.</div>
+    </div>
+  </div>
+
+  <!-- Contrast table -->
+  <h3 style="font-family:var(--font-display); font-size:20px; font-weight:700; margin-bottom:var(--space-5); color:var(--text-primary);">Contrast Ratios</h3>
+  <div style="margin-bottom:var(--space-6);">
+    <div class="contrast-row">
+      <div class="contrast-sample" style="background:#FF6B2B; color:#FFFFFF;">White on Flame-400</div>
+      <div class="contrast-info">
+        <div class="contrast-ratio">3.1:1</div>
+        <div style="font-size:11px; color:var(--text-tertiary);">Use for large text / icons only</div>
+      </div>
+    </div>
+    <div class="contrast-row">
+      <div class="contrast-sample" style="background:#F04E00; color:#FFFFFF;">White on Flame-500</div>
+      <div class="contrast-info">
+        <div class="contrast-ratio">4.6:1</div>
+        <span class="contrast-pass">AA Pass</span>
+      </div>
+    </div>
+    <div class="contrast-row">
+      <div class="contrast-sample" style="background:#FFFFFF; color:#1A1917;">Ink-800 on White</div>
+      <div class="contrast-info">
+        <div class="contrast-ratio">18.4:1</div>
+        <span class="contrast-pass">AAA Pass</span>
+      </div>
+    </div>
+    <div class="contrast-row">
+      <div class="contrast-sample" style="background:#FDFAF3; color:#42403A;">Ink-600 on Sand-50</div>
+      <div class="contrast-info">
+        <div class="contrast-ratio">7.2:1</div>
+        <span class="contrast-pass">AA Pass</span>
+      </div>
+    </div>
+    <div class="contrast-row">
+      <div class="contrast-sample" style="background:#00B4A0; color:#FFFFFF;">White on Ocean-400</div>
+      <div class="contrast-info">
+        <div class="contrast-ratio">3.4:1</div>
+        <div style="font-size:11px; color:var(--text-tertiary);">Use for large text / icons only</div>
+      </div>
+    </div>
+    <div class="contrast-row">
+      <div class="contrast-sample" style="background:#006E63; color:#FFFFFF;">White on Ocean-600</div>
+      <div class="contrast-info">
+        <div class="contrast-ratio">6.8:1</div>
+        <span class="contrast-pass">AA Pass</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="do-dont-grid">
+    <div class="do-card">
+      <div class="do-label">✓ Do</div>
+      <p>Use Flame-500 (#F04E00) or darker for text on white backgrounds. Always pair error states with an error icon AND text, not just a red border. Use aria-label on all icon-only buttons like "Add Stop" or "Delete Trip".</p>
+    </div>
+    <div class="dont-card">
+      <div class="dont-label">✗ Don't</div>
+      <p>Never use Flame-400 (#FF6B2B) for body text on white — it fails AA. Don't remove focus rings with outline:none without providing a visible alternative. Never use placeholder text as a label substitute.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PAGE 9: CSS TOKENS ===== -->
+<section id="tokens" class="ds-section">
+  <div class="page-indicator"><span class="page-num">9</span>Tokens</div>
+  <div class="section-eyebrow">Design Tokens</div>
+  <h2 class="section-title">CSS Variables</h2>
+  <p class="section-desc">Complete CSS custom property reference. Import the root :root block in your global stylesheet. Swap to [data-theme="dark"] for dark mode.</p>
+
+  <div class="code-block">
+<pre><span class="code-comment">/* ===== TRAVELOOP DESIGN TOKENS ===== */</span>
+:root {
+  <span class="code-comment">/* Brand */</span>
+  <span class="code-var">--brand-primary</span>: <span class="code-str">#FF6B2B</span>;
+  <span class="code-var">--brand-primary-hover</span>: <span class="code-str">#F04E00</span>;
+  <span class="code-var">--brand-secondary</span>: <span class="code-str">#00B4A0</span>;
+  <span class="code-var">--brand-secondary-hover</span>: <span class="code-str">#009182</span>;
+  <span class="code-var">--brand-accent</span>: <span class="code-str">#D4B051</span>;
+
+  <span class="code-comment">/* Backgrounds */</span>
+  <span class="code-var">--bg-page</span>: <span class="code-str">#FDFAF3</span>;
+  <span class="code-var">--bg-surface</span>: <span class="code-str">#FFFFFF</span>;
+  <span class="code-var">--bg-elevated</span>: <span class="code-str">#FFFFFF</span>;
+  <span class="code-var">--bg-muted</span>: <span class="code-str">#F5F4F2</span>;
+
+  <span class="code-comment">/* Text */</span>
+  <span class="code-var">--text-primary</span>: <span class="code-str">#1A1917</span>;
+  <span class="code-var">--text-secondary</span>: <span class="code-str">#42403A</span>;
+  <span class="code-var">--text-tertiary</span>: <span class="code-str">#7E7869</span>;
+  <span class="code-var">--text-inverse</span>: <span class="code-str">#FDFAF3</span>;
+
+  <span class="code-comment">/* Borders */</span>
+  <span class="code-var">--border-default</span>: <span class="code-str">#C6C2B8</span>;
+  <span class="code-var">--border-subtle</span>: <span class="code-str">#E2E0DA</span>;
+  <span class="code-var">--border-strong</span>: <span class="code-str">#7E7869</span>;
+
+  <span class="code-comment">/* Typography */</span>
+  <span class="code-var">--font-display</span>: <span class="code-str">'Syne', sans-serif</span>;
+  <span class="code-var">--font-body</span>: <span class="code-str">'DM Sans', sans-serif</span>;
+  <span class="code-var">--font-mono</span>: <span class="code-str">'DM Mono', monospace</span>;
+
+  <span class="code-comment">/* Spacing (4px base grid) */</span>
+  <span class="code-var">--space-1</span>: <span class="code-val">4px</span>;   <span class="code-var">--space-2</span>: <span class="code-val">8px</span>;
+  <span class="code-var">--space-3</span>: <span class="code-val">12px</span>;  <span class="code-var">--space-4</span>: <span class="code-val">16px</span>;
+  <span class="code-var">--space-5</span>: <span class="code-val">20px</span>;  <span class="code-var">--space-6</span>: <span class="code-val">24px</span>;
+  <span class="code-var">--space-8</span>: <span class="code-val">32px</span>;  <span class="code-var">--space-10</span>: <span class="code-val">40px</span>;
+  <span class="code-var">--space-12</span>: <span class="code-val">48px</span>; <span class="code-var">--space-16</span>: <span class="code-val">64px</span>;
+  <span class="code-var">--space-20</span>: <span class="code-val">80px</span>; <span class="code-var">--space-24</span>: <span class="code-val">96px</span>;
+
+  <span class="code-comment">/* Radii */</span>
+  <span class="code-var">--radius-sm</span>: <span class="code-val">4px</span>;   <span class="code-var">--radius-md</span>: <span class="code-val">8px</span>;
+  <span class="code-var">--radius-lg</span>: <span class="code-val">12px</span>;  <span class="code-var">--radius-xl</span>: <span class="code-val">16px</span>;
+  <span class="code-var">--radius-2xl</span>: <span class="code-val">24px</span>; <span class="code-var">--radius-full</span>: <span class="code-val">9999px</span>;
+
+  <span class="code-comment">/* Shadows */</span>
+  <span class="code-var">--shadow-sm</span>: <span class="code-str">0 1px 3px rgba(26,25,23,.08), 0 1px 2px rgba(26,25,23,.04)</span>;
+  <span class="code-var">--shadow-md</span>: <span class="code-str">0 4px 12px rgba(26,25,23,.10), 0 2px 4px rgba(26,25,23,.06)</span>;
+  <span class="code-var">--shadow-lg</span>: <span class="code-str">0 12px 32px rgba(26,25,23,.12), 0 4px 8px rgba(26,25,23,.06)</span>;
+  <span class="code-var">--shadow-xl</span>: <span class="code-str">0 24px 48px rgba(26,25,23,.14), 0 8px 16px rgba(26,25,23,.08)</span>;
+
+  <span class="code-comment">/* Transitions */</span>
+  <span class="code-var">--transition-fast</span>: <span class="code-val">120ms ease</span>;
+  <span class="code-var">--transition-base</span>: <span class="code-val">200ms ease</span>;
+  <span class="code-var">--transition-slow</span>: <span class="code-val">350ms ease</span>;
+
+  <span class="code-comment">/* Z-index */</span>
+  <span class="code-var">--z-raised</span>: <span class="code-val">10</span>;    <span class="code-var">--z-dropdown</span>: <span class="code-val">100</span>;
+  <span class="code-var">--z-sticky</span>: <span class="code-val">200</span>;   <span class="code-var">--z-overlay</span>: <span class="code-val">300</span>;
+  <span class="code-var">--z-modal</span>: <span class="code-val">400</span>;    <span class="code-var">--z-toast</span>: <span class="code-val">500</span>;
+
+  <span class="code-comment">/* Semantic */</span>
+  <span class="code-var">--color-error</span>: <span class="code-str">#E53E3E</span>;
+  <span class="code-var">--color-warning</span>: <span class="code-str">#DD6B20</span>;
+  <span class="code-var">--color-success</span>: <span class="code-str">#38A169</span>;
+  <span class="code-var">--color-info</span>: <span class="code-str">#3182CE</span>;
+}
+
+[data-theme="dark"] {
+  <span class="code-var">--bg-page</span>: <span class="code-str">#0A0907</span>;
+  <span class="code-var">--bg-surface</span>: <span class="code-str">#1A1917</span>;
+  <span class="code-var">--bg-elevated</span>: <span class="code-str">#2D2C28</span>;
+  <span class="code-var">--bg-muted</span>: <span class="code-str">#42403A</span>;
+  <span class="code-var">--text-primary</span>: <span class="code-str">#F5F4F2</span>;
+  <span class="code-var">--text-secondary</span>: <span class="code-str">#C6C2B8</span>;
+  <span class="code-var">--brand-primary</span>: <span class="code-str">#FF8C5A</span>;
+  <span class="code-var">--brand-secondary</span>: <span class="code-str">#3DCABA</span>;
+  <span class="code-var">--border-default</span>: <span class="code-str">#42403A</span>;
+  <span class="code-var">--border-subtle</span>: <span class="code-str">#2D2C28</span>;
+}</pre>
+  </div>
+</section>
+
+<!-- ===== PAGE 10: TAILWIND MAP ===== -->
+<section id="tailwind" class="ds-section">
+  <div class="page-indicator"><span class="page-num">10</span>Reference</div>
+  <div class="section-eyebrow">Tailwind CSS</div>
+  <h2 class="section-title">Tailwind Config Map</h2>
+  <p class="section-desc">Map of Traveloop design tokens to Tailwind class names. Extend your tailwind.config.js with these values for seamless utility-class usage.</p>
+
+  <div class="code-block" style="margin-bottom:var(--space-10);">
+<pre><span class="code-comment">// tailwind.config.js — Traveloop theme extension</span>
+<span class="code-var">module</span>.exports = {
+  darkMode: [<span class="code-str">'selector'</span>, <span class="code-str">'[data-theme="dark"]'</span>],
+  theme: {
+    extend: {
+      colors: {
+        flame: {
+          <span class="code-val">50</span>: <span class="code-str">'#FFF3EE'</span>, <span class="code-val">100</span>: <span class="code-str">'#FFD9C4'</span>,
+          <span class="code-val">300</span>: <span class="code-str">'#FF8C5A'</span>, <span class="code-val">400</span>: <span class="code-str">'#FF6B2B'</span>,
+          <span class="code-val">500</span>: <span class="code-str">'#F04E00'</span>, <span class="code-val">700</span>: <span class="code-str">'#902D00'</span>,
+        },
+        ocean: {
+          <span class="code-val">50</span>: <span class="code-str">'#E8F8F5'</span>, <span class="code-val">400</span>: <span class="code-str">'#00B4A0'</span>,
+          <span class="code-val">500</span>: <span class="code-str">'#009182'</span>, <span class="code-val">700</span>: <span class="code-str">'#004D46'</span>,
+        },
+        sand: {
+          <span class="code-val">50</span>: <span class="code-str">'#FDFAF3'</span>, <span class="code-val">400</span>: <span class="code-str">'#D4B051'</span>,
+          <span class="code-val">500</span>: <span class="code-str">'#B8902C'</span>,
+        },
+        ink: {
+          <span class="code-val">50</span>: <span class="code-str">'#F5F4F2'</span>, <span class="code-val">200</span>: <span class="code-str">'#C6C2B8'</span>,
+          <span class="code-val">600</span>: <span class="code-str">'#42403A'</span>, <span class="code-val">800</span>: <span class="code-str">'#1A1917'</span>,
+        },
+      },
+      fontFamily: {
+        display: [<span class="code-str">'Syne'</span>, <span class="code-str">'sans-serif'</span>],
+        body: [<span class="code-str">'DM Sans'</span>, <span class="code-str">'sans-serif'</span>],
+        mono: [<span class="code-str">'DM Mono'</span>, <span class="code-str">'monospace'</span>],
+      },
+      borderRadius: {
+        <span class="code-val">sm</span>: <span class="code-str">'4px'</span>, <span class="code-val">md</span>: <span class="code-str">'8px'</span>,
+        <span class="code-val">lg</span>: <span class="code-str">'12px'</span>, <span class="code-val">xl</span>: <span class="code-str">'16px'</span>,
+        <span class="code-val">'2xl'</span>: <span class="code-str">'24px'</span>,
+      },
+      spacing: {
+        <span class="code-val">4.5</span>: <span class="code-str">'18px'</span>, <span class="code-val">18</span>: <span class="code-str">'72px'</span>,
+        <span class="code-val">22</span>: <span class="code-str">'88px'</span>, <span class="code-val">26</span>: <span class="code-str">'104px'</span>,
+      },
+      transitionDuration: {
+        <span class="code-val">fast</span>: <span class="code-str">'120ms'</span>,
+        <span class="code-val">base</span>: <span class="code-str">'200ms'</span>,
+        <span class="code-val">slow</span>: <span class="code-str">'350ms'</span>,
+      },
+    },
+  },
+}</pre>
+  </div>
+
+  <!-- Common Utility Patterns -->
+  <h3 style="font-family:var(--font-display); font-size:20px; font-weight:700; margin-bottom:var(--space-5); color:var(--text-primary);">Common Utility Patterns</h3>
+  <div class="tw-grid">
+    <div class="tw-card">
+      <div class="tw-class">Primary Button</div>
+      <div class="tw-value">bg-flame-400 text-white font-semibold rounded-xl hover:bg-flame-500 transition-base</div>
+    </div>
+    <div class="tw-card">
+      <div class="tw-class">Card</div>
+      <div class="tw-value">bg-white border border-ink-200 rounded-2xl shadow-sm hover:shadow-lg transition-base</div>
+    </div>
+    <div class="tw-card">
+      <div class="tw-class">Display Heading</div>
+      <div class="tw-value">font-display text-5xl font-extrabold tracking-tight text-ink-800</div>
+    </div>
+    <div class="tw-card">
+      <div class="tw-class">Body Text</div>
+      <div class="tw-value">font-body text-base text-ink-600 leading-relaxed</div>
+    </div>
+    <div class="tw-card">
+      <div class="tw-class">Badge Primary</div>
+      <div class="tw-value">bg-flame-50 text-flame-700 text-xs font-semibold px-3 py-1 rounded-full</div>
+    </div>
+    <div class="tw-card">
+      <div class="tw-class">Input</div>
+      <div class="tw-value">border border-ink-200 rounded-xl px-4 py-2.5 text-sm focus:border-flame-400 focus:ring-2 focus:ring-flame-400/15</div>
+    </div>
+    <div class="tw-card">
+      <div class="tw-class">Avatar MD</div>
+      <div class="tw-value">w-10 h-10 rounded-full bg-flame-500 flex items-center justify-center text-white font-bold font-display</div>
+    </div>
+    <div class="tw-card">
+      <div class="tw-class">Page Section</div>
+      <div class="tw-value">py-20 px-4 md:px-8 lg:px-16 max-w-screen-xl mx-auto</div>
+    </div>
+    <div class="tw-card">
+      <div class="tw-class">Trip Grid</div>
+      <div class="tw-value">grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6</div>
+    </div>
+    <div class="tw-card">
+      <div class="tw-class">Skeleton</div>
+      <div class="tw-value">animate-pulse bg-ink-100 rounded-xl</div>
+    </div>
+    <div class="tw-card">
+      <div class="tw-class">Dark Mode Toggle</div>
+      <div class="tw-value">Apply data-theme="dark" to &lt;html&gt; — Tailwind darkMode selector picks it up</div>
+    </div>
+    <div class="tw-card">
+      <div class="tw-class">Eyebrow Text</div>
+      <div class="tw-value">text-xs font-bold uppercase tracking-widest text-flame-400</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="margin-top:var(--space-20); padding-top:var(--space-10); border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:var(--space-4);">
+    <div>
+      <div style="font-family:var(--font-display); font-size:24px; font-weight:800; color:var(--brand-primary);">Traveloop</div>
+      <div style="font-size:13px; color:var(--text-tertiary); margin-top:var(--space-1);">Design System v1.0 — Odoo Hackathon 2025</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:12px; color:var(--text-tertiary);">10 pages · Colors · Typography · Spacing · Components</div>
+      <div style="font-size:12px; color:var(--text-tertiary);">Responsive · Motion · Accessibility · CSS Tokens · Tailwind</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+}
+
+const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+if (mediaQuery.matches) {
+  document.documentElement.setAttribute('data-theme', 'dark');
+}
+</script>
+</body>
+</html>
