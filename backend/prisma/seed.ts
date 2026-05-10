@@ -190,6 +190,8 @@ async function main() {
     { cityId: 8, name: "Kerala Ayurvedic Massage", type: "WELLNESS", estimatedCost: 2000, durationHours: 2, description: "Traditional Abhyanga full-body oil massage at an authentic Ayurvedic centre.", imageUrl: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800" },
   ];
 
+  await prisma.tripActivity.deleteMany({});
+  await prisma.activity.deleteMany({});
   await prisma.activity.createMany({
     data: activityData.map((d) => ({
       cityId: d.cityId,
@@ -200,7 +202,6 @@ async function main() {
       description: d.description,
       imageUrl: d.imageUrl,
     })),
-    skipDuplicates: true,
   });
 
   const allActivities = await prisma.activity.findMany({ select: { id: true, name: true } });
