@@ -30,14 +30,14 @@ const typeVariant = { Travel: 'info', Stay: 'secondary', Food: 'accent', Walk: '
 export default function ItineraryView() {
   const { navigate } = useNav()
   return (
-    <div className="flex flex-col h-screen bg-background text-foreground font-sans overflow-hidden">
+    <div className="flex flex-col h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body overflow-hidden">
       <Chrome active="My Trips" />
       <Controls q="Search this itinerary…" />
-      <div className="flex items-end justify-between px-8 py-6 border-b shrink-0">
+      <div className="flex items-end justify-between px-8 py-6 border-b border-[var(--border-subtle)] shrink-0 bg-[var(--bg-surface)]">
         <div>
           <Badge variant="secondary" className="mb-2">Itinerary · 16 days</Badge>
-          <h1 className="text-3xl font-semibold tracking-tight">Rome &amp; the Amalfi</h1>
-          <p className="text-muted-foreground mt-1">Day-by-day plan with cost breakdown</p>
+          <h1 className="font-display text-3xl font-bold tracking-tight">Rome &amp; the Amalfi</h1>
+          <p className="text-[var(--text-secondary)] mt-1">Day-by-day plan with cost breakdown</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline"><Download size={14} /> Export</Button>
@@ -50,22 +50,22 @@ export default function ItineraryView() {
           {days.map(d => (
             <div key={d.day}>
               <div className="flex items-baseline gap-3 mb-3">
-                <h2 className="text-xl font-semibold">{d.day}</h2>
-                <span className="text-sm text-muted-foreground">{d.date}</span>
+                <h2 className="font-display text-xl font-bold">{d.day}</h2>
+                <span className="text-sm text-[var(--text-tertiary)]">{d.date}</span>
               </div>
-              <Card className="rounded-xl border shadow-sm py-0">
+              <Card className="py-0">
                 <CardContent className="p-0">
                   {d.items.map((it, i) => (
-                    <div key={i} className={cn('grid grid-cols-[80px_1fr_100px_80px] items-center gap-4 px-5 py-4', i > 0 && 'border-t')}>
-                      <span className="font-mono text-sm">{it.time}</span>
+                    <div key={i} className={cn('grid grid-cols-[80px_1fr_100px_80px] items-center gap-4 px-5 py-4', i > 0 && 'border-t border-[var(--border-subtle)]')}>
+                      <span className="font-mono text-sm text-[var(--text-tertiary)]">{it.time}</span>
                       <div>
                         <div className="font-medium">{it.name}</div>
                         <div className="flex items-center gap-2 mt-1">
                           <Badge variant={typeVariant[it.type]}>{it.type}</Badge>
-                          <span className="text-xs text-muted-foreground">{it.dur}</span>
+                          <span className="text-xs text-[var(--text-tertiary)]">{it.dur}</span>
                         </div>
                       </div>
-                      <span className={cn('text-right font-medium', it.cost === 'free' ? 'text-emerald-600' : '')}>{it.cost}</span>
+                      <span className={cn('text-right font-medium', it.cost === 'free' ? 'text-[var(--color-success)]' : '')}>{it.cost}</span>
                       <div className="flex justify-end">
                         <Button variant="ghost" size="icon"><MoreHorizontal size={16} /></Button>
                       </div>
@@ -78,7 +78,7 @@ export default function ItineraryView() {
         </div>
 
         <aside>
-          <Card className="rounded-xl border shadow-sm py-0">
+          <Card className="py-0">
             <CardHeader className="p-5 pb-3">
               <CardDescription>Trip budget</CardDescription>
               <CardTitle className="text-3xl">€2,400</CardTitle>
@@ -90,14 +90,14 @@ export default function ItineraryView() {
                 <div key={k} className="mb-3">
                   <div className="flex justify-between text-sm mb-1.5">
                     <span>{k}</span>
-                    <span className="font-medium">{v} <span className="text-muted-foreground text-xs">· {p}%</span></span>
+                    <span className="font-medium">{v} <span className="text-[var(--text-tertiary)] text-xs">· {p}%</span></span>
                   </div>
-                  <div className="h-1.5 rounded-full bg-secondary overflow-hidden">
-                    <div className="h-full bg-primary" style={{ width: `${p}%` }} />
+                  <div className="h-1.5 rounded-full bg-[var(--bg-muted)] overflow-hidden">
+                    <div className="h-full bg-[var(--brand-primary)]" style={{ width: `${p}%` }} />
                   </div>
                 </div>
               ))}
-              <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-md text-xs text-amber-900">
+              <div className="mt-4 p-3 bg-[#FEFCBF] border border-[#F6E05E] rounded-[var(--radius-md)] text-xs text-[#975A16]">
                 ▲ Day 3 is over the daily average by €38. Consider moving the dawn tour.
               </div>
               <Button variant="outline" size="sm" className="w-full mt-4" onClick={() => navigate('invoice')}>View invoice</Button>

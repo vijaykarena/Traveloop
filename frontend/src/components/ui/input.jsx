@@ -2,21 +2,26 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-function Input({
-  className,
-  type,
-  ...props
-}) {
+function Input({ className, type, ...props }) {
   return (
     <input
       type={type}
       data-slot="input"
       className={cn(
-        "h-9 w-full min-w-0 rounded-3xl border border-transparent bg-input/50 px-3 py-1 text-base transition-[color,box-shadow,background-color] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
-        className
+        "font-body text-sm w-full min-w-0",
+        "bg-[var(--bg-surface)] text-[var(--text-primary)]",
+        "border-[1.5px] border-[var(--border-default)] rounded-[var(--radius-lg)]",
+        "px-4 py-2.5 h-11",
+        "outline-none transition-all duration-[120ms] ease",
+        "placeholder:text-[var(--text-tertiary)]",
+        "focus:border-[var(--brand-primary)] focus:shadow-[0_0_0_3px_rgba(255,107,43,0.15)]",
+        "disabled:pointer-events-none disabled:opacity-50",
+        "file:text-[var(--text-primary)] file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium",
+        className,
       )}
-      {...props} />
-  );
+      {...props}
+    />
+  )
 }
 
 export { Input }

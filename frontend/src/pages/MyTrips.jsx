@@ -1,6 +1,7 @@
 import Chrome from '../components/Chrome'
 import Controls from '../components/Controls'
 import Img from '../components/Img'
+import SectionHeader from '../components/common/SectionHeader'
 import { useNav } from '../navigation'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -16,25 +17,24 @@ const groups = [
 export default function MyTrips() {
   const { navigate } = useNav()
   return (
-    <div className="flex flex-col h-screen bg-background text-foreground font-sans overflow-hidden">
+    <div className="flex flex-col h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body overflow-hidden">
       <Chrome active="My Trips" />
       <Controls q="Search your trips…" />
       <div className="px-8 py-6 space-y-6 flex-1 overflow-auto">
         {groups.map(g => (
           <div key={g.label}>
-            <div className="flex items-baseline justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <h2 className="text-xl font-semibold">{g.label}</h2>
-                <Badge variant={g.variant}>{g.count}</Badge>
-              </div>
-              <Button variant="link" size="sm">View all <ArrowRight size={14} /></Button>
-            </div>
-            <Card className="overflow-hidden rounded-xl border shadow-sm py-0">
+            <SectionHeader
+              title={g.label}
+              trailing={<Button variant="link" size="sm">View all <ArrowRight size={14} /></Button>}
+            >
+              <Badge variant={g.variant} className="ml-2">{g.count}</Badge>
+            </SectionHeader>
+            <Card className="overflow-hidden py-0">
               <div className="grid grid-cols-[200px_1fr_auto] items-center">
-                <Img ratio="3/2" label={g.sample.img} className="rounded-none border-0 border-r rounded-l-xl" style={{ aspectRatio: undefined, height: '100%' }} />
+                <Img ratio="3/2" label={g.sample.img} className="rounded-none border-0 border-r rounded-l-[var(--radius-xl)]" style={{ aspectRatio: undefined, height: '100%' }} />
                 <div className="p-5">
                   <CardTitle className="text-xl">{g.sample.title}</CardTitle>
-                  <div className="text-sm text-muted-foreground mt-1">{g.sample.dates} · {g.sample.stops}</div>
+                  <div className="text-sm text-[var(--text-tertiary)] mt-1">{g.sample.dates} · {g.sample.stops}</div>
                   <div className="flex gap-2 mt-3">
                     <Badge variant="accent">{g.sample.budget}</Badge>
                     <Badge variant="outline">Notes · 6</Badge>
