@@ -2,7 +2,9 @@
   "name": "backend",
   "private": true,
   "scripts": {
-    "dev": "bun run --watch src/app.ts"
+    "dev": "bun run --watch src/app.ts",
+    "migrate": "prisma migrate dev",
+    "db:push": "prisma db push"
   },
   "devDependencies": {
     "@types/bcryptjs": "^3.0.0",
