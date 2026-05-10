@@ -16,30 +16,39 @@ const sections = [
 export default function BuildItinerary() {
   const [tab, setTab] = useState('Sections')
   return (
-    <div className="flex flex-col h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body overflow-hidden">
+    <div className="flex flex-col min-h-screen lg:h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body lg:overflow-hidden">
       <Chrome active="Plan" />
-      <div className="flex items-end justify-between px-8 py-6 border-b border-[var(--border-subtle)] shrink-0 bg-[var(--bg-surface)]">
+
+      {/* Page Header — stacks on mobile */}
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 px-4 sm:px-8 py-4 sm:py-6 border-b border-[var(--border-subtle)] shrink-0 bg-[var(--bg-surface)]">
         <div>
           <Badge variant="secondary" className="mb-2">Itinerary builder · 16 days</Badge>
-          <h1 className="font-display text-3xl font-bold tracking-tight">Rome &amp; the Amalfi Coast</h1>
+          <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight">Rome &amp; the Amalfi Coast</h1>
         </div>
         <TabsSwitcher tabs={['Sections', 'Calendar', 'Map']} active={tab} onChange={setTab} />
       </div>
-      <div className="p-8 space-y-4 flex-1 overflow-auto">
+
+      {/* Section Cards */}
+      <div className="p-4 sm:p-8 space-y-4 flex-1 lg:overflow-y-auto">
         {sections.map(s => (
           <Card key={s.n} className="py-0">
-            <div className="grid grid-cols-[80px_1fr_280px]">
-              <div className="p-6 border-r border-[var(--border-subtle)] flex items-start justify-center">
-                <div className="h-10 w-10 rounded-full bg-[var(--brand-primary)] text-white grid place-items-center font-display font-bold">{s.n}</div>
+            {/* Desktop: 3-col [number | content | meta]  Mobile: stacked */}
+            <div className="flex flex-col md:grid md:grid-cols-[80px_1fr_280px]">
+              {/* Number */}
+              <div className="flex md:flex-col items-center gap-3 p-4 md:p-6 md:border-r border-b md:border-b-0 border-[var(--border-subtle)] justify-start md:justify-center">
+                <div className="h-10 w-10 rounded-full bg-[var(--brand-primary)] text-white grid place-items-center font-display font-bold shrink-0">{s.n}</div>
+                <span className="md:hidden font-display font-bold text-base">{s.title}</span>
               </div>
-              <CardContent className="pt-6 pb-6">
-                <CardTitle className="text-base">{s.title}</CardTitle>
+              {/* Content */}
+              <CardContent className="pt-4 md:pt-6 pb-4 md:pb-6">
+                <CardTitle className="text-base hidden md:block">{s.title}</CardTitle>
                 <CardDescription className="mt-2">{s.body}</CardDescription>
-                <div className="flex gap-2 mt-3">
+                <div className="flex flex-wrap gap-2 mt-3">
                   {s.tags.map(t => <Badge key={t} variant="secondary">{t}</Badge>)}
                 </div>
               </CardContent>
-              <div className="p-6 border-l border-[var(--border-subtle)] space-y-4 bg-[var(--bg-muted)]/30">
+              {/* Meta */}
+              <div className="p-4 md:p-6 md:border-l border-t md:border-t-0 border-[var(--border-subtle)] space-y-3 bg-[var(--bg-muted)]/30 flex flex-row md:flex-col flex-wrap gap-4 md:gap-0 items-center md:items-start">
                 <div>
                   <Label className="text-xs text-[var(--text-tertiary)]">Date range</Label>
                   <div className="font-medium mt-1 flex items-center gap-1.5 text-sm"><Calendar size={14} /> {s.dates}</div>
@@ -48,7 +57,7 @@ export default function BuildItinerary() {
                   <Label className="text-xs text-[var(--text-tertiary)]">Section budget</Label>
                   <div className="font-bold mt-1 text-[var(--brand-primary)] text-lg">{s.budget}</div>
                 </div>
-                <Button variant="outline" size="sm" className="w-full"><Edit size={14} /> Edit section</Button>
+                <Button variant="outline" size="sm" className="w-full md:w-full"><Edit size={14} /> Edit section</Button>
               </div>
             </div>
           </Card>

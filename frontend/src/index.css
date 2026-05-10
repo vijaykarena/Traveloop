@@ -258,3 +258,13 @@ a { cursor: pointer; }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--border-strong);
 }
+
+/* ===== SCROLLBAR HIDE UTILITY ===== */
+/* Used for horizontally scrollable rows (e.g. TabsSwitcher on mobile) */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

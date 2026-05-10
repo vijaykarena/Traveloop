@@ -18,46 +18,63 @@ const notes = [
 
 export default function Notes() {
   const [tab, setTab] = useState('All')
+  const [selectedNote, setSelectedNote] = useState(0)
+
   return (
-    <div className="flex flex-col h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body overflow-hidden">
+    <div className="flex flex-col min-h-screen lg:h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body lg:overflow-hidden">
       <Chrome active="My Trips" />
       <Controls q="Search trip notes…" extra={<Button size="sm"><Plus size={14} /> Add note</Button>} />
-      <div className="px-8 py-6 border-b border-[var(--border-subtle)] flex items-end justify-between shrink-0 bg-[var(--bg-surface)]">
+
+      {/* Page Header — stacks on mobile */}
+      <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-[var(--border-subtle)] flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 shrink-0 bg-[var(--bg-surface)]">
         <div>
           <Badge variant="secondary" className="mb-2">Rome &amp; Amalfi</Badge>
-          <h1 className="font-display text-3xl font-bold tracking-tight">Trip notes</h1>
+          <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight">Trip notes</h1>
           <p className="text-[var(--text-secondary)] mt-1">Important details, reminders, and confirmations.</p>
         </div>
         <TabsSwitcher tabs={['All', 'By day', 'By stop']} active={tab} onChange={setTab} />
       </div>
-      <div className="grid grid-cols-[200px_1fr] gap-6 p-8 flex-1 overflow-auto">
-        <aside>
+
+      {/* Main grid: sidebar hidden on mobile */}
+      <div className="flex flex-col lg:grid lg:grid-cols-[200px_1fr] gap-4 sm:gap-6 p-4 sm:p-8 flex-1 lg:overflow-auto">
+
+        {/* ===== SIDEBAR INDEX — hidden on mobile ===== */}
+        <aside className="hidden lg:block">
           <h3 className="text-xs font-bold text-[var(--text-tertiary)] uppercase tracking-wider mb-3">Index</h3>
           <div className="space-y-1">
             {notes.map((n, i) => (
-              <button key={i} className={cn('w-full text-left p-2 rounded-[var(--radius-md)] text-sm hover:bg-[var(--bg-muted)] transition-colors', i === 0 && 'bg-[var(--bg-muted)]')}>
+              <button
+                key={i}
+                onClick={() => setSelectedNote(i)}
+                className={cn(
+                  'w-full text-left p-2 rounded-[var(--radius-md)] text-sm hover:bg-[var(--bg-muted)] transition-colors',
+                  i === selectedNote && 'bg-[var(--bg-muted)]'
+                )}
+              >
                 <div className="font-medium truncate">№ {String(i + 1).padStart(2, '0')} · {n.title.split('—')[0].trim()}</div>
                 <div className="text-xs text-[var(--text-tertiary)]">{n.date}</div>
               </button>
             ))}
           </div>
         </aside>
+
+        {/* ===== NOTES LIST ===== */}
         <div className="space-y-4">
           {notes.map((n, i) => (
             <Card key={i} className="py-0">
-              <CardHeader className="flex-row items-start justify-between space-y-0 p-5 pb-3">
+              <CardHeader className="flex-row items-start justify-between space-y-0 p-4 sm:p-5 pb-3">
                 <div>
                   <div className="text-xs text-[var(--text-tertiary)] uppercase tracking-wider mb-1">{n.date}</div>
-                  <CardTitle className="text-lg">{n.title}</CardTitle>
+                  <CardTitle className="text-base sm:text-lg">{n.title}</CardTitle>
                 </div>
-                <div className="flex gap-1">
+                <div className="flex gap-1 shrink-0">
                   <Button variant="ghost" size="icon"><Edit size={14} /></Button>
                   <Button variant="ghost" size="icon"><Trash2 size={14} /></Button>
                 </div>
               </CardHeader>
-              <CardContent className="px-5 pb-5">
+              <CardContent className="px-4 sm:px-5 pb-4 sm:pb-5">
                 <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{n.body}</p>
-                <div className="flex gap-2 mt-3">
+                <div className="flex flex-wrap gap-2 mt-3">
                   {n.tags.map(t => <Badge key={t} variant="outline">{t}</Badge>)}
                 </div>
               </CardContent>

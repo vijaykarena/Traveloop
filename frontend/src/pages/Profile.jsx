@@ -12,25 +12,33 @@ import { cn } from '@/lib/utils'
 export default function Profile() {
   const { navigate } = useNav()
   return (
-    <div className="flex flex-col h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body overflow-hidden">
+    <div className="flex flex-col min-h-screen lg:h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body lg:overflow-hidden">
       <Chrome active="" user="AS" />
 
-      <div className="px-8 py-8 border-b border-[var(--border-subtle)] grid grid-cols-[120px_1fr_auto] gap-6 items-center shrink-0 bg-[var(--bg-surface)]">
-        <Avatar className="h-28 w-28 text-2xl">
-          <AvatarFallback className="bg-[var(--brand-primary)]/10 text-[var(--brand-primary)] text-2xl font-bold">AS</AvatarFallback>
-        </Avatar>
-        <div>
-          <Badge variant="secondary" className="mb-2">Member since Mar 2024 · 11 trips logged</Badge>
-          <h1 className="font-display text-3xl font-bold tracking-tight">Amelia Stone</h1>
-          <p className="text-[var(--text-secondary)] mt-1 max-w-xl">Slow traveller, occasional cook, cataloguer of small bookshops. Based in Lisbon.</p>
-        </div>
-        <div className="flex gap-2">
-          <Button variant="outline"><Settings size={14} /> Settings</Button>
-          <Button><Edit size={14} /> Edit profile</Button>
+      {/* ===== PROFILE HEADER ===== */}
+      {/* Desktop: 3-col [avatar | info | buttons]   Mobile: stacked, centered */}
+      <div className="px-4 sm:px-8 py-6 sm:py-8 border-b border-[var(--border-subtle)] shrink-0 bg-[var(--bg-surface)]">
+        <div className="flex flex-col sm:grid sm:grid-cols-[120px_1fr_auto] sm:gap-6 sm:items-center gap-4 items-center sm:items-start text-center sm:text-left">
+          <Avatar className="h-24 w-24 sm:h-28 sm:w-28 text-2xl">
+            <AvatarFallback className="bg-[var(--brand-primary)]/10 text-[var(--brand-primary)] text-2xl font-bold">AS</AvatarFallback>
+          </Avatar>
+          <div>
+            <Badge variant="secondary" className="mb-2">Member since Mar 2024 · 11 trips logged</Badge>
+            <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight">Amelia Stone</h1>
+            <p className="text-[var(--text-secondary)] mt-1 max-w-xl text-sm sm:text-base">Slow traveller, occasional cook, cataloguer of small bookshops. Based in Lisbon.</p>
+          </div>
+          <div className="flex gap-2 sm:flex-col sm:items-stretch">
+            <Button variant="outline" size="sm"><Settings size={14} /> Settings</Button>
+            <Button size="sm"><Edit size={14} /> Edit profile</Button>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-[1fr_2fr] gap-8 p-8 flex-1 overflow-auto">
+      {/* ===== MAIN CONTENT ===== */}
+      {/* Desktop: [1fr 2fr] | Mobile: stacked */}
+      <div className="flex flex-col lg:grid lg:grid-cols-[1fr_2fr] gap-4 sm:gap-8 p-4 sm:p-8 flex-1 lg:overflow-auto">
+
+        {/* LEFT — Account details + saved destinations */}
         <div>
           <SectionHeader title="Account details" />
           <Card className="py-0">
@@ -59,12 +67,14 @@ export default function Profile() {
           </div>
         </div>
 
+        {/* RIGHT — Trip cards */}
         <div>
           <SectionHeader
             title="Preplanned trips"
             trailing={<Badge variant="secondary">3 ahead</Badge>}
           />
-          <div className="grid grid-cols-3 gap-4">
+          {/* 1-col mobile → 2-col sm → 3-col lg */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[['Rome & Amalfi', '18 May'], ['Tokyo loop', '12 Jun'], ['Iceland', '02 Aug']].map(([n, d]) => (
               <Card key={n} className="py-0">
                 <Img ratio="4/3" className="rounded-t-[var(--radius-xl)] rounded-b-none border-0 border-b" />
@@ -79,8 +89,8 @@ export default function Profile() {
             ))}
           </div>
 
-          <SectionHeader title="Previous trips" className="mt-8" />
-          <div className="grid grid-cols-3 gap-4">
+          <SectionHeader title="Previous trips" className="mt-6 sm:mt-8" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[['Hokkaidō', 'Feb 2026'], ['Lofoten', 'Aug 2025'], ['Cusco', 'Apr 2025']].map(([n, d]) => (
               <Card key={n} className="py-0">
                 <Img ratio="4/3" className="rounded-t-[var(--radius-xl)] rounded-b-none border-0 border-b" />
