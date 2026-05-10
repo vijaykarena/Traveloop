@@ -1,0 +1,29 @@
+{
+  "name": "traveloop",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/vijaykarena/Traveloop#readme",
+  "bugs": {
+    "url": "https://github.com/vijaykarena/Traveloop/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vijaykarena/Traveloop.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"bun run dev:backend\" \"bun run dev:frontend\"",
+    "dev:backend": "bun run --filter backend dev",
+    "dev:frontend": "bun run --filter frontend dev"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
