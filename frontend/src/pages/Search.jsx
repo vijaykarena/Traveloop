@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardTitle, CardDescription } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
-import { MapPin, Plus, SlidersHorizontal, X } from 'lucide-react'
+import { MapPin, SlidersHorizontal, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import api, { ENDPOINTS } from '../api'
 
@@ -145,13 +145,10 @@ export default function Search() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex gap-2 mt-3">
-                      <Button size="sm" className="flex-1"><Plus size={14} /> Add to trip</Button>
                     </div>
-                  </div>
 
                   {/* Desktop */}
-                  <div className="hidden sm:grid sm:grid-cols-[40px_140px_1fr_auto] sm:items-center sm:gap-4 sm:p-4">
+                  <div className="hidden sm:grid sm:grid-cols-[40px_140px_1fr] sm:items-center sm:gap-4 sm:p-4">
                     <span className="text-xs text-[var(--text-tertiary)] font-mono">{String(i + 1).padStart(2, '0')}</span>
                     {r.imageUrl
                       ? <img src={r.imageUrl} alt={r.name} className="w-full aspect-[4/3] object-cover rounded-[var(--radius-md)]" />
@@ -172,9 +169,6 @@ export default function Search() {
                         </span>
                       </div>
                       {r.description && <CardDescription className="mt-2">{r.description}</CardDescription>}
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <Button size="sm"><Plus size={14} /> Add</Button>
                     </div>
                   </div>
                 </Card>

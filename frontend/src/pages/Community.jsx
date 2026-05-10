@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 import Chrome from '../components/Chrome'
 import Controls from '../components/Controls'
-import Img from '../components/Img'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardTitle, CardDescription } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { MapPin, ArrowRight, Plus } from 'lucide-react'
+import { MapPin, ArrowRight } from 'lucide-react'
+import { useNav } from '../navigation'
 import api, { ENDPOINTS } from '../api'
 
 function fmtDateRange(start, end) {
@@ -16,6 +16,7 @@ function fmtDateRange(start, end) {
 }
 
 export default function Community() {
+  const { navigate } = useNav()
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -32,13 +33,10 @@ export default function Community() {
       <Controls q="Search community trip plans…" hideFilters={true} />
 
       {/* Page Header */}
-      <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-[var(--border-subtle)] flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 shrink-0 bg-[var(--bg-surface)]">
-        <div>
-          <Badge variant="secondary" className="mb-2">Community</Badge>
-          <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight">Trips, in other people's words</h1>
-          <p className="text-[var(--text-secondary)] mt-1 max-w-xl text-sm sm:text-base">Travelers share their itineraries here. Search, filter, and copy any trip into your own plan.</p>
-        </div>
-        <Button className="self-start sm:self-auto shrink-0"><Plus size={14} /> Share a trip</Button>
+      <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-[var(--border-subtle)] shrink-0 bg-[var(--bg-surface)]">
+        <Badge variant="secondary" className="mb-2">Community</Badge>
+        <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight">Trips, in other people's words</h1>
+        <p className="text-[var(--text-secondary)] mt-1 max-w-xl text-sm sm:text-base">Browse public itineraries shared by other travelers.</p>
       </div>
 
       {/* Post cards */}
@@ -59,7 +57,7 @@ export default function Community() {
             const stops = p._count?.stops ?? 0
 
             return (
-              <Card key={p.id} className="hover:shadow-[var(--shadow-md)] transition-shadow cursor-pointer py-0">
+              <Card key={p.id} className="hover:shadow-[var(--shadow-md)] transition-shadow py-0">
                 {/* Mobile */}
                 <div className="block sm:hidden p-4">
                   <div className="flex items-center gap-3 mb-3">
@@ -82,12 +80,14 @@ export default function Community() {
                     {fmtDateRange(p.startDate, p.endDate)}
                   </div>
                   <div className="flex gap-2 mt-3">
-                    <Button size="sm" className="flex-1">View trip <ArrowRight size={14} /></Button>
+                    <Button size="sm" className="flex-1" onClick={() => navigate(`itinerary/${p.id}`)}>
+                      View trip <ArrowRight size={14} />
+                    </Button>
                   </div>
                 </div>
 
                 {/* Desktop */}
-                <div className="hidden sm:grid sm:grid-cols-[64px_1fr_180px] sm:items-center sm:gap-4 sm:p-5">
+                <div className="hidden sm:grid sm:grid-cols-[64px_1fr_140px] sm:items-center sm:gap-4 sm:p-5">
                   <Avatar className="h-14 w-14">
                     {p.user?.avatarUrl
                       ? <img src={p.user.avatarUrl} alt={authorName} className="h-full w-full object-cover rounded-full" />
@@ -106,8 +106,9 @@ export default function Community() {
                     <div className="text-xs text-[var(--text-tertiary)] mt-2">{fmtDateRange(p.startDate, p.endDate)}</div>
                   </div>
                   <div className="flex flex-col gap-2">
-                    <Button size="sm">View trip <ArrowRight size={14} /></Button>
-                    <Button variant="outline" size="sm">Copy itinerary</Button>
+                    <Button size="sm" onClick={() => navigate(`itinerary/${p.id}`)}>
+                      View trip <ArrowRight size={14} />
+                    </Button>
                   </div>
                 </div>
               </Card>

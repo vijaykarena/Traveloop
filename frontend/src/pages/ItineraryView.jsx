@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
-import { Download, Share, Plus, MapPin } from 'lucide-react'
+import { Plus, MapPin } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import api, { ENDPOINTS } from '../api'
 
@@ -88,8 +88,6 @@ export default function ItineraryView() {
           )}
         </div>
         <div className="flex flex-wrap gap-2">
-          <Button variant="outline" size="sm"><Download size={14} /> Export</Button>
-          <Button variant="outline" size="sm"><Share size={14} /> Share</Button>
           <Button size="sm" onClick={() => navigate(`build-itinerary/${id}`)}><Plus size={14} /> Edit</Button>
         </div>
       </div>

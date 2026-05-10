@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Progress } from '@/components/ui/progress'
 import { Input } from '@/components/ui/input'
-import { FileText, Package, Heart, Zap, Pill, Plus, Trash2, X, Check, Share } from 'lucide-react'
+import { FileText, Package, Heart, Zap, Pill, Plus, Trash2, X, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const API = 'http://localhost:4000'
@@ -132,7 +132,6 @@ export default function Packing() {
         {/* Action buttons wrap on mobile */}
         <div className="flex flex-wrap gap-2">
           <Button variant="outline" onClick={resetAll} disabled={!tripId || total === 0}>Reset</Button>
-          <Button variant="outline"><Share size={14} /> Share</Button>
           <Button onClick={() => setAdding(true)} disabled={!tripId || adding}>
             <Plus size={14} /> Add item
           </Button>

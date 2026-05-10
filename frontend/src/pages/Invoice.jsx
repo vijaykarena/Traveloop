@@ -231,8 +231,7 @@ export default function Invoice() {
 
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-2 mt-6">
-            <Button variant="outline"><Download size={14} /> Download invoice</Button>
-            <Button variant="outline"><Download size={14} /> Export PDF</Button>
+            <Button variant="outline" onClick={() => window.print()}><Download size={14} /> Print / Save PDF</Button>
             <div className="flex-1" />
             <Button onClick={() => navigate(`itinerary/${id}`)}>Back to itinerary</Button>
           </div>
