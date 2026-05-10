@@ -2,10 +2,12 @@
   "name": "backend",
   "private": true,
   "scripts": {
-    "dev": "bun run --watch src/app.js"
+    "dev": "bun run --watch src/app.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/express": "^5.0.6",
+    "@types/pg": "^8.20.0"
   },
   "peerDependencies": {
     "typescript": "^5"
