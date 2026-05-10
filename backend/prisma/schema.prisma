@@ -59,6 +59,8 @@ model User {
   firstName String
   lastName  String
   city      String
+  country   String
+  countryCode String
   phoneNo   String @unique
   role        Role     @default(USER)
   avatarUrl   String?

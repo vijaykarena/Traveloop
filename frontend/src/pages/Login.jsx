@@ -1,15 +1,52 @@
-import { useNav } from '../navigation'
-import Img from '../components/Img'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
-import { ArrowRight } from 'lucide-react'
+import {useState} from 'react';
+import {useNav} from '../navigation';
+import Img from '../components/Img';
+import {Button} from '@/components/ui/button';
+import {Input} from '@/components/ui/input';
+import {Label} from '@/components/ui/label';
+import {Badge} from '@/components/ui/badge';
+import {Card, CardHeader, CardTitle, CardDescription} from '@/components/ui/card';
+import {Checkbox} from '@/components/ui/checkbox';
+import {ArrowRight, Loader2} from 'lucide-react';
+import {useForm} from 'react-hook-form';
 
 export default function Login() {
-  const { navigate } = useNav()
+  const {navigate} = useNav();
+  const {
+    register,
+    handleSubmit,
+    formState: {errors},
+  } = useForm();
+
+  const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState('');
+
+  const onSubmit = async (formData) => {
+    setLoading(true);
+    setServerError('');
+
+    try {
+      const res = await fetch('http://localhost:4000/auth/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        navigate('dashboard');
+      } else {
+        setServerError(data.error || 'Invalid email or password');
+      }
+    } catch (err) {
+      setServerError('Failed to connect to the server');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex h-screen bg-background">
       <div className="flex-[0.46] flex flex-col justify-between p-12">
@@ -19,49 +56,92 @@ export default function Login() {
         </div>
 
         <div className="max-w-sm w-full">
-          <Badge variant="secondary" className="mb-4">Sign in</Badge>
+          <Badge variant="secondary" className="mb-4">
+            Sign in
+          </Badge>
           <h1 className="text-4xl font-semibold tracking-tight mb-2">Welcome back.</h1>
           <p className="text-muted-foreground mb-8">Pick up where you left off — your itineraries and notes are right where you left them.</p>
-          <div className="space-y-4">
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {serverError && <div className="bg-destructive/10 text-destructive text-sm p-4 rounded-lg mb-6 font-medium">{serverError}</div>}
+
             <div className="space-y-2">
               <Label>Email</Label>
-              <Input type="email" placeholder="name@traveloop.io" defaultValue="amelia.stone@traveloop.io" />
+              <Input
+                type="email"
+                {...register('email', {
+                  required: 'Email is required',
+                  pattern: {
+                    value: /^\S+@\S+$/i,
+                    message: 'Invalid email address',
+                  },
+                })}
+                placeholder="name@traveloop.io"
+                className={errors.email ? 'border-destructive' : ''}
+              />
+              {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
             </div>
+
             <div className="space-y-2">
               <div className="flex justify-between">
                 <Label>Password</Label>
-                <a className="text-xs text-primary hover:underline cursor-pointer" onClick={() => navigate('forgot-password')}>Forgot password?</a>
+                <a className="text-xs text-primary hover:underline cursor-pointer" onClick={() => navigate('forgot-password')}>
+                  Forgot password?
+                </a>
               </div>
-              <Input type="password" defaultValue="••••••••" />
+              <Input
+                type="password"
+                {...register('password', {required: 'Password is required'})}
+                placeholder="••••••••"
+                className={errors.password ? 'border-destructive' : ''}
+              />
+              {errors.password && <p className="text-xs text-destructive">{errors.password.message}</p>}
             </div>
+
             <label className="flex items-center gap-2 text-sm cursor-pointer">
-              <Checkbox checked />
-              Keep me signed in
+              <Checkbox id="remember" />
+              Remember me
             </label>
-            <Button className="w-full" onClick={() => navigate('dashboard')}>
-              Sign in <ArrowRight size={14} />
+
+            <Button className="w-full h-11" type="submit" disabled={loading}>
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Signing in...
+                </>
+              ) : (
+                <>
+                  Sign in <ArrowRight size={14} className="ml-2" />
+                </>
+              )}
             </Button>
-            <div className="text-sm text-muted-foreground text-center">
-              New here? <a className="text-foreground underline cursor-pointer" onClick={() => navigate('register')}>Create an account</a>
+
+            <div className="text-sm text-muted-foreground text-center pt-2">
+              New here?{' '}
+              <a className="text-foreground underline cursor-pointer" onClick={() => navigate('register')}>
+                Create an account
+              </a>
             </div>
-          </div>
+          </form>
         </div>
 
         <div className="text-xs text-muted-foreground flex justify-between">
-          <span>© 2026 Traveloop</span><span>v1.4.0</span>
+          <span>© 2026 Traveloop</span>
+          <span>v1.4.0</span>
         </div>
       </div>
 
       <div className="flex-1 relative bg-muted">
-        <Img label="Lisbon · 38.72° N" className="absolute inset-0 rounded-none border-0 border-l h-full w-full" style={{ aspectRatio: undefined }} />
+        <Img label="Lisbon · 38.72° N" className="absolute inset-0 rounded-none border-0 border-l h-full w-full" style={{aspectRatio: undefined}} />
         <Card className="absolute bottom-10 left-10 right-10 max-w-md rounded-xl border shadow-sm py-0">
           <CardHeader className="p-6">
-            <Badge variant="accent" className="w-fit mb-2">Featured · 7 days</Badge>
+            <Badge variant="accent" className="w-fit mb-2">
+              Featured · 7 days
+            </Badge>
             <CardTitle className="text-xl">The slow road through Iberia</CardTitle>
             <CardDescription>From Porto's wineries to Granada's old quarter — a hand-built itinerary.</CardDescription>
           </CardHeader>
         </Card>
       </div>
     </div>
-  )
+  );
 }
