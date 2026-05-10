@@ -26,17 +26,8 @@ router.post("/register", async (req: Request, res: Response) => {
     } = req.body;
 
     // 1. Validation
-    if (
-      !email ||
-      !password ||
-      !firstName ||
-      !lastName ||
-      !city ||
-      !country ||
-      !countryCode ||
-      !phoneNo
-    ) {
-      return res.status(400).json({ error: "All fields are required" });
+    if (!email || !password || !firstName || !lastName || !city || !phoneNo) {
+      return res.status(400).json({ error: "email, password, firstName, lastName, city, phoneNo required" });
     }
 
     // 2. Check if user already exists

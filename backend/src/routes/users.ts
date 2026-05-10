@@ -1,42 +1,16 @@
 import { Router, type Request, type Response } from "express";
 import prisma from "../lib/prisma";
+import { authenticate } from "../middleware/auth";
 
 const router = Router();
 
-// @route   GET /users
-// @desc    Get all users
-// @access  Private (Admin only - TBD)
-router.get("/", async (_req: Request, res: Response) => {
-  try {
-    const users = await prisma.user.findMany({
-      select: {
-        id: true,
-        email: true,
-        firstName: true,
-        lastName: true,
-        city: true,
-        country: true,
-        countryCode: true,
-        phoneNo: true,
-        role: true,
-        createdAt: true,
-        updatedAt: true,
-        trips: true,
-      },
-    });
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch users" });
-  }
-});
+router.use(authenticate);
 
-// @route   GET /users/:id
-// @desc    Get user by ID
-// @access  Private
-router.get("/:id", async (req: Request, res: Response) => {
+// GET /users/me
+router.get("/me", async (req: Request, res: Response) => {
   try {
     const user = await prisma.user.findUnique({
-      where: { id: Number(req.params.id) },
+      where: { id: req.userId },
       select: {
         id: true,
         email: true,
@@ -47,63 +21,143 @@ router.get("/:id", async (req: Request, res: Response) => {
         countryCode: true,
         phoneNo: true,
         role: true,
+        avatarUrl: true,
+        bio: true,
+        language: true,
         createdAt: true,
         updatedAt: true,
-        trips: true,
       },
     });
     if (!user) return res.status(404).json({ error: "User not found" });
     res.json(user);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch user" });
+  } catch {
+    res.status(500).json({ error: "Failed to fetch profile" });
   }
 });
 
-// @route   PUT /users/:id
-// @desc    Update user
-// @access  Private
-router.put("/:id", async (req: Request, res: Response) => {
+// PUT /users/me
+router.put("/me", async (req: Request, res: Response) => {
   try {
     const {
-      email,
       firstName,
       lastName,
       city,
       country,
       countryCode,
       phoneNo,
-    } = req.body;
+      avatarUrl,
+      bio,
+      language,
+    } = req.body as {
+      firstName?: string;
+      lastName?: string;
+      city?: string;
+      country?: string;
+      countryCode?: string;
+      phoneNo?: string;
+      avatarUrl?: string;
+      bio?: string;
+      language?: string;
+    };
 
     const user = await prisma.user.update({
-      where: { id: Number(req.params.id) },
+      where: { id: req.userId },
       data: {
-        ...(email && { email }),
         ...(firstName && { firstName }),
         ...(lastName && { lastName }),
         ...(city && { city }),
-        ...(country && { country }),
-        ...(countryCode && { countryCode }),
+        ...(country !== undefined && { country }),
+        ...(countryCode !== undefined && { countryCode }),
         ...(phoneNo && { phoneNo }),
+        ...(avatarUrl !== undefined && { avatarUrl }),
+        ...(bio !== undefined && { bio }),
+        ...(language && { language }),
+      },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        city: true,
+        country: true,
+        countryCode: true,
+        phoneNo: true,
+        role: true,
+        avatarUrl: true,
+        bio: true,
+        language: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
-
-    const { password: _, ...userWithoutPassword } = user;
-    res.json(userWithoutPassword);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to update user" });
+    res.json(user);
+  } catch {
+    res.status(500).json({ error: "Failed to update profile" });
   }
 });
 
-// @route   DELETE /users/:id
-// @desc    Delete user
-// @access  Private
-router.delete("/:id", async (req: Request, res: Response) => {
+// DELETE /users/me
+router.delete("/me", async (req: Request, res: Response) => {
   try {
-    await prisma.user.delete({ where: { id: Number(req.params.id) } });
+    await prisma.user.delete({ where: { id: req.userId } });
     res.status(204).send();
-  } catch (error) {
-    res.status(500).json({ error: "Failed to delete user" });
+  } catch {
+    res.status(500).json({ error: "Failed to delete account" });
   }
 });
+
+// GET /users/me/saved-destinations
+router.get("/me/saved-destinations", async (req: Request, res: Response) => {
+  try {
+    const saved = await prisma.savedDestination.findMany({
+      where: { userId: req.userId },
+      include: {
+        city: {
+          include: { activities: { select: { id: true, name: true, type: true } } },
+        },
+      },
+    });
+    res.json(saved.map((s) => s.city));
+  } catch {
+    res.status(500).json({ error: "Failed to fetch saved destinations" });
+  }
+});
+
+// POST /users/me/saved-destinations
+router.post("/me/saved-destinations", async (req: Request, res: Response) => {
+  try {
+    const { cityId } = req.body as { cityId: number };
+    if (!cityId) return res.status(400).json({ error: "cityId required" });
+
+    await prisma.savedDestination.upsert({
+      where: { userId_cityId: { userId: req.userId!, cityId: Number(cityId) } },
+      create: { userId: req.userId!, cityId: Number(cityId) },
+      update: {},
+    });
+    res.status(201).json({ message: "Destination saved" });
+  } catch {
+    res.status(500).json({ error: "Failed to save destination" });
+  }
+});
+
+// DELETE /users/me/saved-destinations/:cityId
+router.delete(
+  "/me/saved-destinations/:cityId",
+  async (req: Request, res: Response) => {
+    try {
+      await prisma.savedDestination.delete({
+        where: {
+          userId_cityId: {
+            userId: req.userId!,
+            cityId: Number(req.params.cityId),
+          },
+        },
+      });
+      res.status(204).send();
+    } catch {
+      res.status(500).json({ error: "Failed to remove saved destination" });
+    }
+  }
+);
 
 export default router;
