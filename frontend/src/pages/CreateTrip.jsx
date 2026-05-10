@@ -169,7 +169,10 @@ export default function CreateTrip() {
 
                   return (
                     <Card key={city.id} className={`py-0 transition-all ${isSelected ? 'ring-2 ring-(--brand-primary)' : ''}`}>
-                      <Img ratio="4/3" label={city.name} className="rounded-t-xl rounded-b-none border-0 border-b" />
+                      {city.imageUrl
+                        ? <img src={city.imageUrl} alt={city.name} className="w-full aspect-[4/3] object-cover rounded-t-xl border-b" />
+                        : <Img ratio="4/3" label={city.name} className="rounded-t-xl rounded-b-none border-0 border-b" />
+                      }
                       <CardHeader className="p-4 pb-2">
                         <div className="flex justify-between items-start gap-2">
                           <CardTitle className="text-base">{city.name}</CardTitle>

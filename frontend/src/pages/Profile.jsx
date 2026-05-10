@@ -272,7 +272,7 @@ export default function Profile() {
               : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {pastTrips.slice(0, 6).map(t => (
-                    <Card key={t.id} className="py-0">
+                    <Card key={t.id} className="py-0 cursor-pointer" onClick={() => navigate(`itinerary/${t.id}`)}>
                       <Img ratio="4/3" className="rounded-t-[var(--radius-xl)] rounded-b-none border-0 border-b" />
                       <CardHeader className="p-4">
                         <CardTitle className="text-base">{t.title}</CardTitle>

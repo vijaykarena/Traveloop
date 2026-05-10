@@ -108,7 +108,7 @@ export default function Dashboard() {
                     <div key={i} className="h-32 bg-[var(--bg-muted)] rounded-[var(--radius-xl)] animate-pulse" />
                   ))
                 : cities.map(c => (
-                    <Card key={c.id} className="overflow-hidden cursor-pointer hover:shadow-[var(--shadow-md)] transition-shadow py-0" onClick={() => navigate('search')}>
+                    <Card key={c.id} className="overflow-hidden cursor-pointer hover:shadow-[var(--shadow-md)] transition-shadow py-0" onClick={() => navigate(`search?cityId=${c.id}&cityName=${encodeURIComponent(c.name)}`)}>
                       {c.imageUrl
                         ? <img src={c.imageUrl} alt={c.name} className="w-full aspect-square object-cover" />
                         : <Img ratio="1/1" label={c.name} className="rounded-none border-0" />

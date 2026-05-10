@@ -107,7 +107,7 @@ export default function MyTrips() {
                       <div className="flex flex-wrap gap-2 mt-3">
                         <Badge variant="accent">{formatBudget(trip)}</Badge>
                         <Badge variant="outline">Notes · {trip._count?.notes || 0}</Badge>
-                        <Badge variant="outline">Activities · 0</Badge>
+                        <Badge variant="outline">Stops · {trip._count?.stops || 0}</Badge>
                       </div>
                     </div>
                     <div className="flex sm:flex-col gap-2 p-4 sm:p-5 border-t sm:border-t-0 sm:border-l border-[var(--border-subtle)]">

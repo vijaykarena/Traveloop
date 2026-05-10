@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import Chrome from '../components/Chrome'
-import Controls from '../components/Controls'
 import Img from '../components/Img'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -22,14 +22,28 @@ function fmtDuration(hours) {
 }
 
 export default function Search() {
+  const [searchParams, setSearchParams] = useSearchParams()
+
   const [query, setQuery] = useState('')
   const [results, setResults] = useState([])
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(false)
   const [filtersOpen, setFiltersOpen] = useState(false)
-
   const [activeTypes, setActiveTypes] = useState(new Set())
   const [maxCost, setMaxCost] = useState('')
+
+  // City filter from URL params (set when navigating from Dashboard)
+  const cityId = searchParams.get('cityId') || ''
+  const cityName = searchParams.get('cityName') || ''
+
+  const clearCityFilter = () => {
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev)
+      next.delete('cityId')
+      next.delete('cityName')
+      return next
+    })
+  }
 
   const search = useCallback(async () => {
     setLoading(true)
@@ -38,6 +52,7 @@ export default function Search() {
       if (query.trim()) params.set('search', query.trim())
       if (activeTypes.size > 0) params.set('type', [...activeTypes][0])
       if (maxCost) params.set('maxCost', maxCost)
+      if (cityId) params.set('cityId', cityId)
       params.set('limit', '20')
 
       const res = await api.get(`${ENDPOINTS.ACTIVITIES}?${params}`)
@@ -48,7 +63,7 @@ export default function Search() {
     } finally {
       setLoading(false)
     }
-  }, [query, activeTypes, maxCost])
+  }, [query, activeTypes, maxCost, cityId])
 
   useEffect(() => {
     search()
@@ -61,6 +76,8 @@ export default function Search() {
       return next
     })
   }
+
+  const hasActiveFilters = activeTypes.size > 0 || cityId
 
   return (
     <div className="flex flex-col min-h-screen lg:h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body lg:overflow-hidden">
@@ -99,12 +116,17 @@ export default function Search() {
                 {loading ? 'Searching…' : `${total} activit${total !== 1 ? 'ies' : 'y'}`}
               </h2>
               <div className="text-sm text-[var(--text-tertiary)] mt-1">
-                {query ? `matching "${query}"` : 'Browse all activities'}
+                {cityName ? `in ${cityName}` : query ? `matching "${query}"` : 'Browse all activities'}
                 {activeTypes.size > 0 && ` · ${[...activeTypes].map(t => TYPE_LABEL[t]).join(', ')}`}
               </div>
             </div>
-            {activeTypes.size > 0 && (
+            {hasActiveFilters && (
               <div className="flex flex-wrap gap-2">
+                {cityId && (
+                  <Badge variant="info" className="cursor-pointer gap-1" onClick={clearCityFilter}>
+                    <MapPin size={11} /> {cityName || `City #${cityId}`} ×
+                  </Badge>
+                )}
                 {[...activeTypes].map(t => (
                   <Badge key={t} variant="accent" className="cursor-pointer" onClick={() => toggleType(t)}>
                     {TYPE_LABEL[t]} ×
@@ -128,7 +150,7 @@ export default function Search() {
                 <Card key={r.id} className="hover:shadow-[var(--shadow-md)] transition-shadow cursor-pointer py-0">
                   {/* Mobile */}
                   <div className="block sm:hidden p-4">
-                    <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-start gap-2">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 flex-wrap mb-1">
                           <CardTitle className="text-base">{r.name}</CardTitle>
@@ -145,7 +167,7 @@ export default function Search() {
                         </div>
                       </div>
                     </div>
-                    </div>
+                  </div>
 
                   {/* Desktop */}
                   <div className="hidden sm:grid sm:grid-cols-[40px_140px_1fr] sm:items-center sm:gap-4 sm:p-4">
