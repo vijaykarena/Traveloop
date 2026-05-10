@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { NavProvider } from './navigation'
 import { ThemeProvider } from './context/ThemeContext'
 import { UserProvider } from './context/UserContext'
+import RouteTransitionLoader from './components/common/RouteTransitionLoader'
 import ProtectedRoute from './components/common/ProtectedRoute'
 import AuthRoute from './components/common/AuthRoute'
 import Login from './pages/Login'
@@ -25,6 +26,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
+        <RouteTransitionLoader />
         <NavProvider>
           <UserProvider>
             <Routes>

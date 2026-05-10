@@ -106,6 +106,34 @@
   transform: scale(1.08);
 }
 
+/* --- Route Transition Loader --- */
+.route-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 300ms ease-out;
+}
+
+.route-loader--fading {
+  opacity: 0;
+}
+
+.route-loader__img {
+  width: clamp(150px, 22vw, 350px);
+  height: auto;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+  user-select: none;
+}
+
 /* --- Reduced Motion --- */
 @media (prefers-reduced-motion: reduce) {
   *,
