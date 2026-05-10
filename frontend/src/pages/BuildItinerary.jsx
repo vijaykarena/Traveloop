@@ -8,9 +8,9 @@ import { Label } from '@/components/ui/label'
 import { Calendar, Edit, Plus } from 'lucide-react'
 
 const sections = [
-  { n: 1, title: 'Rome — three slow days', dates: '18 → 21 May', budget: '€620', body: "Settle into Trastevere, visit the Pantheon at golden hour, find a small enoteca near Campo de' Fiori.", tags: ['Walking', 'Food', 'Architecture'] },
-  { n: 2, title: 'Naples & a day on Vesuvius', dates: '22 → 24 May', budget: '€480', body: 'Pizza pilgrimage. A day trip up the volcano. Espresso at every stop, on principle.', tags: ['Hike', 'Food', 'Day trip'] },
-  { n: 3, title: 'The Amalfi by ferry', dates: '25 → 30 May', budget: '€1,180', body: 'Sorrento as base camp. Ferries to Positano and Capri. Read on the deck, swim in coves.', tags: ['Coast', 'Slow', 'Swim'] },
+  { n: 1, title: 'Rome — three slow days', dates: '18 → 21 May', budget: '₹620', body: "Settle into Trastevere, visit the Pantheon at golden hour, find a small enoteca near Campo de' Fiori.", tags: ['Walking', 'Food', 'Architecture'] },
+  { n: 2, title: 'Naples & a day on Vesuvius', dates: '22 → 24 May', budget: '₹480', body: 'Pizza pilgrimage. A day trip up the volcano. Espresso at every stop, on principle.', tags: ['Hike', 'Food', 'Day trip'] },
+  { n: 3, title: 'The Amalfi by ferry', dates: '25 → 30 May', budget: '₹1,180', body: 'Sorrento as base camp. Ferries to Positano and Capri. Read on the deck, swim in coves.', tags: ['Coast', 'Slow', 'Swim'] },
 ]
 
 export default function BuildItinerary() {

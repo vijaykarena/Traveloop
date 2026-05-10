@@ -10,18 +10,18 @@ import { cn } from '@/lib/utils'
 
 const days = [
   { day: 'Day 1', date: 'Mon, 18 May', items: [
-    { time: '09:30', name: 'Train · Lisbon → Rome (via Madrid)', dur: '12h', cost: '€220', type: 'Travel' },
-    { time: '21:40', name: 'Check-in · Trastevere apartment', dur: '—', cost: '€140', type: 'Stay' },
+    { time: '09:30', name: 'Train · Lisbon → Rome (via Madrid)', dur: '12h', cost: '₹220', type: 'Travel' },
+    { time: '21:40', name: 'Check-in · Trastevere apartment', dur: '—', cost: '₹140', type: 'Stay' },
   ]},
   { day: 'Day 2', date: 'Tue, 19 May', items: [
-    { time: '08:00', name: "Espresso at Sant'Eustachio", dur: '30m', cost: '€4', type: 'Food' },
+    { time: '08:00', name: "Espresso at Sant'Eustachio", dur: '30m', cost: '₹4', type: 'Food' },
     { time: '10:00', name: 'Pantheon & Piazza Navona walk', dur: '3h', cost: 'free', type: 'Walk' },
-    { time: '13:30', name: 'Lunch · Roscioli', dur: '2h', cost: '€60', type: 'Food' },
-    { time: '17:00', name: "Aperitivo · Campo de' Fiori", dur: '2h', cost: '€18', type: 'Food' },
+    { time: '13:30', name: 'Lunch · Roscioli', dur: '2h', cost: '₹60', type: 'Food' },
+    { time: '17:00', name: "Aperitivo · Campo de' Fiori", dur: '2h', cost: '₹18', type: 'Food' },
   ]},
   { day: 'Day 3', date: 'Wed, 20 May', items: [
-    { time: '06:30', name: 'Vatican at dawn (private)', dur: '3h', cost: '€96', type: 'Tour' },
-    { time: '14:00', name: 'Borghese Gardens · picnic', dur: '3h', cost: '€22', type: 'Walk' },
+    { time: '06:30', name: 'Vatican at dawn (private)', dur: '3h', cost: '₹96', type: 'Tour' },
+    { time: '14:00', name: 'Borghese Gardens · picnic', dur: '3h', cost: '₹22', type: 'Walk' },
   ]},
 ]
 
@@ -105,12 +105,12 @@ export default function ItineraryView() {
           <Card className="py-0">
             <CardHeader className="p-5 pb-3">
               <CardDescription>Trip budget</CardDescription>
-              <CardTitle className="text-3xl">€2,400</CardTitle>
-              <CardDescription>of €3,200 ceiling · 75% spent</CardDescription>
+              <CardTitle className="text-3xl">₹2,400</CardTitle>
+              <CardDescription>of ₹3,200 ceiling · 75% spent</CardDescription>
             </CardHeader>
             <CardContent className="px-5 pb-5">
               <Progress value={75} className="mb-6" />
-              {[['Travel', '€620', 26], ['Stay', '€940', 39], ['Food', '€420', 17], ['Activities', '€280', 12], ['Misc', '€140', 6]].map(([k, v, p]) => (
+              {[['Travel', '₹620', 26], ['Stay', '₹940', 39], ['Food', '₹420', 17], ['Activities', '₹280', 12], ['Misc', '₹140', 6]].map(([k, v, p]) => (
                 <div key={k} className="mb-3">
                   <div className="flex justify-between text-sm mb-1.5">
                     <span>{k}</span>
@@ -122,7 +122,7 @@ export default function ItineraryView() {
                 </div>
               ))}
               <div className="mt-4 p-3 bg-[#FEFCBF] border border-[#F6E05E] rounded-[var(--radius-md)] text-xs text-[#975A16]">
-                ▲ Day 3 is over the daily average by €38. Consider moving the dawn tour.
+                ▲ Day 3 is over the daily average by ₹38. Consider moving the dawn tour.
               </div>
               <Button variant="outline" size="sm" className="w-full mt-4" onClick={() => navigate('invoice')}>View invoice</Button>
             </CardContent>

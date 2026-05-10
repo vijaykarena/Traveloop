@@ -70,9 +70,9 @@ export default function Dashboard() {
             {/* Previous trip cards: 1 col mobile → 2 tablet → 3 desktop */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
-                ['Hokkaidō Loop', 'Feb 2026', '14 days · ¥184,200'],
-                ['Lofoten Islands', 'Aug 2025', '8 days · €2,140'],
-                ['Cusco → Sacred Valley', 'Apr 2025', '11 days · $1,860'],
+                ['Hokkaidō Loop', 'Feb 2026', '14 days · ₹1,84,200'],
+                ['Lofoten Islands', 'Aug 2025', '8 days · ₹2,140'],
+                ['Cusco → Sacred Valley', 'Apr 2025', '11 days · ₹1,860'],
               ].map(([n, d, m]) => (
                 <Card key={n} className="py-0 cursor-pointer" onClick={() => navigate('my-trips')}>
                   <Img ratio="16/10" className="rounded-b-none border-0 border-b rounded-t-[var(--radius-xl)]" />
@@ -100,7 +100,7 @@ export default function Dashboard() {
               <CardContent className="px-5 pb-5">
                 <div className="flex justify-between text-sm mb-2">
                   <span className="text-[var(--text-tertiary)]">Budget</span>
-                  <span className="font-medium">€2,400 / €3,200</span>
+                  <span className="font-medium">₹2,400 / ₹3,200</span>
                 </div>
                 <Progress value={75} />
               </CardContent>

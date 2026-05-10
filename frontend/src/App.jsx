@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { NavProvider } from './navigation'
 import { ThemeProvider } from './context/ThemeContext'
+import { UserProvider } from './context/UserContext'
 import ProtectedRoute from './components/common/ProtectedRoute'
 import AuthRoute from './components/common/AuthRoute'
 import Login from './pages/Login'
@@ -25,35 +26,37 @@ export default function App() {
     <ThemeProvider>
       <BrowserRouter>
         <NavProvider>
-          <Routes>
-            {/* Protected Routes */}
-            <Route element={<ProtectedRoute />}>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/create-trip" element={<CreateTrip />} />
-              <Route path="/build-itinerary" element={<BuildItinerary />} />
-              <Route path="/my-trips" element={<MyTrips />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/search" element={<Search />} />
-              <Route path="/itinerary" element={<ItineraryView />} />
-              <Route path="/community" element={<Community />} />
-              <Route path="/packing" element={<Packing />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/notes" element={<Notes />} />
-              <Route path="/invoice" element={<Invoice />} />
-            </Route>
+          <UserProvider>
+            <Routes>
+              {/* Protected Routes */}
+              <Route element={<ProtectedRoute />}>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/create-trip" element={<CreateTrip />} />
+                <Route path="/build-itinerary" element={<BuildItinerary />} />
+                <Route path="/my-trips" element={<MyTrips />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/itinerary" element={<ItineraryView />} />
+                <Route path="/community" element={<Community />} />
+                <Route path="/packing" element={<Packing />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/notes" element={<Notes />} />
+                <Route path="/invoice" element={<Invoice />} />
+              </Route>
 
-            {/* Auth Flow (Public Only) */}
-            <Route element={<AuthRoute />}>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-            </Route>
-            
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+              {/* Auth Flow (Public Only) */}
+              <Route element={<AuthRoute />}>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+              </Route>
+
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </UserProvider>
         </NavProvider>
       </BrowserRouter>
     </ThemeProvider>

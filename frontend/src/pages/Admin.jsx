@@ -44,7 +44,7 @@ export default function Admin() {
   const statCards = stats ? [
     ['Members', stats.totalUsers.toLocaleString(), TrendingUp],
     ['Trips created', stats.totalTrips.toLocaleString(), PlaneTakeoff],
-    ['Avg. trip budget', stats.avgBudgetLimit != null ? `₹${Math.round(stats.avgBudgetLimit).toLocaleString()}` : '—', Receipt],
+    ['Avg. trip budget', stats.avgBudget ? `₹${Math.round(stats.avgBudget).toLocaleString()}` : '—', Receipt],
     ['Public trips', stats.publicTrips.toLocaleString(), Globe],
   ] : []
 

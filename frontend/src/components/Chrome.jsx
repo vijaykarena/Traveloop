@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNav } from '../navigation'
+import { useUser } from '../context/UserContext'
 import { Button } from '@/components/ui/button'
 import ThemeToggle from './common/ThemeToggle'
 import { Bell, Settings, Compass, Calendar, PlaneTakeoff, Users, Menu, X } from 'lucide-react'
@@ -13,19 +14,19 @@ const NAV_ITEMS = [
   ['Community', Users, 'community'],
 ]
 
-export default function Chrome({ active = 'Plan', user = 'AS' }) {
+export default function Chrome({ active = 'Plan' }) {
   const { navigate } = useNav()
+  const { user } = useUser()
+  const initials = user ? `${user.firstName[0]}${user.lastName[0]}` : '?'
   const [menuOpen, setMenuOpen] = useState(false)
   const panelRef = useRef(null)
 
-  // Close on Escape key
   useEffect(() => {
     const handler = (e) => { if (e.key === 'Escape') setMenuOpen(false) }
     document.addEventListener('keydown', handler)
     return () => document.removeEventListener('keydown', handler)
   }, [])
 
-  // Close on route change (resize etc)
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)')
     const handler = () => { if (mq.matches) setMenuOpen(false) }
@@ -33,7 +34,6 @@ export default function Chrome({ active = 'Plan', user = 'AS' }) {
     return () => mq.removeEventListener('change', handler)
   }, [])
 
-  // Navigate and close mobile menu
   const handleNav = (page) => {
     navigate(page)
     setMenuOpen(false)
@@ -90,7 +90,7 @@ export default function Chrome({ active = 'Plan', user = 'AS' }) {
             onClick={() => navigate('profile')}
           >
             <AvatarFallback className="bg-[var(--brand-primary)]/10 text-[var(--brand-primary)] font-display text-sm font-bold">
-              {user}
+              {initials}
             </AvatarFallback>
           </Avatar>
         </div>
@@ -102,7 +102,7 @@ export default function Chrome({ active = 'Plan', user = 'AS' }) {
             onClick={() => handleNav('profile')}
           >
             <AvatarFallback className="bg-[var(--brand-primary)]/10 text-[var(--brand-primary)] font-display text-xs font-bold">
-              {user}
+              {initials}
             </AvatarFallback>
           </Avatar>
           <button

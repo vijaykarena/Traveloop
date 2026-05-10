@@ -49,7 +49,7 @@ export default function Invoice() {
               <Separator orientation="vertical" className="h-10 hidden sm:block" />
               <div>
                 <div className="text-xs text-[var(--text-tertiary)] uppercase tracking-wider">Currency</div>
-                <div className="font-medium mt-0.5">EUR · €</div>
+                <div className="font-medium mt-0.5">INR · ₹</div>
               </div>
               <Separator orientation="vertical" className="h-10 hidden sm:block" />
               <div>
@@ -69,8 +69,8 @@ export default function Invoice() {
                 </svg>
                 <div>
                   <div className="text-xs text-[var(--text-tertiary)]">Total budget</div>
-                  <div className="text-xl font-bold">€3,200</div>
-                  <div className="text-xs text-[var(--text-tertiary)] mt-1">Spent · €2,422 (75%)</div>
+                  <div className="text-xl font-bold">₹3,200</div>
+                  <div className="text-xs text-[var(--text-tertiary)] mt-1">Spent · ₹2,422 (75%)</div>
                 </div>
               </div>
               <Button variant="outline" size="sm" className="w-full mt-3" onClick={() => navigate('itinerary')}>View full budget</Button>
@@ -102,8 +102,8 @@ export default function Invoice() {
                       <TableCell><Badge variant={catVariant[r[1]]}>{r[1]}</Badge></TableCell>
                       <TableCell className="font-medium">{r[2]}</TableCell>
                       <TableCell className="text-[var(--text-tertiary)]">{r[3]}</TableCell>
-                      <TableCell className="text-right tabular-nums">€{r[4]}</TableCell>
-                      <TableCell className="text-right tabular-nums font-medium">€{r[5].toLocaleString()}</TableCell>
+                      <TableCell className="text-right tabular-nums">₹{r[4]}</TableCell>
+                      <TableCell className="text-right tabular-nums font-medium">₹{r[5].toLocaleString()}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -123,8 +123,8 @@ export default function Invoice() {
                     <div className="text-xs text-[var(--text-tertiary)] mt-0.5">{r[3]}</div>
                   </div>
                   <div className="text-right shrink-0">
-                    <div className="text-xs text-[var(--text-tertiary)]">€{r[4]} × unit</div>
-                    <div className="font-bold text-base">€{r[5].toLocaleString()}</div>
+                    <div className="text-xs text-[var(--text-tertiary)]">₹{r[4]} × unit</div>
+                    <div className="font-bold text-base">₹{r[5].toLocaleString()}</div>
                   </div>
                 </div>
               ))}
@@ -136,13 +136,13 @@ export default function Invoice() {
             <div />
             <Card className="py-0">
               <CardContent className="p-5 space-y-2">
-                <div className="flex justify-between text-sm"><span className="text-[var(--text-tertiary)]">Subtotal</span><span className="tabular-nums">€2,422</span></div>
-                <div className="flex justify-between text-sm"><span className="text-[var(--text-tertiary)]">VAT (10%)</span><span className="tabular-nums">€242</span></div>
-                <div className="flex justify-between text-sm"><span className="text-[var(--text-tertiary)]">Discount</span><span className="tabular-nums text-[var(--color-success)]">−€50</span></div>
+                <div className="flex justify-between text-sm"><span className="text-[var(--text-tertiary)]">Subtotal</span><span className="tabular-nums">₹2,422</span></div>
+                <div className="flex justify-between text-sm"><span className="text-[var(--text-tertiary)]">VAT (10%)</span><span className="tabular-nums">₹242</span></div>
+                <div className="flex justify-between text-sm"><span className="text-[var(--text-tertiary)]">Discount</span><span className="tabular-nums text-[var(--color-success)]">−₹50</span></div>
                 <Separator className="my-2" />
                 <div className="flex justify-between">
                   <span className="font-bold">Grand total</span>
-                  <span className="text-xl font-bold tabular-nums">€2,614</span>
+                  <span className="text-xl font-bold tabular-nums">₹2,614</span>
                 </div>
               </CardContent>
             </Card>

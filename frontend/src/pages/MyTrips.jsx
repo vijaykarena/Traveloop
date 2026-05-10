@@ -9,8 +9,8 @@ import { Card, CardTitle } from '@/components/ui/card'
 import { ArrowRight } from 'lucide-react'
 
 const groups = [
-  { label: 'Ongoing', count: 1, variant: 'success', sample: { title: 'Rome & the Amalfi', dates: '18 May → 02 Jun', stops: '6 stops', budget: '€2,400 / €3,200', img: 'rome' }, page: 'itinerary' },
-  { label: 'Up-coming', count: 2, variant: 'info', sample: { title: 'Tokyo · neighbourhood loop', dates: '12 Jun → 24 Jun', stops: '4 stops', budget: '¥210k of ¥260k', img: 'tokyo' }, page: 'itinerary' },
+  { label: 'Ongoing', count: 1, variant: 'success', sample: { title: 'Rome & the Amalfi', dates: '18 May → 02 Jun', stops: '6 stops', budget: '₹2,400 / ₹3,200', img: 'rome' }, page: 'itinerary' },
+  { label: 'Up-coming', count: 2, variant: 'info', sample: { title: 'Tokyo · neighbourhood loop', dates: '12 Jun → 24 Jun', stops: '4 stops', budget: '₹2,10,000 of ₹2,60,000', img: 'tokyo' }, page: 'itinerary' },
   { label: 'Completed', count: 8, variant: 'outline', sample: { title: 'Hokkaidō Loop', dates: 'Feb 2026', stops: '14 days', budget: 'Archived', img: 'hokkaido' }, page: 'my-trips' },
 ]
 

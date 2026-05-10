@@ -8,9 +8,9 @@ import { MapPin, ArrowRight, Plus } from 'lucide-react'
 
 const posts = [
   { author: 'Marco P.', city: 'Naples, IT', title: 'Three days in Naples — by mouth', body: 'A kid-friendly route through the back streets of the Spanish Quarters.', tags: ['Food', 'Family'], reads: '2.4k' },
-  { author: 'Iris K.', city: 'Hanoi, VN', title: 'A walking guide to Hanoi at dawn', body: 'The old quarter wakes up earlier than you think. A sub-€20 morning that changes how you see the city.', tags: ['Slow', 'Solo'], reads: '1.1k' },
+  { author: 'Iris K.', city: 'Hanoi, VN', title: 'A walking guide to Hanoi at dawn', body: 'The old quarter wakes up earlier than you think. A sub-₹20 morning that changes how you see the city.', tags: ['Slow', 'Solo'], reads: '1.1k' },
   { author: 'Diego R.', city: 'Patagonia, AR', title: 'Patagonia in the off-season', body: 'Cheaper, quieter, and the wind has manners. A fully costed 14-day loop.', tags: ['Hike', 'Budget'], reads: '880' },
-  { author: 'Hana S.', city: 'Kyoto, JP', title: 'Temples without crowds — a small map', body: 'Five lesser-known temples, walking distances, and the cafés near each. Trip cost in JPY included.', tags: ['Photo', 'Slow'], reads: '4.7k' },
+  { author: 'Hana S.', city: 'Kyoto, JP', title: 'Temples without crowds — a small map', body: 'Five lesser-known temples, walking distances, and the cafés near each. Trip cost in ₹ included.', tags: ['Photo', 'Slow'], reads: '4.7k' },
 ]
 
 export default function Community() {

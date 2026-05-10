@@ -34,8 +34,7 @@ export default function CreateTrip() {
         throw new Error(errData.error || 'Failed to create trip')
       }
 
-      const trip = await res.json()
-      // Navigate to dashboard after creation
+      await res.json()
       navigate('dashboard')
     } catch (err) {
       setErrorMsg(err.message)
@@ -119,11 +118,11 @@ export default function CreateTrip() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
                 ['Trastevere walk', 'Rome · 3h', 'free'],
-                ['Mt. Vesuvius hike', 'Naples · 1d', '€18'],
-                ['Positano by ferry', 'Amalfi · ½d', '€32'],
-                ['Cooking with Nonna', 'Sorrento · 4h', '€85'],
-                ['Vatican at dawn', 'Rome · 3h', '€48'],
-                ['Capri grottoes', 'Capri · 1d', '€54'],
+                ['Mt. Vesuvius hike', 'Naples · 1d', '₹18'],
+                ['Positano by ferry', 'Amalfi · ½d', '₹32'],
+                ['Cooking with Nonna', 'Sorrento · 4h', '₹85'],
+                ['Vatican at dawn', 'Rome · 3h', '₹48'],
+                ['Capri grottoes', 'Capri · 1d', '₹54'],
               ].map(([n, m, p]) => (
                 <Card key={n} className="py-0">
                   <Img ratio="4/3" className="rounded-t-[var(--radius-xl)] rounded-b-none border-0 border-b" />

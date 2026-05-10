@@ -9,12 +9,12 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { MapPin, ArrowRight, Plus, SlidersHorizontal, X } from 'lucide-react'
 
 const results = [
-  { name: 'Paragliding · Cape Sounion', meta: 'Athens, Greece', dur: '4h', cost: '€120', tag: 'Adventure', body: 'Tandem flights from cliff-tops above the Aegean. Pickup from central Athens.' },
-  { name: 'Paragliding · Ölüdeniz', meta: 'Fethiye, Türkiye', dur: '3h', cost: '€95', tag: 'Adventure', body: 'World-class thermals over the Blue Lagoon. Multiple takeoff altitudes from 1,200–1,960 m.' },
-  { name: 'Paragliding course', meta: 'Annecy, France', dur: '5 days', cost: '€860', tag: 'Course', body: 'Beginner-to-solo certification on the Col de la Forclaz. English instructors, weather-flexible.' },
+  { name: 'Paragliding · Cape Sounion', meta: 'Athens, Greece', dur: '4h', cost: '₹120', tag: 'Adventure', body: 'Tandem flights from cliff-tops above the Aegean. Pickup from central Athens.' },
+  { name: 'Paragliding · Ölüdeniz', meta: 'Fethiye, Türkiye', dur: '3h', cost: '₹95', tag: 'Adventure', body: 'World-class thermals over the Blue Lagoon. Multiple takeoff altitudes from 1,200–1,960 m.' },
+  { name: 'Paragliding course', meta: 'Annecy, France', dur: '5 days', cost: '₹860', tag: 'Course', body: 'Beginner-to-solo certification on the Col de la Forclaz. English instructors, weather-flexible.' },
   { name: 'Tandem · Interlaken', meta: 'Switzerland', dur: '2h', cost: 'CHF 220', tag: 'Adventure', body: 'Classic alpine flight over Lake Thun. GoPro footage included.' },
   { name: 'Paragliding · Bir Billing', meta: 'Himachal, India', dur: '3h', cost: '₹3,200', tag: 'Adventure', body: 'Himalayan foothills, second-highest paragliding site in the world. Best Oct–Nov.' },
-  { name: 'Photography flight', meta: 'Cappadocia, TR', dur: '1d', cost: '€180', tag: 'Photo', body: 'Sunrise flight alongside the balloons — purpose-built for photographers.' },
+  { name: 'Photography flight', meta: 'Cappadocia, TR', dur: '1d', cost: '₹180', tag: 'Photo', body: 'Sunrise flight alongside the balloons — purpose-built for photographers.' },
 ]
 
 export default function Search() {
@@ -44,7 +44,7 @@ export default function Search() {
             </div>
             <div className="flex flex-wrap gap-2">
               <Badge variant="accent">Adventure</Badge>
-              <Badge variant="outline">Under €200</Badge>
+              <Badge variant="outline">Under ₹200</Badge>
               <Badge variant="outline">Half-day</Badge>
             </div>
           </div>
@@ -107,7 +107,7 @@ export default function Search() {
         {/* Always shown on lg+. On mobile: toggled via filtersOpen state */}
         <aside className={`space-y-4 ${filtersOpen ? 'block' : 'hidden'} lg:block`}>
           <Card className="py-0">
-            <div className="p-4 pb-2 font-medium text-sm">Cost (EUR)</div>
+            <div className="p-4 pb-2 font-medium text-sm">Cost (INR)</div>
             <div className="p-4 pt-2">
               <div className="relative h-6">
                 <div className="absolute inset-x-0 top-1/2 h-px bg-[var(--border-subtle)]" />
@@ -115,7 +115,7 @@ export default function Search() {
                 <div className="absolute left-[15%] top-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-[var(--bg-surface)] border-2 border-[var(--brand-primary)]" />
                 <div className="absolute left-[70%] top-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-[var(--brand-primary)]" />
               </div>
-              <div className="flex justify-between text-xs text-[var(--text-tertiary)] mt-3"><span>€80</span><span>€480</span></div>
+              <div className="flex justify-between text-xs text-[var(--text-tertiary)] mt-3"><span>₹80</span><span>₹480</span></div>
             </div>
           </Card>
 
