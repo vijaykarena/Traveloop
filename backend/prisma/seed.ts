@@ -134,60 +134,60 @@ async function main() {
 
   const activityData = [
     // Mumbai
-    { cityId: 1, name: "Gateway of India", type: "SIGHTSEEING", estimatedCost: 0, durationHours: 1.5, description: "Iconic arch monument overlooking the Arabian Sea, built in 1924." },
-    { cityId: 1, name: "Elephanta Caves", type: "CULTURE", estimatedCost: 600, durationHours: 4, description: "UNESCO rock-cut cave temples on Elephanta Island, accessible by ferry." },
-    { cityId: 1, name: "Dharavi Street Food Tour", type: "FOOD", estimatedCost: 800, durationHours: 3, description: "Guided food walk through one of Asia's largest urban settlements." },
-    { cityId: 1, name: "Marine Drive Sunset Walk", type: "NATURE", estimatedCost: 0, durationHours: 1.5, description: "Queen's Necklace — the 3km promenade along the coast." },
-    { cityId: 1, name: "Bollywood Studio Tour", type: "CULTURE", estimatedCost: 1500, durationHours: 3, description: "Behind-the-scenes tour of Film City, Mumbai's legendary studio complex." },
-    { cityId: 1, name: "Colaba Causeway Shopping", type: "SHOPPING", estimatedCost: 2000, durationHours: 2.5, description: "Street market for antiques, clothes, jewellery, and curios." },
+    { cityId: 1, name: "Gateway of India", type: "SIGHTSEEING", estimatedCost: 0, durationHours: 1.5, description: "Iconic arch monument overlooking the Arabian Sea, built in 1924.", imageUrl: "https://images.unsplash.com/photo-1567157577867-05ccb1388e66?w=800" },
+    { cityId: 1, name: "Elephanta Caves", type: "CULTURE", estimatedCost: 600, durationHours: 4, description: "UNESCO rock-cut cave temples on Elephanta Island, accessible by ferry.", imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800" },
+    { cityId: 1, name: "Dharavi Street Food Tour", type: "FOOD", estimatedCost: 800, durationHours: 3, description: "Guided food walk through one of Asia's largest urban settlements.", imageUrl: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800" },
+    { cityId: 1, name: "Marine Drive Sunset Walk", type: "NATURE", estimatedCost: 0, durationHours: 1.5, description: "Queen's Necklace — the 3km promenade along the coast.", imageUrl: "https://images.unsplash.com/photo-1529253355930-ddbe423a2ac7?w=800" },
+    { cityId: 1, name: "Bollywood Studio Tour", type: "CULTURE", estimatedCost: 1500, durationHours: 3, description: "Behind-the-scenes tour of Film City, Mumbai's legendary studio complex.", imageUrl: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800" },
+    { cityId: 1, name: "Colaba Causeway Shopping", type: "SHOPPING", estimatedCost: 2000, durationHours: 2.5, description: "Street market for antiques, clothes, jewellery, and curios.", imageUrl: "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=800" },
 
     // Delhi
-    { cityId: 2, name: "Red Fort", type: "SIGHTSEEING", estimatedCost: 500, durationHours: 2.5, description: "Mughal fortress that served as the main residence of emperors for 200 years." },
-    { cityId: 2, name: "Qutub Minar", type: "SIGHTSEEING", estimatedCost: 300, durationHours: 2, description: "UNESCO minaret — tallest brick minaret in the world at 72.5m." },
-    { cityId: 2, name: "Chandni Chowk Food Walk", type: "FOOD", estimatedCost: 700, durationHours: 3, description: "Taste paranthe, jalebi, and chaat in one of India's oldest markets." },
-    { cityId: 2, name: "Humayun's Tomb", type: "CULTURE", estimatedCost: 350, durationHours: 2, description: "Inspiration for the Taj Mahal — first garden-tomb of the Indian subcontinent." },
-    { cityId: 2, name: "Lodhi Garden Morning Walk", type: "WELLNESS", estimatedCost: 0, durationHours: 1.5, description: "15th-century tombs surrounded by parks and walking paths." },
-    { cityId: 2, name: "Sarojini Nagar Market", type: "SHOPPING", estimatedCost: 1500, durationHours: 2, description: "Famous budget fashion market popular with college students." },
+    { cityId: 2, name: "Red Fort", type: "SIGHTSEEING", estimatedCost: 500, durationHours: 2.5, description: "Mughal fortress that served as the main residence of emperors for 200 years.", imageUrl: "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=800" },
+    { cityId: 2, name: "Qutub Minar", type: "SIGHTSEEING", estimatedCost: 300, durationHours: 2, description: "UNESCO minaret — tallest brick minaret in the world at 72.5m.", imageUrl: "https://images.unsplash.com/photo-1548013146-72479768bada?w=800" },
+    { cityId: 2, name: "Chandni Chowk Food Walk", type: "FOOD", estimatedCost: 700, durationHours: 3, description: "Taste paranthe, jalebi, and chaat in one of India's oldest markets.", imageUrl: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=800" },
+    { cityId: 2, name: "Humayun's Tomb", type: "CULTURE", estimatedCost: 350, durationHours: 2, description: "Inspiration for the Taj Mahal — first garden-tomb of the Indian subcontinent.", imageUrl: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800" },
+    { cityId: 2, name: "Lodhi Garden Morning Walk", type: "WELLNESS", estimatedCost: 0, durationHours: 1.5, description: "15th-century tombs surrounded by parks and walking paths.", imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800" },
+    { cityId: 2, name: "Sarojini Nagar Market", type: "SHOPPING", estimatedCost: 1500, durationHours: 2, description: "Famous budget fashion market popular with college students.", imageUrl: "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=800" },
 
     // Jaipur
-    { cityId: 3, name: "Amber Fort", type: "SIGHTSEEING", estimatedCost: 550, durationHours: 3, description: "Hilltop Rajput fort with intricate mirror work, elephant rides, and panoramic views." },
-    { cityId: 3, name: "Hawa Mahal", type: "SIGHTSEEING", estimatedCost: 100, durationHours: 1, description: "Palace of Winds — five-storey facade with 953 small windows." },
-    { cityId: 3, name: "Johri Bazaar Gem Shopping", type: "SHOPPING", estimatedCost: 3000, durationHours: 2.5, description: "Jaipur's famous jewellery market — gems, gold, and silver." },
-    { cityId: 3, name: "City Palace Museum", type: "CULTURE", estimatedCost: 700, durationHours: 2, description: "Royal palace complex with museums displaying royal costumes and artefacts." },
-    { cityId: 3, name: "Rajasthani Cooking Class", type: "FOOD", estimatedCost: 1200, durationHours: 3, description: "Learn dal baati churma, laal maas, and ghevar from local chefs." },
+    { cityId: 3, name: "Amber Fort", type: "SIGHTSEEING", estimatedCost: 550, durationHours: 3, description: "Hilltop Rajput fort with intricate mirror work, elephant rides, and panoramic views.", imageUrl: "https://images.unsplash.com/photo-1477587458883-47145ed6979e?w=800" },
+    { cityId: 3, name: "Hawa Mahal", type: "SIGHTSEEING", estimatedCost: 100, durationHours: 1, description: "Palace of Winds — five-storey facade with 953 small windows.", imageUrl: "https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800" },
+    { cityId: 3, name: "Johri Bazaar Gem Shopping", type: "SHOPPING", estimatedCost: 3000, durationHours: 2.5, description: "Jaipur's famous jewellery market — gems, gold, and silver.", imageUrl: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800" },
+    { cityId: 3, name: "City Palace Museum", type: "CULTURE", estimatedCost: 700, durationHours: 2, description: "Royal palace complex with museums displaying royal costumes and artefacts.", imageUrl: "https://images.unsplash.com/photo-1603262110263-fb0112e7cc33?w=800" },
+    { cityId: 3, name: "Rajasthani Cooking Class", type: "FOOD", estimatedCost: 1200, durationHours: 3, description: "Learn dal baati churma, laal maas, and ghevar from local chefs.", imageUrl: "https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=800" },
 
     // Goa
-    { cityId: 4, name: "Baga Beach", type: "NATURE", estimatedCost: 500, durationHours: 4, description: "North Goa's liveliest beach — water sports, shacks, and sunsets." },
-    { cityId: 4, name: "Old Goa Churches Tour", type: "CULTURE", estimatedCost: 0, durationHours: 3, description: "UNESCO heritage churches including Basilica of Bom Jesus." },
-    { cityId: 4, name: "Dudhsagar Waterfall Trek", type: "ADVENTURE", estimatedCost: 1800, durationHours: 8, description: "Jeep safari + trek to one of India's tallest waterfalls." },
-    { cityId: 4, name: "Anjuna Flea Market", type: "SHOPPING", estimatedCost: 1000, durationHours: 3, description: "Wednesday market with handicrafts, clothing, and antiques." },
-    { cityId: 4, name: "Goan Seafood Dinner Cruise", type: "FOOD", estimatedCost: 2200, durationHours: 3, description: "Sunset cruise on the Mandovi River with fresh seafood and live music." },
+    { cityId: 4, name: "Baga Beach", type: "NATURE", estimatedCost: 500, durationHours: 4, description: "North Goa's liveliest beach — water sports, shacks, and sunsets.", imageUrl: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800" },
+    { cityId: 4, name: "Old Goa Churches Tour", type: "CULTURE", estimatedCost: 0, durationHours: 3, description: "UNESCO heritage churches including Basilica of Bom Jesus.", imageUrl: "https://images.unsplash.com/photo-1548013146-72479768bada?w=800" },
+    { cityId: 4, name: "Dudhsagar Waterfall Trek", type: "ADVENTURE", estimatedCost: 1800, durationHours: 8, description: "Jeep safari + trek to one of India's tallest waterfalls.", imageUrl: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800" },
+    { cityId: 4, name: "Anjuna Flea Market", type: "SHOPPING", estimatedCost: 1000, durationHours: 3, description: "Wednesday market with handicrafts, clothing, and antiques.", imageUrl: "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=800" },
+    { cityId: 4, name: "Goan Seafood Dinner Cruise", type: "FOOD", estimatedCost: 2200, durationHours: 3, description: "Sunset cruise on the Mandovi River with fresh seafood and live music.", imageUrl: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800" },
 
     // Varanasi
-    { cityId: 5, name: "Ganga Aarti at Dashashwamedh Ghat", type: "CULTURE", estimatedCost: 0, durationHours: 2, description: "Spectacular evening fire ritual performed by priests on the ghats at sunset." },
-    { cityId: 5, name: "Sunrise Boat Ride on the Ganga", type: "SIGHTSEEING", estimatedCost: 400, durationHours: 1.5, description: "Row past the ghats at dawn to witness bathing rituals and cremations." },
-    { cityId: 5, name: "Sarnath Buddhist Circuit", type: "CULTURE", estimatedCost: 300, durationHours: 3, description: "Where Buddha gave his first sermon — deer park, stupa, and museum." },
-    { cityId: 5, name: "Banarasi Silk Weaving Tour", type: "CULTURE", estimatedCost: 200, durationHours: 2, description: "Visit master weavers in Old Varanasi making UNESCO-recognized silk sarees." },
-    { cityId: 5, name: "Chaat Trail at Kashi Chaat", type: "FOOD", estimatedCost: 300, durationHours: 2, description: "Famous tamatar chaat, kachori sabzi, and lassi of Varanasi." },
+    { cityId: 5, name: "Ganga Aarti at Dashashwamedh Ghat", type: "CULTURE", estimatedCost: 0, durationHours: 2, description: "Spectacular evening fire ritual performed by priests on the ghats at sunset.", imageUrl: "https://images.unsplash.com/photo-1627938823193-fd13c1c867dd?w=800" },
+    { cityId: 5, name: "Sunrise Boat Ride on the Ganga", type: "SIGHTSEEING", estimatedCost: 400, durationHours: 1.5, description: "Row past the ghats at dawn to witness bathing rituals and cremations.", imageUrl: "https://images.unsplash.com/photo-1561361058-c24e09c462e0?w=800" },
+    { cityId: 5, name: "Sarnath Buddhist Circuit", type: "CULTURE", estimatedCost: 300, durationHours: 3, description: "Where Buddha gave his first sermon — deer park, stupa, and museum.", imageUrl: "https://images.unsplash.com/photo-1582531579210-5463be2c6a53?w=800" },
+    { cityId: 5, name: "Banarasi Silk Weaving Tour", type: "CULTURE", estimatedCost: 200, durationHours: 2, description: "Visit master weavers in Old Varanasi making UNESCO-recognized silk sarees.", imageUrl: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=800" },
+    { cityId: 5, name: "Chaat Trail at Kashi Chaat", type: "FOOD", estimatedCost: 300, durationHours: 2, description: "Famous tamatar chaat, kachori sabzi, and lassi of Varanasi.", imageUrl: "https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=800" },
 
     // Agra
-    { cityId: 6, name: "Taj Mahal at Sunrise", type: "SIGHTSEEING", estimatedCost: 1100, durationHours: 3, description: "UNESCO wonder — white marble mausoleum of Mumtaz Mahal. Best at sunrise." },
-    { cityId: 6, name: "Agra Fort", type: "SIGHTSEEING", estimatedCost: 650, durationHours: 2.5, description: "Red sandstone Mughal fort with palaces, audience halls, and Taj views." },
-    { cityId: 6, name: "Fatehpur Sikri", type: "CULTURE", estimatedCost: 610, durationHours: 3.5, description: "Abandoned Mughal capital — UNESCO site 40km from Agra." },
-    { cityId: 6, name: "Petha & Street Food Walk", type: "FOOD", estimatedCost: 400, durationHours: 2, description: "Taste Agra's signature petha sweet and best street snacks." },
+    { cityId: 6, name: "Taj Mahal at Sunrise", type: "SIGHTSEEING", estimatedCost: 1100, durationHours: 3, description: "UNESCO wonder — white marble mausoleum of Mumtaz Mahal. Best at sunrise.", imageUrl: "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800" },
+    { cityId: 6, name: "Agra Fort", type: "SIGHTSEEING", estimatedCost: 650, durationHours: 2.5, description: "Red sandstone Mughal fort with palaces, audience halls, and Taj views.", imageUrl: "https://images.unsplash.com/photo-1588416936097-41850ab3d86d?w=800" },
+    { cityId: 6, name: "Fatehpur Sikri", type: "CULTURE", estimatedCost: 610, durationHours: 3.5, description: "Abandoned Mughal capital — UNESCO site 40km from Agra.", imageUrl: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800" },
+    { cityId: 6, name: "Petha & Street Food Walk", type: "FOOD", estimatedCost: 400, durationHours: 2, description: "Taste Agra's signature petha sweet and best street snacks.", imageUrl: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800" },
 
     // Udaipur
-    { cityId: 7, name: "City Palace Udaipur", type: "SIGHTSEEING", estimatedCost: 300, durationHours: 3, description: "Massive palace complex overlooking Lake Pichola with museum and courtyards." },
-    { cityId: 7, name: "Lake Pichola Boat Ride", type: "NATURE", estimatedCost: 700, durationHours: 1.5, description: "Boat to Jag Mandir palace island with sunset views of the city." },
-    { cityId: 7, name: "Vintage Car Museum", type: "CULTURE", estimatedCost: 250, durationHours: 1.5, description: "Royal collection of vintage Rolls-Royces, Cadillacs, and Mercedes." },
-    { cityId: 7, name: "Sajjangarh Monsoon Palace", type: "SIGHTSEEING", estimatedCost: 130, durationHours: 2, description: "Hilltop palace built to watch monsoon clouds — panoramic sunset views." },
+    { cityId: 7, name: "City Palace Udaipur", type: "SIGHTSEEING", estimatedCost: 300, durationHours: 3, description: "Massive palace complex overlooking Lake Pichola with museum and courtyards.", imageUrl: "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?w=800" },
+    { cityId: 7, name: "Lake Pichola Boat Ride", type: "NATURE", estimatedCost: 700, durationHours: 1.5, description: "Boat to Jag Mandir palace island with sunset views of the city.", imageUrl: "https://images.unsplash.com/photo-1477587458883-47145ed6979e?w=800" },
+    { cityId: 7, name: "Vintage Car Museum", type: "CULTURE", estimatedCost: 250, durationHours: 1.5, description: "Royal collection of vintage Rolls-Royces, Cadillacs, and Mercedes.", imageUrl: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800" },
+    { cityId: 7, name: "Sajjangarh Monsoon Palace", type: "SIGHTSEEING", estimatedCost: 130, durationHours: 2, description: "Hilltop palace built to watch monsoon clouds — panoramic sunset views.", imageUrl: "https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800" },
 
     // Kochi
-    { cityId: 8, name: "Fort Kochi Heritage Walk", type: "CULTURE", estimatedCost: 0, durationHours: 3, description: "Walk past Chinese fishing nets, Dutch Palace, and Jewish Synagogue." },
-    { cityId: 8, name: "Kerala Backwater Houseboat", type: "NATURE", estimatedCost: 4500, durationHours: 8, description: "Day cruise through Alleppey backwaters on a traditional kettuvallam." },
-    { cityId: 8, name: "Kathakali Performance", type: "CULTURE", estimatedCost: 350, durationHours: 2, description: "Classical Kerala dance-drama with elaborate costumes and face painting." },
-    { cityId: 8, name: "Spice Market Tour Mattancherry", type: "SHOPPING", estimatedCost: 500, durationHours: 2, description: "Explore centuries-old spice warehouses of cardamom, pepper, and cloves." },
-    { cityId: 8, name: "Kerala Ayurvedic Massage", type: "WELLNESS", estimatedCost: 2000, durationHours: 2, description: "Traditional Abhyanga full-body oil massage at an authentic Ayurvedic centre." },
+    { cityId: 8, name: "Fort Kochi Heritage Walk", type: "CULTURE", estimatedCost: 0, durationHours: 3, description: "Walk past Chinese fishing nets, Dutch Palace, and Jewish Synagogue.", imageUrl: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800" },
+    { cityId: 8, name: "Kerala Backwater Houseboat", type: "NATURE", estimatedCost: 4500, durationHours: 8, description: "Day cruise through Alleppey backwaters on a traditional kettuvallam.", imageUrl: "https://images.unsplash.com/photo-1593693411515-c20261bcad6e?w=800" },
+    { cityId: 8, name: "Kathakali Performance", type: "CULTURE", estimatedCost: 350, durationHours: 2, description: "Classical Kerala dance-drama with elaborate costumes and face painting.", imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800" },
+    { cityId: 8, name: "Spice Market Tour Mattancherry", type: "SHOPPING", estimatedCost: 500, durationHours: 2, description: "Explore centuries-old spice warehouses of cardamom, pepper, and cloves.", imageUrl: "https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=800" },
+    { cityId: 8, name: "Kerala Ayurvedic Massage", type: "WELLNESS", estimatedCost: 2000, durationHours: 2, description: "Traditional Abhyanga full-body oil massage at an authentic Ayurvedic centre.", imageUrl: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800" },
   ];
 
   await prisma.activity.createMany({
@@ -198,6 +198,7 @@ async function main() {
       estimatedCost: d.estimatedCost,
       durationHours: d.durationHours,
       description: d.description,
+      imageUrl: d.imageUrl,
     })),
     skipDuplicates: true,
   });

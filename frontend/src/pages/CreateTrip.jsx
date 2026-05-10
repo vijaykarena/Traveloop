@@ -20,10 +20,8 @@ export default function CreateTrip() {
   const onSubmit = async (data) => {
     setErrorMsg('')
     try {
-      await api.post(ENDPOINTS.TRIPS, data)
-
-      // Navigate to dashboard after creation
-      navigate('dashboard')
+      const res = await api.post(ENDPOINTS.TRIPS, data)
+      navigate(`build-itinerary/${res.data.id}`)
     } catch (err) {
       if (err.response && err.response.data && err.response.data.error) {
         setErrorMsg(err.response.data.error)

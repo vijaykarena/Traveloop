@@ -257,7 +257,7 @@ export default function Profile() {
                         </CardDescription>
                       </CardHeader>
                       <CardFooter className="p-4 pt-0">
-                        <Button variant="outline" size="sm" className="w-full" onClick={() => navigate('itinerary')}>View <ArrowRight size={14} /></Button>
+                        <Button variant="outline" size="sm" className="w-full" onClick={() => navigate(`itinerary/${t.id}`)}>View <ArrowRight size={14} /></Button>
                       </CardFooter>
                     </Card>
                   ))}

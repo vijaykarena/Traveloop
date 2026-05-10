@@ -39,11 +39,13 @@ export default function App() {
                 <Route path="/my-trips" element={<MyTrips />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/search" element={<Search />} />
+                <Route path="/itinerary/:id" element={<ItineraryView />} />
                 <Route path="/itinerary" element={<ItineraryView />} />
                 <Route path="/community" element={<Community />} />
                 <Route path="/packing" element={<Packing />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/notes" element={<Notes />} />
+                <Route path="/invoice/:id" element={<Invoice />} />
                 <Route path="/invoice" element={<Invoice />} />
               </Route>
 

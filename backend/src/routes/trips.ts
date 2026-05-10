@@ -51,7 +51,32 @@ async function assertStopOwner(
   return true;
 }
 
-// ── public route (no auth) ────────────────────────────────────────────────────
+// ── public routes (no auth) ──────────────────────────────────────────────────
+
+// GET /trips/public — list all public trips
+router.get("/public", async (req: Request, res: Response) => {
+  try {
+    const page = Math.max(1, Number(req.query["page"]) || 1);
+    const limit = Math.min(50, Number(req.query["limit"]) || 20);
+
+    const [trips, total] = await Promise.all([
+      prisma.trip.findMany({
+        where: { isPublic: true },
+        orderBy: { createdAt: "desc" },
+        skip: (page - 1) * limit,
+        take: limit,
+        include: {
+          user: { select: { firstName: true, lastName: true, avatarUrl: true } },
+          _count: { select: { stops: true } },
+        },
+      }),
+      prisma.trip.count({ where: { isPublic: true } }),
+    ]);
+    res.json({ trips, total, page, limit });
+  } catch {
+    res.status(500).json({ error: "Failed to fetch public trips" });
+  }
+});
 
 // GET /trips/public/:slug
 router.get("/public/:slug", async (req: Request, res: Response) => {
