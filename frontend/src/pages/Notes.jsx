@@ -19,35 +19,35 @@ const notes = [
 export default function Notes() {
   const [tab, setTab] = useState('All')
   return (
-    <div className="flex flex-col h-screen bg-background text-foreground font-sans overflow-hidden">
+    <div className="flex flex-col h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body overflow-hidden">
       <Chrome active="My Trips" />
       <Controls q="Search trip notes…" extra={<Button size="sm"><Plus size={14} /> Add note</Button>} />
-      <div className="px-8 py-6 border-b flex items-end justify-between shrink-0">
+      <div className="px-8 py-6 border-b border-[var(--border-subtle)] flex items-end justify-between shrink-0 bg-[var(--bg-surface)]">
         <div>
           <Badge variant="secondary" className="mb-2">Rome &amp; Amalfi</Badge>
-          <h1 className="text-3xl font-semibold tracking-tight">Trip notes</h1>
-          <p className="text-muted-foreground mt-1">Important details, reminders, and confirmations.</p>
+          <h1 className="font-display text-3xl font-bold tracking-tight">Trip notes</h1>
+          <p className="text-[var(--text-secondary)] mt-1">Important details, reminders, and confirmations.</p>
         </div>
         <TabsSwitcher tabs={['All', 'By day', 'By stop']} active={tab} onChange={setTab} />
       </div>
       <div className="grid grid-cols-[200px_1fr] gap-6 p-8 flex-1 overflow-auto">
         <aside>
-          <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">Index</h3>
+          <h3 className="text-xs font-bold text-[var(--text-tertiary)] uppercase tracking-wider mb-3">Index</h3>
           <div className="space-y-1">
             {notes.map((n, i) => (
-              <button key={i} className={cn('w-full text-left p-2 rounded-md text-sm hover:bg-accent', i === 0 && 'bg-accent')}>
+              <button key={i} className={cn('w-full text-left p-2 rounded-[var(--radius-md)] text-sm hover:bg-[var(--bg-muted)] transition-colors', i === 0 && 'bg-[var(--bg-muted)]')}>
                 <div className="font-medium truncate">№ {String(i + 1).padStart(2, '0')} · {n.title.split('—')[0].trim()}</div>
-                <div className="text-xs text-muted-foreground">{n.date}</div>
+                <div className="text-xs text-[var(--text-tertiary)]">{n.date}</div>
               </button>
             ))}
           </div>
         </aside>
         <div className="space-y-4">
           {notes.map((n, i) => (
-            <Card key={i} className="rounded-xl border shadow-sm py-0">
+            <Card key={i} className="py-0">
               <CardHeader className="flex-row items-start justify-between space-y-0 p-5 pb-3">
                 <div>
-                  <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{n.date}</div>
+                  <div className="text-xs text-[var(--text-tertiary)] uppercase tracking-wider mb-1">{n.date}</div>
                   <CardTitle className="text-lg">{n.title}</CardTitle>
                 </div>
                 <div className="flex gap-1">
@@ -56,7 +56,7 @@ export default function Notes() {
                 </div>
               </CardHeader>
               <CardContent className="px-5 pb-5">
-                <p className="text-sm text-foreground/80 leading-relaxed">{n.body}</p>
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{n.body}</p>
                 <div className="flex gap-2 mt-3">
                   {n.tags.map(t => <Badge key={t} variant="outline">{t}</Badge>)}
                 </div>

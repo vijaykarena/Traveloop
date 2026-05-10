@@ -1,5 +1,6 @@
 import { useNav } from '../navigation'
 import { Button } from '@/components/ui/button'
+import ThemeToggle from './common/ThemeToggle'
 import { Bell, Settings, Compass, Calendar, PlaneTakeoff, Users } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { AvatarFallback, Avatar } from '@/components/ui/avatar'
@@ -14,10 +15,17 @@ const NAV_ITEMS = [
 export default function Chrome({ active = 'Plan', user = 'AS' }) {
   const { navigate } = useNav()
   return (
-    <header className="flex items-center justify-between px-8 h-16 border-b bg-background shrink-0">
-      <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('dashboard')}>
-        <div className="h-8 w-8 rounded-md bg-primary text-primary-foreground flex items-center justify-center font-semibold text-sm">T</div>
-        <span className="text-lg font-semibold tracking-tight">Traveloop</span>
+    <header className="flex items-center justify-between px-8 h-16 border-b border-[var(--border-subtle)] bg-[var(--bg-surface)] shrink-0">
+      <div
+        className="flex items-center gap-2 cursor-pointer"
+        onClick={() => navigate('dashboard')}
+      >
+        <div className="h-8 w-8 rounded-[var(--radius-md)] bg-[var(--brand-primary)] text-white flex items-center justify-center font-display font-bold text-sm">
+          T
+        </div>
+        <span className="font-display text-lg font-bold tracking-tight text-[var(--brand-primary)]">
+          Traveloop
+        </span>
       </div>
 
       <nav className="flex items-center gap-1">
@@ -26,10 +34,11 @@ export default function Chrome({ active = 'Plan', user = 'AS' }) {
             key={label}
             onClick={() => navigate(page)}
             className={cn(
-              'flex items-center gap-2 px-3 h-9 rounded-md text-sm font-medium transition-colors',
+              'flex items-center gap-2 px-3 h-9 rounded-[var(--radius-md)] text-[13px] font-medium whitespace-nowrap',
+              'transition-all duration-[120ms] ease',
               label === active
-                ? 'bg-secondary text-secondary-foreground'
-                : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                ? 'bg-[var(--bg-muted)] text-[var(--text-primary)]'
+                : 'text-[var(--text-secondary)] hover:text-[var(--brand-primary)] hover:bg-[var(--bg-muted)]'
             )}
           >
             <Icon size={15} /> {label}
@@ -38,13 +47,20 @@ export default function Chrome({ active = 'Plan', user = 'AS' }) {
       </nav>
 
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon"><Bell size={16} /></Button>
-        <Button variant="ghost" size="icon" onClick={() => navigate('admin')}><Settings size={16} /></Button>
+        <ThemeToggle />
+        <Button variant="ghost" size="icon">
+          <Bell size={16} />
+        </Button>
+        <Button variant="ghost" size="icon" onClick={() => navigate('admin')}>
+          <Settings size={16} />
+        </Button>
         <Avatar
-          className="h-9 w-9 bg-primary/10 text-primary cursor-pointer"
+          className="h-9 w-9 cursor-pointer bg-[var(--brand-primary)]/10"
           onClick={() => navigate('profile')}
         >
-          <AvatarFallback className="bg-primary/10 text-primary text-sm font-medium">{user}</AvatarFallback>
+          <AvatarFallback className="bg-[var(--brand-primary)]/10 text-[var(--brand-primary)] font-display text-sm font-bold">
+            {user}
+          </AvatarFallback>
         </Avatar>
       </div>
     </header>
