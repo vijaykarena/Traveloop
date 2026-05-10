@@ -141,8 +141,9 @@ router.post("/", async (req: Request, res: Response) => {
       },
     });
     res.status(201).json(trip);
-  } catch {
-    res.status(500).json({ error: "Failed to create trip" });
+  } catch (error: any) {
+    console.error("Trip creation error:", error);
+    res.status(500).json({ error: "Failed to create trip", details: error.message });
   }
 });
 
@@ -966,13 +967,22 @@ router.delete("/:id/packing/:itemId", async (req: Request, res: Response) => {
 
 // ── notes ─────────────────────────────────────────────────────────────────────
 
-// GET /trips/:id/notes
+// GET /trips/:id/notes?tripStopId=
 router.get("/:id/notes", async (req: Request, res: Response) => {
   try {
     const tripId = Number(req.params.id);
     if (!(await assertOwner(tripId, req.userId!, res))) return;
+
+    const tripStopId = req.query["tripStopId"]
+      ? Number(req.query["tripStopId"])
+      : undefined;
+
     const notes = await prisma.tripNote.findMany({
-      where: { tripId, userId: req.userId },
+      where: {
+        tripId,
+        userId: req.userId,
+        ...(tripStopId !== undefined && { tripStopId }),
+      },
       orderBy: { noteDate: "desc" },
     });
     res.json(notes);
@@ -987,10 +997,12 @@ router.post("/:id/notes", async (req: Request, res: Response) => {
     const tripId = Number(req.params.id);
     if (!(await assertOwner(tripId, req.userId!, res))) return;
 
-    const { title, content, noteDate } = req.body as {
+    const { title, content, noteDate, tripStopId, tags } = req.body as {
       title?: string;
       content: string;
       noteDate?: string;
+      tripStopId?: number;
+      tags?: string[];
     };
 
     if (!content) return res.status(400).json({ error: "content required" });
@@ -1002,6 +1014,8 @@ router.post("/:id/notes", async (req: Request, res: Response) => {
         title,
         content,
         noteDate: noteDate ? new Date(noteDate) : undefined,
+        tripStopId: tripStopId ? Number(tripStopId) : undefined,
+        tags: tags ?? [],
       },
     });
     res.status(201).json(note);
@@ -1016,10 +1030,12 @@ router.put("/:id/notes/:noteId", async (req: Request, res: Response) => {
     const tripId = Number(req.params.id);
     if (!(await assertOwner(tripId, req.userId!, res))) return;
 
-    const { title, content, noteDate } = req.body as {
+    const { title, content, noteDate, tripStopId, tags } = req.body as {
       title?: string;
       content?: string;
       noteDate?: string | null;
+      tripStopId?: number | null;
+      tags?: string[];
     };
 
     const note = await prisma.tripNote.update({
@@ -1030,6 +1046,8 @@ router.put("/:id/notes/:noteId", async (req: Request, res: Response) => {
         ...(noteDate !== undefined && {
           noteDate: noteDate ? new Date(noteDate) : null,
         }),
+        ...(tripStopId !== undefined && { tripStopId }),
+        ...(tags !== undefined && { tags }),
       },
     });
     res.json(note);

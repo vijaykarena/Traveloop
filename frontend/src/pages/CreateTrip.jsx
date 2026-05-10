@@ -1,6 +1,8 @@
 import Chrome from '../components/Chrome'
 import Img from '../components/Img'
 import { useNav } from '../navigation'
+import { useForm } from 'react-hook-form'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -11,6 +13,35 @@ import { ArrowRight, Plus } from 'lucide-react'
 
 export default function CreateTrip() {
   const { navigate } = useNav()
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm()
+  const [errorMsg, setErrorMsg] = useState('')
+
+  const onSubmit = async (data) => {
+    setErrorMsg('')
+    try {
+      const token = localStorage.getItem('token')
+      const res = await fetch('http://localhost:4000/trips', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+      })
+
+      if (!res.ok) {
+        const errData = await res.json()
+        throw new Error(errData.error || 'Failed to create trip')
+      }
+
+      const trip = await res.json()
+      // Navigate to dashboard after creation
+      navigate('dashboard')
+    } catch (err) {
+      setErrorMsg(err.message)
+    }
+  }
+
   return (
     <div className="flex flex-col min-h-screen lg:h-screen bg-[var(--bg-page)] text-[var(--text-primary)] font-body lg:overflow-hidden">
       <Chrome active="Plan" />
@@ -29,32 +60,55 @@ export default function CreateTrip() {
       <div className="flex-1 overflow-y-auto lg:overflow-hidden">
         <div className="flex flex-col lg:grid lg:grid-cols-[1fr_1.6fr] lg:h-full">
 
-          {/* ===== LEFT — Trip details form ===== */}
-          <div className="p-4 sm:p-8 border-b lg:border-b-0 lg:border-r border-[var(--border-subtle)] space-y-4 lg:overflow-y-auto">
+          {/* ===== LEFT — Trip details form (API-connected) ===== */}
+          <form onSubmit={handleSubmit(onSubmit)} className="p-4 sm:p-8 border-b lg:border-b-0 lg:border-r border-[var(--border-subtle)] space-y-4 lg:overflow-y-auto flex flex-col">
             <h2 className="font-display text-lg font-bold">Trip details</h2>
-            <div className="space-y-2"><Label>Trip name</Label><Input defaultValue="A long weekend in Rome" /></div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-2"><Label>Start date</Label><Input defaultValue="18 / 05 / 2026" /></div>
-              <div className="space-y-2"><Label>End date</Label><Input defaultValue="02 / 06 / 2026" /></div>
-            </div>
-            <div className="space-y-2"><Label>Destination</Label><Input defaultValue="Rome, Italy" /></div>
+            {errorMsg && <p className="text-red-500 text-sm bg-red-50 dark:bg-red-950/20 p-3 rounded-[var(--radius-md)]">{errorMsg}</p>}
+
             <div className="space-y-2">
-              <Label>Companions</Label>
+              <Label>Trip name</Label>
+              <Input {...register('title', { required: true })} placeholder="A long weekend in Rome" />
+              {errors.title && <span className="text-red-500 text-xs">Title is required</span>}
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <Label>Start date</Label>
+                <Input type="date" {...register('startDate', { required: true })} />
+                {errors.startDate && <span className="text-red-500 text-xs">Required</span>}
+              </div>
+              <div className="space-y-2">
+                <Label>End date</Label>
+                <Input type="date" {...register('endDate', { required: true })} />
+                {errors.endDate && <span className="text-red-500 text-xs">Required</span>}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Destination</Label>
+              <Input {...register('destination')} placeholder="Rome, Italy" />
+            </div>
+
+            <div className="space-y-2 opacity-50 pointer-events-none">
+              <Label>Companions (Coming Soon)</Label>
               <div className="flex flex-wrap gap-2 p-2 border border-[var(--border-default)] rounded-[var(--radius-md)] min-h-10 bg-[var(--bg-surface)]">
                 <Badge variant="secondary">Marco ×</Badge>
                 <Badge variant="secondary">Iris ×</Badge>
-                <button className="text-xs text-[var(--text-tertiary)] hover:text-[var(--text-primary)] px-2">+ add</button>
               </div>
             </div>
+
             <div className="space-y-2">
               <Label>Description</Label>
-              <Textarea rows={4} defaultValue="A slow loop through Lazio and the Amalfi coast — markets, espresso, and an afternoon train down the coast." />
+              <Textarea rows={4} {...register('description')} placeholder="A slow loop through Lazio and the Amalfi coast..." />
             </div>
-            <div className="flex flex-col sm:flex-row gap-2 pt-2">
-              <Button variant="outline" className="sm:w-auto">Save draft</Button>
-              <Button className="flex-1" onClick={() => navigate('build-itinerary')}>Build itinerary <ArrowRight size={14} /></Button>
+
+            <div className="flex flex-col sm:flex-row gap-2 pt-2 mt-auto">
+              <Button type="button" variant="outline" onClick={() => navigate('dashboard')} className="sm:w-auto">Cancel</Button>
+              <Button type="submit" className="flex-1" disabled={isSubmitting}>
+                {isSubmitting ? 'Creating...' : 'Create Trip'} <ArrowRight size={14} />
+              </Button>
             </div>
-          </div>
+          </form>
 
           {/* ===== RIGHT — Suggested places ===== */}
           <div className="p-4 sm:p-8 lg:overflow-y-auto">

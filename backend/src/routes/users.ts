@@ -24,6 +24,8 @@ router.get("/me", async (req: Request, res: Response) => {
         avatarUrl: true,
         bio: true,
         language: true,
+        currency: true,
+        visibility: true,
         createdAt: true,
         updatedAt: true,
       },
@@ -48,6 +50,8 @@ router.put("/me", async (req: Request, res: Response) => {
       avatarUrl,
       bio,
       language,
+      currency,
+      visibility,
     } = req.body as {
       firstName?: string;
       lastName?: string;
@@ -58,6 +62,8 @@ router.put("/me", async (req: Request, res: Response) => {
       avatarUrl?: string;
       bio?: string;
       language?: string;
+      currency?: string;
+      visibility?: string;
     };
 
     const user = await prisma.user.update({
@@ -72,6 +78,8 @@ router.put("/me", async (req: Request, res: Response) => {
         ...(avatarUrl !== undefined && { avatarUrl }),
         ...(bio !== undefined && { bio }),
         ...(language && { language }),
+        ...(currency !== undefined && { currency }),
+        ...(visibility !== undefined && { visibility }),
       },
       select: {
         id: true,
@@ -86,6 +94,8 @@ router.put("/me", async (req: Request, res: Response) => {
         avatarUrl: true,
         bio: true,
         language: true,
+        currency: true,
+        visibility: true,
         createdAt: true,
         updatedAt: true,
       },

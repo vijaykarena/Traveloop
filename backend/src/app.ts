@@ -4,6 +4,7 @@ import authRouter from "./routes/auth";
 import usersRouter from "./routes/users";
 import tripsRouter from "./routes/trips";
 import citiesRouter from "./routes/cities";
+import activitiesRouter from "./routes/activities";
 import adminRouter from "./routes/admin";
 
 const app = express();
@@ -21,6 +22,7 @@ app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 app.use("/trips", tripsRouter);
 app.use("/cities", citiesRouter);
+app.use("/activities", activitiesRouter);
 app.use("/admin", adminRouter);
 
 app.listen(port, () => {
