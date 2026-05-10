@@ -26,9 +26,11 @@ router.post("/", async (req: Request, res: Response) => {
     userId: number;
   };
   if (!title || !destination || !startDate || !endDate || !userId)
-    return res.status(400).json({
-      error: "title, destination, startDate, endDate, userId required",
-    });
+    return res
+      .status(400)
+      .json({
+        error: "title, destination, startDate, endDate, userId required",
+      });
   const trip = await prisma.trip.create({
     data: {
       title,
