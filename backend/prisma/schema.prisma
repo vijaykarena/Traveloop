@@ -7,7 +7,190 @@ datasource db {
   provider = "postgresql"
 }
 
-// ── Enums ──────────────────────────────────────────────────────────────────
+model User {
+  id                Int                @id @default(autoincrement())
+  email             String             @unique
+  password          String
+  firstName         String
+  lastName          String
+  city              String
+  country           String
+  countryCode       String
+  phoneNo           String             @unique
+  role              Role               @default(USER)
+  avatarUrl         String?
+  bio               String?
+  language          String             @default("en")
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  packingItems      PackingItem[]
+  savedDestinations SavedDestination[]
+  trips             Trip[]
+  notes             TripNote[]
+}
+
+model City {
+  id                Int                @id @default(autoincrement())
+  name              String
+  costIndex         Float              @default(1.0)
+  popularity        Int                @default(0)
+  description       String?
+  imageUrl          String?
+  latitude          Float?
+  longitude         Float?
+  activities        Activity[]
+  savedDestinations SavedDestination[]
+  tripStops         TripStop[]
+}
+
+model Activity {
+  id             Int            @id @default(autoincrement())
+  name           String
+  description    String?
+  type           ActivityType   @default(OTHER)
+  estimatedCost  Float          @default(0)
+  durationHours  Float          @default(1)
+  imageUrl       String?
+  cityId         Int
+  city           City           @relation(fields: [cityId], references: [id])
+  tripActivities TripActivity[]
+}
+
+model Trip {
+  id            Int             @id @default(autoincrement())
+  title         String
+  description   String?
+  coverPhotoUrl String?
+  startDate     DateTime
+  endDate       DateTime
+  isPublic      Boolean         @default(false)
+  publicSlug    String?         @unique
+  budgetLimit   Float?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  userId        Int
+  packing       PackingItem[]
+  user          User            @relation(fields: [userId], references: [id])
+  expenses      TripExpense[]
+  notes         TripNote[]
+  stops         TripStop[]
+  transports    TripTransport[]
+}
+
+model TripStop {
+  id            Int                @id @default(autoincrement())
+  tripId        Int
+  cityId        Int
+  order         Int
+  arrivalDate   DateTime
+  departureDate DateTime
+  notes         String?
+  accommodation TripAccommodation?
+  activities    TripActivity[]
+  expenses      TripExpense[]
+  city          City               @relation(fields: [cityId], references: [id])
+  trip          Trip               @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  transportFrom TripTransport[]    @relation("FromStop")
+  transportTo   TripTransport[]    @relation("ToStop")
+
+  @@unique([tripId, order])
+}
+
+model TripActivity {
+  id            Int       @id @default(autoincrement())
+  tripStopId    Int
+  activityId    Int
+  scheduledDate DateTime?
+  actualCost    Float?
+  notes         String?
+  activity      Activity  @relation(fields: [activityId], references: [id])
+  tripStop      TripStop  @relation(fields: [tripStopId], references: [id], onDelete: Cascade)
+}
+
+model TripAccommodation {
+  id           Int      @id @default(autoincrement())
+  tripStopId   Int      @unique
+  name         String
+  address      String?
+  checkIn      DateTime
+  checkOut     DateTime
+  costPerNight Float
+  bookingRef   String?
+  notes        String?
+  tripStop     TripStop @relation(fields: [tripStopId], references: [id], onDelete: Cascade)
+}
+
+model TripTransport {
+  id            Int           @id @default(autoincrement())
+  tripId        Int
+  fromStopId    Int?
+  toStopId      Int?
+  mode          TransportMode @default(OTHER)
+  carrier       String?
+  departureTime DateTime?
+  arrivalTime   DateTime?
+  cost          Float         @default(0)
+  bookingRef    String?
+  notes         String?
+  fromStop      TripStop?     @relation("FromStop", fields: [fromStopId], references: [id])
+  toStop        TripStop?     @relation("ToStop", fields: [toStopId], references: [id])
+  trip          Trip          @relation(fields: [tripId], references: [id], onDelete: Cascade)
+}
+
+model TripExpense {
+  id          Int             @id @default(autoincrement())
+  tripId      Int
+  tripStopId  Int?
+  category    ExpenseCategory @default(MEAL)
+  description String?
+  amount      Float
+  expenseDate DateTime?
+  createdAt   DateTime        @default(now())
+  trip        Trip            @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  tripStop    TripStop?       @relation(fields: [tripStopId], references: [id])
+}
+
+model PackingItem {
+  id       Int             @id @default(autoincrement())
+  tripId   Int
+  userId   Int
+  name     String
+  category PackingCategory @default(OTHER)
+  isPacked Boolean         @default(false)
+  order    Int             @default(0)
+  trip     Trip            @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  user     User            @relation(fields: [userId], references: [id])
+}
+
+model TripNote {
+  id        Int       @id @default(autoincrement())
+  tripId    Int
+  userId    Int
+  title     String?
+  content   String
+  noteDate  DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  trip      Trip      @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id])
+}
+
+model SavedDestination {
+  userId Int
+  cityId Int
+  city   City @relation(fields: [cityId], references: [id])
+  user   User @relation(fields: [userId], references: [id])
+
+  @@id([userId, cityId])
+}
+
+model PasswordResetToken {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
 
 enum Role {
   USER
@@ -48,220 +231,4 @@ enum ExpenseCategory {
   MEAL
   MISC
   OTHER
-}
-
-// ── User ───────────────────────────────────────────────────────────────────
-
-model User {
-  id        Int    @id @default(autoincrement())
-  email     String @unique
-  password  String
-  firstName String
-  lastName  String
-  city      String
-  country   String
-  countryCode String
-  phoneNo   String @unique
-  role        Role     @default(USER)
-  avatarUrl   String?
-  bio         String?
-  language    String   @default("en")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  trips             Trip[]
-  savedDestinations SavedDestination[]
-  notes             TripNote[]
-  packingItems      PackingItem[]
-}
-
-// ── City (seeded catalog) ──────────────────────────────────────────────────
-
-model City {
-  id        Int   @id @default(autoincrement())
-  name      String
-  costIndex Float  @default(1.0)
-  popularity  Int     @default(0)
-  description String?
-  imageUrl    String?
-  latitude    Float?
-  longitude   Float?
-
-  activities        Activity[]
-  tripStops         TripStop[]
-  savedDestinations SavedDestination[]
-}
-
-// ── Activity (seeded catalog, per city) ───────────────────────────────────
-
-model Activity {
-  id            Int          @id @default(autoincrement())
-  name          String
-  description   String?
-  type          ActivityType @default(OTHER)
-  estimatedCost Float        @default(0)
-  durationHours Float        @default(1)
-  imageUrl      String?
-  cityId        Int
-  city          City         @relation(fields: [cityId], references: [id])
-
-  tripActivities TripActivity[]
-}
-
-// ── Trip ───────────────────────────────────────────────────────────────────
-
-model Trip {
-  id            Int      @id @default(autoincrement())
-  title         String
-  description   String?
-  coverPhotoUrl String?
-  startDate     DateTime
-  endDate       DateTime
-  isPublic      Boolean  @default(false)
-  publicSlug    String?  @unique
-  budgetLimit   Float?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  userId        Int
-  user          User     @relation(fields: [userId], references: [id])
-
-  stops      TripStop[]
-  transports TripTransport[]
-  notes      TripNote[]
-  expenses   TripExpense[]
-  packing    PackingItem[]
-}
-
-// ── TripStop ───────────────────────────────────────────────────────────────
-
-model TripStop {
-  id            Int      @id @default(autoincrement())
-  tripId        Int
-  trip          Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
-  cityId        Int
-  city          City     @relation(fields: [cityId], references: [id])
-  order         Int
-  arrivalDate   DateTime
-  departureDate DateTime
-  notes         String?
-
-  activities    TripActivity[]
-  accommodation TripAccommodation?
-  transportFrom TripTransport[]    @relation("FromStop")
-  transportTo   TripTransport[]    @relation("ToStop")
-  expenses      TripExpense[]
-
-  @@unique([tripId, order])
-}
-
-// ── TripActivity ───────────────────────────────────────────────────────────
-
-model TripActivity {
-  id            Int       @id @default(autoincrement())
-  tripStopId    Int
-  tripStop      TripStop  @relation(fields: [tripStopId], references: [id], onDelete: Cascade)
-  activityId    Int
-  activity      Activity  @relation(fields: [activityId], references: [id])
-  scheduledDate DateTime?
-  actualCost    Float?
-  notes         String?
-}
-
-// ── TripAccommodation ──────────────────────────────────────────────────────
-
-model TripAccommodation {
-  id           Int      @id @default(autoincrement())
-  tripStopId   Int      @unique
-  tripStop     TripStop @relation(fields: [tripStopId], references: [id], onDelete: Cascade)
-  name         String
-  address      String?
-  checkIn      DateTime
-  checkOut     DateTime
-  costPerNight Float
-  bookingRef   String?
-  notes        String?
-}
-
-// ── TripTransport ──────────────────────────────────────────────────────────
-
-model TripTransport {
-  id            Int           @id @default(autoincrement())
-  tripId        Int
-  trip          Trip          @relation(fields: [tripId], references: [id], onDelete: Cascade)
-  fromStopId    Int?
-  fromStop      TripStop?     @relation("FromStop", fields: [fromStopId], references: [id])
-  toStopId      Int?
-  toStop        TripStop?     @relation("ToStop", fields: [toStopId], references: [id])
-  mode          TransportMode @default(OTHER)
-  carrier       String?
-  departureTime DateTime?
-  arrivalTime   DateTime?
-  cost          Float         @default(0)
-  bookingRef    String?
-  notes         String?
-}
-
-// ── TripExpense (meals + misc) ─────────────────────────────────────────────
-
-model TripExpense {
-  id          Int             @id @default(autoincrement())
-  tripId      Int
-  trip        Trip            @relation(fields: [tripId], references: [id], onDelete: Cascade)
-  tripStopId  Int?
-  tripStop    TripStop?       @relation(fields: [tripStopId], references: [id])
-  category    ExpenseCategory @default(MEAL)
-  description String?
-  amount      Float
-  expenseDate DateTime?
-  createdAt   DateTime        @default(now())
-}
-
-// ── PackingItem ────────────────────────────────────────────────────────────
-
-model PackingItem {
-  id       Int             @id @default(autoincrement())
-  tripId   Int
-  trip     Trip            @relation(fields: [tripId], references: [id], onDelete: Cascade)
-  userId   Int
-  user     User            @relation(fields: [userId], references: [id])
-  name     String
-  category PackingCategory @default(OTHER)
-  isPacked Boolean         @default(false)
-  order    Int             @default(0)
-}
-
-// ── TripNote ───────────────────────────────────────────────────────────────
-
-model TripNote {
-  id        Int       @id @default(autoincrement())
-  tripId    Int
-  trip      Trip      @relation(fields: [tripId], references: [id], onDelete: Cascade)
-  userId    Int
-  user      User      @relation(fields: [userId], references: [id])
-  title     String?
-  content   String
-  noteDate  DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-}
-
-// ── SavedDestination ───────────────────────────────────────────────────────
-
-model SavedDestination {
-  userId Int
-  cityId Int
-  user   User @relation(fields: [userId], references: [id])
-  city   City @relation(fields: [cityId], references: [id])
-
-  @@id([userId, cityId])
-}
-
-// ── Password Reset Token ───────────────────────────────────────────────────
-
-model PasswordResetToken {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  token     String   @unique
-  expiresAt DateTime
-  createdAt DateTime @default(now())
 }
