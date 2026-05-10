@@ -66,7 +66,7 @@ export default function Dashboard() {
 
         {/* ===== HERO BANNER ===== */}
         <div className="relative h-48 sm:h-64 md:h-72 border-b border-[var(--border-subtle)] shrink-0">
-          <Img label="Banner" className="absolute inset-0 rounded-none border-0 h-full w-full" style={{ aspectRatio: undefined }} />
+          <img src="/hero-banner.jpg" alt="Banner" className="absolute inset-0 h-full w-full object-cover" />
           <div className="absolute inset-x-4 sm:inset-x-8 bottom-4 sm:bottom-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
             <Card className="max-w-xs sm:max-w-md py-0">
               <CardHeader className="p-4 sm:p-6">
